@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="DataAccess/DataAccess.csproj" />
+  <Project Path="Models/Models.csproj" />
+  <Project Path="Services/Services.csproj" />
+  <Project Path="UI/UI.csproj" Id="8492440b-4e0b-4ba4-950f-63055e80de7d" />
+  <Project Path="ViewModels/ViewModels.csproj" />
+</Solution>

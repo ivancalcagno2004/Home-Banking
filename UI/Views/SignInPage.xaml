@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ViewModels;assembly=ViewModels"
+             x:Class="UI.Views.SignInPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#121212}">
+
+    <Grid VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+
+        <Border StrokeShape="RoundRectangle 12"
+                Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
+                StrokeThickness="1"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                WidthRequest="360"
+                Padding="32">
+
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.1" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="16">
+
+                <Image Source="logo_tandilbank.png" 
+                       HeightRequest="100" 
+                       HorizontalOptions="Center" 
+                       Margin="0,0,0,8"/>
+
+                <Label Text="Bienvenido a Tandil Bank" 
+                       FontAttributes="Bold"
+                       FontSize="20"
+                       HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+
+                <Label Text="Banca Personal" 
+                       FontSize="14"
+                       TextColor="Gray"
+                       HorizontalOptions="Center" 
+                       Margin="0,-10,0,16"/>
+
+                <Label Text="Usuario" TextColor="Gray" Margin="0,0,0,-8"/>
+                <Entry Text="{Binding UserName}"
+                       Placeholder="Ingrese su usuario"
+                       ClearButtonVisibility="WhileEditing"
+                       HeightRequest="45"/>
+
+                <Label Text="Contraseña" TextColor="Gray" Margin="0,0,0,-8"/>
+                <Entry x:Name="TxtPasswordLogin"
+                       IsPassword="True"
+                       Placeholder="Ingrese su contraseña"
+                       HeightRequest="45"/>
+
+                <Button Text="Ingresar de forma segura"
+                        Command="{Binding SignInCommand}"
+                        CommandParameter="{Binding Source={x:Reference TxtPasswordLogin}, Path=Text}"
+                        BackgroundColor="#005fb8"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="8"
+                        HeightRequest="45"
+                        Margin="0,16,0,0"/>
+
+                <Button Text="No tengo cuenta, quiero registrarme"
+                        Command="{Binding NavigateToSignUpCommand}"
+                        BackgroundColor="Transparent"
+                        TextColor="#005fb8"
+                        FontAttributes="Bold"
+                        Margin="0,8,0,0"/>
+
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

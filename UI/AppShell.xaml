@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="UI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:UI.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Title="Tandil Bank">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Color x:Key="PrimaryColor">#005fb8</Color>
+            <Style TargetType="Element" x:Key="BaseStyle">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+            </Style>
+            <Style TargetType="ShellItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <Shell.FlyoutHeader>
+        <Grid HeightRequest="150" BackgroundColor="#004a94" Padding="20">
+            <VerticalStackLayout VerticalOptions="End" Spacing="5">
+                <Image Source="logo_tandilbank.png" HeightRequest="60" HorizontalOptions="Start" />
+                <Label Text="Tandil Bank" TextColor="White" FontAttributes="Bold" FontSize="18" />
+                <Label Text="Banca Personal" TextColor="#D1E4F9" FontSize="12" />
+            </VerticalStackLayout>
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate views:SignInPage}" 
+                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" />
+
+    <ShellContent Route="SignUpPage" ContentTemplate="{DataTemplate views:SignUpPage}" 
+                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" />
+
+    <FlyoutItem Title="Inicio" >
+        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate views:HomePage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Transferencias" >
+        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate views:TransferPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Pagos de Servicios" >
+        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate views:PaymentsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Últimos Movimientos" >
+        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate views:TransactionsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Configuración" >
+        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </FlyoutItem>
+
+</Shell>
+
+<!-- <Shell
+    x:Class="UI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:UI.Views"
+    Shell.FlyoutBehavior="Flyout">
+
+    <TabBar>
+        <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:SignInPage}"
+        Route="SignInPage"
+        Shell.FlyoutItemIsVisible="False" 
+        Shell.NavBarIsVisible="False" 
+        Shell.TabBarIsVisible="True"/>
+       
+        <ShellContent 
+        Title="Register"
+        ContentTemplate="{DataTemplate views:SignUpPage}"
+        Route="SignUpPage"
+        Shell.NavBarIsVisible="False"
+        Shell.FlyoutItemIsVisible="False"
+        Shell.TabBarIsVisible="True"/>
+    </TabBar>
+
+    <FlyoutItem Title="Mi Banco" FlyoutDisplayOptions="AsMultipleItems">
+
+    </FlyoutItem>
+        <ShellContent
+            Title="Inicio"
+            ContentTemplate="{DataTemplate views:DashboardPage}"
+            Route="DashboardPage" />
+
+         <ShellContent
+            Title="Transferencias"
+            ContentTemplate="{DataTemplate views:TransferPage}"
+            Route="TransferPage" />
+
+        <ShellContent
+            Title="Pagos de Servicios"
+            ContentTemplate="{DataTemplate views:PaymentsPage}"
+            Route="PaymentsPage" />
+
+        <ShellContent
+            Title="Últimos Movimientos"
+            ContentTemplate="{DataTemplate views:TransactionsPage}"
+            Route="TransactionsPage" />
+
+    </FlyoutItem>
+
+    <FlyoutItem Title="Ajustes">
+        <ShellContent
+            Title="Configuración"
+            ContentTemplate="{DataTemplate views:SettingsPage}"
+            Route="SettingsPage" />
+    </FlyoutItem>
+
+</Shell>-->
