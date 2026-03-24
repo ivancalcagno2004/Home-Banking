@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace ViewModels
     public class UserViewModel : BaseViewModel
     {
 
-        public ObservableCollection<User> Users { get; }
+        public ObservableCollection<UserProfileDTO> Users { get; }
 
         private User? _selectedUser;
 
@@ -30,24 +31,9 @@ namespace ViewModels
         {
             _userService = userService;
 
-            Users = new ObservableCollection<User>();
+            Users = new ObservableCollection<UserProfileDTO>();
 
             LoadUsersAsync();
-            Users.Add(new User { 
-                UserName="Ivan",
-                Password="123",
-                Email="Icalc@gmail.com",
-                FullName="Ivan Calcano",
-                CreatedAt=DateTime.UtcNow
-            });
-            
-            Users.Add(new User { 
-                UserName="Clau",
-                Password="123",
-                Email="Icalc@gmail.com",
-                FullName="Claudia Suarez",
-                CreatedAt=DateTime.UtcNow
-            });
         }
 
         private async void LoadUsersAsync()

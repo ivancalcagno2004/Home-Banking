@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Graphics;
 
 namespace HomeBanking.Data.Converters
 {
@@ -11,18 +12,25 @@ namespace HomeBanking.Data.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return new SolidColorBrush(Color.FromRgb(0, 0, 0));
-
             if (value is DateTime date)
             {
-                // Comparar solo fechas (sin horas)
-                if (date.Date < DateTime.Now.Date)
+                var today = DateTime.Now.Date;
+
+                if (date.Date < today)
                 {
-                    return new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                    return Colors.Red;
+                }
+                else if (date.Date <= today.AddDays(3))
+                {
+                    return Colors.DarkOrange;
+                }
+                else
+                {
+                    return Color.FromArgb("FF2E7D32");
                 }
             }
 
-            return new SolidColorBrush(Color.FromRgb(50, 50, 50));
+            return Colors.Gray;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

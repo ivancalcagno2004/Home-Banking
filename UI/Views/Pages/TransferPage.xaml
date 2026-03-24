@@ -42,12 +42,12 @@
                         </VerticalStackLayout>
                     </HorizontalStackLayout>
 
-                    <Label Text="Desde tu cuenta" TextColor="Gray" Margin="0,0,0,-8"/>
+                    <Label Text="Desde tu cuenta" TextColor="Gray" Margin="0,0,0,-4"/>
                     <Picker ItemsSource="{Binding MyAccounts}" 
                             SelectedItem="{Binding SelectedOriginAccount}"
                             ItemDisplayBinding="{Binding Alias}"
                             Title="Selecciona una cuenta"
-                            HeightRequest="45"/>
+                            HeightRequest="70"/>
 
                     <Label Text="Hacia (CBU o Alias)" TextColor="Gray" Margin="0,0,0,-8"/>
                     <Entry Text="{Binding DestinationCBU_Alias}" 

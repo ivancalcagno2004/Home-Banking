@@ -1,5 +1,6 @@
 ﻿using HomeBanking.Data.UnitOfWork;
 using Models;
+using Models.DTO;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,31 +16,44 @@ namespace Services.Implementations
         {
         }
 
-        public async Task<IEnumerable<ServicePayment>> GetPendingPaymentsAsync(int userId, bool showPaid)
+        public async Task<IEnumerable<PaymentDTO>> GetPendingPaymentsAsync(int userId, bool showPaid)
         {
 
             var payments = await _unitOfWork.Payments.GetPendingByUserIdAsync(userId, showPaid);
+            List<PaymentDTO> dtoList = new List<PaymentDTO>();
 
-            // Si estamos viendo HISTORIAL (showHistory = true), necesitamos buscar las fechas
+            IEnumerable<Transaction> transactions = null!;
             if (showPaid)
             {
+                transactions = await _unitOfWork.Transactions.GetByUserIdAsync(userId);
+            }
 
-                var transactions = await _unitOfWork.Transactions.GetByUserIdAsync(userId);
+            foreach (var p in payments)
+            {
 
-                foreach (var p in payments)
+                if (showPaid && transactions != null)
                 {
-                    // Buscamos la transacción que dice "Pago #{Id}:" en su descripción
-                    var transaction = transactions
-                        .FirstOrDefault(t => t.Description.Contains($"Pago #{p.Id}"));
+                    var transaction = transactions.FirstOrDefault(t => t.Description.Contains($"Pago #{p.Id}"));
 
                     if (transaction != null)
                     {
-                        p.PaymentDate = transaction.CreatedAt; 
+                        p.PaymentDate = transaction.CreatedAt;
                     }
                 }
+
+                dtoList.Add(new PaymentDTO
+                {
+                    Id = p.Id,
+                    ServiceName = p.ServiceName,
+                    CategoryName = p.Category?.Name,
+                    Amount = p.Amount,
+                    ExpDate = p.ExpDate,
+                    IsPaid = p.IsPaid,
+                    PaymentDate = p.PaymentDate
+                });
             }
 
-            return payments;
+            return dtoList;
         }
 
         public async Task PayServiceAsync(int paymentId, int fromAccountId)

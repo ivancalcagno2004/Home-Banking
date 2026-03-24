@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace Services.Interfaces
     {
         Task<Account> CreateAccountAsync(User user);
         Task<decimal> GetBalanceAsync(int accountId);
-        Task<List<Account>> GetAllAsync();
-        Task<List<Account>> GetAccountsByUserId(int userId);
+        Task<List<AccountDTO>> GetAllAsync();
+        Task ClaimGiftAsync(int accountId, decimal amount);
+        Task<List<AccountDTO>> GetAccountsByUserId(int userId);
         public Task UpdateAccount(Account account);
     }
 }

@@ -5,15 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.DTO;
 
 namespace Services.Interfaces
 {
     public interface IUserService
     {
         Task<User> CreateAsync(User user);
-        Task<User?> GetByIdAsync(int id);
+        Task<UserProfileDTO?> GetByIdAsync(int id);
 
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<IEnumerable<UserProfileDTO>> GetAllAsync();
 
         Task<User?> ValidateUserAsync(string username, string password);
 

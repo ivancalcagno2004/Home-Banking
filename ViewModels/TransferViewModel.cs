@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using Services.Implementations;
 using Services.Interfaces;
 using System;
@@ -16,11 +17,11 @@ namespace ViewModels
     {
         private readonly User _currentUser;
 
-        public ObservableCollection<Account> MyAccounts { get; set; }
+        public ObservableCollection<AccountDTO> MyAccounts { get; set; }
 
-        private Account? _selectedOriginAccount;
+        private AccountDTO? _selectedOriginAccount;
 
-        public Account? SelectedOriginAccount
+        public AccountDTO? SelectedOriginAccount
         {
             get => _selectedOriginAccount;
             set
@@ -45,7 +46,7 @@ namespace ViewModels
             _transactionService = transactionService;
             _dialogService = dialogService;
 
-            MyAccounts = new ObservableCollection<Account>();
+            MyAccounts = new ObservableCollection<AccountDTO>();
 
             TransferCommand = new RelayCommand(ExecuteTransfer);
 
@@ -92,7 +93,7 @@ namespace ViewModels
 
                 if (!result) return;
 
-                await _transactionService!.TransferToAsync(SelectedOriginAccount.AccountId, DestinationCBU_Alias, Amount);
+                await _transactionService!.TransferToAsync(SelectedOriginAccount.Id, DestinationCBU_Alias, Amount);
 
                 await _dialogService.ShowAlertAsync(
                     "Transferencia exitosa",

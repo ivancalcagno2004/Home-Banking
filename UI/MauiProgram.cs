@@ -2,10 +2,12 @@
 using HomeBanking.Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Models;
 using Services.Implementations;
 using Services.Interfaces;
 using UI.Services;
 using UI.Views;
+using UI.Views.Pages;
 using ViewModels;
 
 namespace UI
@@ -21,6 +23,7 @@ namespace UI
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("materialdesignicons-webfont.ttf", "MaterialDesign");
                 });
 
             // 1. Configurar la Base de Datos (SQLite)
@@ -57,7 +60,11 @@ namespace UI
             // 5. Inyección de Dependencias: Capa Views (Pantallas)
             builder.Services.AddTransient<SignInPage>(); 
             builder.Services.AddTransient<SignUpPage>();
-            builder.Services.AddTransient<DashboardPage>();
+            builder.Services.AddTransient<HomePage>();
+            builder.Services.AddTransient<PaymentsPage>();
+            builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<TransferPage>();
+            builder.Services.AddTransient<TransactionsPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -79,7 +86,22 @@ namespace UI
             // Esto crea el archivo HomeBanking.db en el celular/PC si no existe
             context.Database.EnsureCreated();
 
-            // Aquí puedes llamar a tu clase BankGenerator o SeedData si necesitas datos iniciales
+            if (!context.TransactionCategories.Any()) {
+                context.TransactionCategories.AddRange(
+                    new TransactionCategory { Name = "Impuestos Municipales" },
+                    new TransactionCategory { Name = "Telefonía" },
+                    new TransactionCategory { Name = "Servicios Públicos" },
+                    new TransactionCategory { Name = "Automotor" }
+                    );
+                context.SaveChanges();
+            }
+
+            User sistema = new User { UserName = "Admin", Email = "", Password = "admin", FullName = "Sistema", UserId = 0 };
+            context.Users.Add(sistema);
+
+            context.Accounts.Add(new Account { Alias = "PAGOS.SERVICIOS", CBU = "123", User = sistema, Balance = 9999999});
+
+            context.SaveChanges();
         }
     }
 }

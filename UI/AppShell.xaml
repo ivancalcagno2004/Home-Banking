@@ -4,7 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:views="clr-namespace:UI.Views"
-    Shell.FlyoutBehavior="Flyout"
+    xmlns:pages="clr-namespace:UI.Views.Pages"
+    xmlns:helpers="clr-namespace:UI.Resources.Helpers"
+    Shell.FlyoutBehavior="{OnIdiom Desktop=Locked, Phone=Flyout}"
     Title="Tandil Bank">
 
     <Shell.Resources>
@@ -32,88 +34,62 @@
     </Shell.FlyoutHeader>
 
     <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate views:SignInPage}" 
-                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" />
+                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" Shell.FlyoutBehavior="Disabled" />
 
     <ShellContent Route="SignUpPage" ContentTemplate="{DataTemplate views:SignUpPage}" 
-                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" />
+                  Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" Shell.FlyoutBehavior="Disabled"/>
 
     <FlyoutItem Title="Inicio" >
-        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate views:HomePage}" />
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Home}" Color="White" Size="22"/>
+        </FlyoutItem.Icon>
+        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" Shell.NavBarIsVisible="False" />
     </FlyoutItem>
 
     <FlyoutItem Title="Transferencias" >
-        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate views:TransferPage}" />
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transfer}" Color="White" Size="22"/>
+        </FlyoutItem.Icon>
+        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate pages:TransferPage}" Shell.NavBarIsVisible="False" />
     </FlyoutItem>
 
     <FlyoutItem Title="Pagos de Servicios" >
-        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate views:PaymentsPage}" />
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Pagos}" Color="White" Size="22"/>
+        </FlyoutItem.Icon>
+        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate pages:PaymentsPage}" Shell.NavBarIsVisible="False"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Últimos Movimientos" >
-        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate views:TransactionsPage}" />
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transactions}" Color="White" Size="22"/>
+        </FlyoutItem.Icon>
+        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate pages:TransactionsPage}" Shell.NavBarIsVisible="False"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Configuración" >
-        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate views:SettingsPage}" />
+        <FlyoutItem.Icon>
+            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Settings}" Color="White" Size="22"/>
+        </FlyoutItem.Icon>
+        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="False" />
     </FlyoutItem>
+
+    <Shell.FlyoutFooter>
+        <Grid Padding="20,15,20,25">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnLogOutClicked" />
+            </Grid.GestureRecognizers>
+
+            <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
+                <Label Text="🚪" FontSize="20" VerticalOptions="Center" />
+
+                <Label Text="Cerrar Sesión" 
+                       TextColor="#dc3545" 
+                       FontAttributes="Bold" 
+                       FontSize="16"
+                       VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Grid>
+    </Shell.FlyoutFooter>
 
 </Shell>
-
-<!-- <Shell
-    x:Class="UI.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:views="clr-namespace:UI.Views"
-    Shell.FlyoutBehavior="Flyout">
-
-    <TabBar>
-        <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate views:SignInPage}"
-        Route="SignInPage"
-        Shell.FlyoutItemIsVisible="False" 
-        Shell.NavBarIsVisible="False" 
-        Shell.TabBarIsVisible="True"/>
-       
-        <ShellContent 
-        Title="Register"
-        ContentTemplate="{DataTemplate views:SignUpPage}"
-        Route="SignUpPage"
-        Shell.NavBarIsVisible="False"
-        Shell.FlyoutItemIsVisible="False"
-        Shell.TabBarIsVisible="True"/>
-    </TabBar>
-
-    <FlyoutItem Title="Mi Banco" FlyoutDisplayOptions="AsMultipleItems">
-
-    </FlyoutItem>
-        <ShellContent
-            Title="Inicio"
-            ContentTemplate="{DataTemplate views:DashboardPage}"
-            Route="DashboardPage" />
-
-         <ShellContent
-            Title="Transferencias"
-            ContentTemplate="{DataTemplate views:TransferPage}"
-            Route="TransferPage" />
-
-        <ShellContent
-            Title="Pagos de Servicios"
-            ContentTemplate="{DataTemplate views:PaymentsPage}"
-            Route="PaymentsPage" />
-
-        <ShellContent
-            Title="Últimos Movimientos"
-            ContentTemplate="{DataTemplate views:TransactionsPage}"
-            Route="TransactionsPage" />
-
-    </FlyoutItem>
-
-    <FlyoutItem Title="Ajustes">
-        <ShellContent
-            Title="Configuración"
-            ContentTemplate="{DataTemplate views:SettingsPage}"
-            Route="SettingsPage" />
-    </FlyoutItem>
-
-</Shell>-->

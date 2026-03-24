@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using Services.Interfaces;
 using Services.Implementations;
+using Models.DTO;
 
 namespace ViewModels
 {
@@ -16,7 +17,7 @@ namespace ViewModels
     {
         private readonly User _currentUser;
 
-        public ObservableCollection<ServicePayment> PendingPayments { get; set; }
+        public ObservableCollection<PaymentDTO> PendingPayments { get; set; }
 
         public ICommand PayCommand { get; }
 
@@ -28,9 +29,12 @@ namespace ViewModels
             get => _showHistory;
             set
             {
-                _showHistory = value;
-                OnPropertyChanged();
-                LoadData();
+                if (_showHistory != value)
+                {
+                    _showHistory = value;
+                    OnPropertyChanged();
+                    LoadData();
+                }
             }
         }
 
@@ -43,7 +47,7 @@ namespace ViewModels
             _accountService = accountService;
             _dialogService = dialogService;
 
-            PendingPayments = new ObservableCollection<ServicePayment>();
+            PendingPayments = new ObservableCollection<PaymentDTO>();
             PayCommand = new RelayCommand(ExecutePay);
 
             LoadData();
@@ -69,7 +73,7 @@ namespace ViewModels
 
         private async void ExecutePay(object parameter)
         {
-            if (parameter is ServicePayment paymentToPay)
+            if (parameter is PaymentDTO paymentToPay)
             {
                 try
                 {
@@ -92,7 +96,7 @@ namespace ViewModels
                     if (!result) return;
 
    
-                    await _paymentService!.PayServiceAsync(paymentToPay.Id, accountToUse.AccountId);
+                    await _paymentService!.PayServiceAsync(paymentToPay.Id, accountToUse.Id);
 
                     await _dialogService.ShowAlertAsync("Pago Exitoso", $"Has pagado {paymentToPay.ServiceName} por ${paymentToPay.Amount} exitosamente.", "Ok");
 

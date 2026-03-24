@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace Services.Interfaces
 
         Task TransferToAsync(int fromAccountId, string toCBUOrAlias, decimal amount);
 
-        Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int userId);
+        Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId);
     }
 }

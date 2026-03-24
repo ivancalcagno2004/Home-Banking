@@ -8,42 +8,14 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class TransactionDTO : INotifyPropertyChanged
+    public class TransactionDTO
     {
-        private string? _date;
-        private string? _description;
-        private string? _amount;
-        private string? _color;
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
+        public string? Description { get; set; }
 
-        public string? Date
-        {
-            get => _date;
-            set { _date = value; OnPropertyChanged(); }
-        }
+        public string? Amount { get; set; }
 
-        public string? Description
-        {
-            get => _description;
-            set { _description = value; OnPropertyChanged(); }
-        }
-
-        public string? Amount
-        {
-            get => _amount;
-            set { _amount = value; OnPropertyChanged(); }
-        }
-
-        public string? Color
-        {
-            get => _color;
-            set { _color = value; OnPropertyChanged(); }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public string? Color { get; set; }
     }
 }

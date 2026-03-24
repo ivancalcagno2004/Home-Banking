@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.DTO;
 
 namespace Services.Implementations
 {
@@ -96,14 +97,30 @@ namespace Services.Implementations
             return user;
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<UserProfileDTO>> GetAllAsync()
         {
-            return (IEnumerable<User>) await _unitOfWork.Users.GetAllAsync();
+            var users = await _unitOfWork.Users.GetAllAsync();
+
+            var dtoList = users.Select(u => new UserProfileDTO
+            {
+                Email = u.Email,
+                FullName = u.FullName,
+                UserName = u.UserName,
+            }).ToList();
+
+            return dtoList;
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<UserProfileDTO?> GetByIdAsync(int id)
         {
-            return await _unitOfWork.Users.GetByIdAsync(id);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
+
+            return new UserProfileDTO
+            {
+                FullName = user?.FullName,
+                Email = user?.Email,
+                UserName = user?.UserName,
+            };
         }
 
         public async Task UpdateUser(User user)

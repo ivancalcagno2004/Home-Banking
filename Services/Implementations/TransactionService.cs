@@ -1,5 +1,6 @@
 ﻿using HomeBanking.Data.UnitOfWork;
 using Models;
+using Models.DTO;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,26 @@ namespace Services.Implementations
         {
         }
 
-        public async Task<IEnumerable<Transaction>> GetTransactionsByUserIdAsync(int userId)
+        public async Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId)
         {
-            return await _unitOfWork.Transactions.GetByUserIdAsync(userId);
+            var transactions = await _unitOfWork.Transactions.GetByUserIdAsync(userId);
+
+            var dtoList = transactions.Select(t =>
+            {
+                bool isIncome = t.ToAccount != null && t.ToAccount.UserId == userId;
+
+                return new TransactionDTO
+                {
+                    Date = t.CreatedAt,
+
+                    Description = t.Description,
+
+                    Amount = isIncome ? $"+ ${t.Amount:N2}" : $"- ${t.Amount:N2}",
+                    Color = isIncome ? "#2E7D32" : "#dc3545"
+                };
+            }).ToList();
+
+            return dtoList;
         }
 
         /*public async Task TransferAsync(int fromAccountId, int toAccountId, decimal amount)

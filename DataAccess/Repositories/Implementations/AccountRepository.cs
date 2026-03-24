@@ -18,6 +18,7 @@ namespace HomeBanking.Data.Repositories.Implementations
         public async Task<Account?> GetAccountByCBUOrAliasAsync(string cbuOrAlias)
         {
             return await _dbSet
+                .Include(a => a.User)
                 .FirstOrDefaultAsync(a => a.CBU == cbuOrAlias || a.Alias == cbuOrAlias);
         }
 

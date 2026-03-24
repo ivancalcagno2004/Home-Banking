@@ -54,7 +54,7 @@ namespace ViewModels
                         $"¡Hola {user.FullName}! Has iniciado sesión exitosamente.",
                         "OK");
 
-                    await _navigationService!.NavigateToAsync("//DashboardPage");
+                    await _navigationService!.NavigateToAsync("//HomePage");
                 }
                 else
                 {

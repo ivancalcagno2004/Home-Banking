@@ -34,22 +34,7 @@ namespace ViewModels
                 Transactions.Clear();
                 foreach (var transaction in transactions)
                 {
-                    bool isIncome = false;
-                    if (transaction.ToAccount != null && transaction.FromAccount != null)
-                        isIncome = transaction.ToAccount.UserId == _currentUser.UserId;
-                        
-                    Transactions.Add(new TransactionDTO
-                    {
-                        Date = transaction.CreatedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm"),
-                        
-                        Description = isIncome
-                            ? $"Recibido: {transaction.Description}"
-                            : $"Enviado: {transaction.Description}",
-
-                        Amount = isIncome ? $"+ {transaction.Amount:C}" : $"- {transaction.Amount:C}",
-
-                        Color = isIncome ? "#28a745" : "#dc3545"
-                    });
+                    Transactions.Add(transaction);
                 }
 
             }

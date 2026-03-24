@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Services.Implementations;
+using Models.DTO;
 
 namespace ViewModels
 {
@@ -27,7 +28,7 @@ namespace ViewModels
 
         public ICommand ClaimGiftCommand { get; }
 
-        public ObservableCollection<Account> Accounts { get; set; }
+        public ObservableCollection<AccountDTO> Accounts { get; set; }
 
         public string WelcomeMessage { get; set; }
 
@@ -39,7 +40,7 @@ namespace ViewModels
             _dialogService = dialogService;
 
             WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
-            Accounts = new ObservableCollection<Account>();
+            Accounts = new ObservableCollection<AccountDTO>();
             ClaimGiftCommand = new RelayCommand(ExecuteClaimGift);
             _ = LoadData();
         }
@@ -60,7 +61,7 @@ namespace ViewModels
                 _currentUser.IsGiftClaimed = true;
 
 
-                await _accountService!.UpdateAccount(mainAccount);
+                await _accountService!.ClaimGiftAsync(mainAccount.Id, regalo);
                 await _userService!.UpdateUser(_currentUser);
 
 
