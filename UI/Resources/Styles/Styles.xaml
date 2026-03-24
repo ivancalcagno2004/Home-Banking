@@ -53,7 +53,7 @@
                         <VisualState.Setters>
                             <Setter Property="BackgroundColor" Value="#004a94" />
                             <Setter Property="Opacity" Value="0.7" />
-                            <Setter Property="Scale" Value="1.05" />
+                            <Setter Property="Scale" Value="1.01" />
                         </VisualState.Setters>
                     </VisualState>
 

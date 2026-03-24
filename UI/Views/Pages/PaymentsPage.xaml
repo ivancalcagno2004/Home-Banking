@@ -4,7 +4,7 @@
              xmlns:converters="clr-namespace:HomeBanking.Data.Converters"
              x:Class="UI.Views.Pages.PaymentsPage"
              Title="Pagos"
-             BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#121212}">
+             BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#0A0A0A}">
 
     <ContentPage.Resources>
         <converters:DateToColorConverter x:Key="DateToColorConverter"/>
@@ -12,20 +12,20 @@
 
     <Grid RowDefinitions="Auto, *" Padding="20">
 
-        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,25">
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
             <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
                 <Label Text="{Binding Title}" 
-                       FontSize="24" FontAttributes="Bold" 
-                       TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                <Label Text="Gestioná y pagá tus facturas pendientes" 
+                       FontSize="26" FontAttributes="Bold" 
+                       TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                <Label Text="Tus facturas al día" 
                        FontSize="14" 
-                       TextColor="Gray" Margin="0,5,0,0"/>
+                       TextColor="#888888" Margin="0,2,0,0"/>
             </VerticalStackLayout>
 
-            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center">
-                <Label Text="Ver Historial" FontSize="16" TextColor="Gray" HorizontalOptions="Center" Margin="0,0,-10,0"/>
-                <Switch IsToggled="{Binding ShowHistory}" OnColor="#005fb8" HorizontalOptions="Center" Margin="0,0,10,0"/>
-            </VerticalStackLayout>
+            <HorizontalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="10">
+                <Label Text="Historial" FontSize="14" FontAttributes="Bold" TextColor="Gray" VerticalOptions="Center"/>
+                <Switch IsToggled="{Binding ShowHistory}" OnColor="#005fb8" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
         </Grid>
 
         <CollectionView Grid.Row="1" ItemsSource="{Binding PendingPayments}" SelectionMode="None">
@@ -33,96 +33,105 @@
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" 
                                  Span="{OnIdiom Desktop=3, Phone=1}" 
-                                 HorizontalItemSpacing="10" 
-                                 VerticalItemSpacing="10" />
+                                 HorizontalItemSpacing="15" 
+                                 VerticalItemSpacing="15" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
 
                     <Border Padding="20" 
-                            StrokeShape="RoundRectangle 12"
-                            Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
-                            BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                            StrokeShape="RoundRectangle 16"
+                            Stroke="{AppThemeBinding Light=#EAEAEA, Dark=#222222}"
+                            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#151515}">
 
                         <Border.Shadow>
-                            <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
+                            <Shadow Brush="{AppThemeBinding Light=#000000, Dark=#000000}" Offset="0,2" Radius="8" Opacity="{AppThemeBinding Light=0.03, Dark=0.1}" />
                         </Border.Shadow>
 
-                        <Grid RowDefinitions="*, *, *">
+                        <Grid RowDefinitions="*, Auto, *" RowSpacing="16">
 
-                            <Grid Grid.Row="0" ColumnDefinitions="Auto, *" Margin="0,0,0,15">
-                                <Border Grid.Column="0" WidthRequest="45" HeightRequest="45" 
-                                        StrokeShape="RoundRectangle 8" BackgroundColor="#E3F2FD" 
-                                        Stroke="Transparent" Margin="0,0,12,0">
+                            <Grid Grid.Row="0" ColumnDefinitions="Auto, *">
+                                <Border Grid.Column="0" WidthRequest="46" HeightRequest="46" 
+                                        StrokeShape="RoundRectangle 23" 
+                                        BackgroundColor="{AppThemeBinding Light=#F0F7FF, Dark=#002244}" 
+                                        Stroke="Transparent" Margin="0,0,15,0">
                                     <Label Text="{Binding ServiceName[0]}" 
                                            HorizontalOptions="Center" VerticalOptions="Center"
-                                           FontAttributes="Bold" TextColor="#005fb8" FontSize="20"/>
+                                           FontAttributes="Bold" TextColor="#005fb8" FontSize="18"/>
                                 </Border>
 
                                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                    <Label Text="{Binding ServiceName}" FontAttributes="Bold" FontSize="15" 
-                                           LineBreakMode="TailTruncation" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                                    <Label Text="{Binding CategoryName}" FontSize="12" TextColor="Gray"/>
+                                    <Label Text="{Binding ServiceName}" FontAttributes="Bold" FontSize="16" 
+                                           LineBreakMode="TailTruncation" TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                    <Label Text="{Binding CategoryName}" FontSize="13" TextColor="#888888"/>
                                 </VerticalStackLayout>
                             </Grid>
 
-                            <VerticalStackLayout Grid.Row="1" HorizontalOptions="Center" Margin="0,0,0,20">
-                                <Label Text="Total a pagar" FontSize="12" TextColor="Gray" HorizontalOptions="Center"/>
-                                <Label Text="{Binding Amount, StringFormat='${0:N2}'}" 
-                                       FontSize="26" FontAttributes="Bold" 
-                                       TextColor="{AppThemeBinding Light=Black, Dark=White}" 
-                                       HorizontalOptions="Center" Margin="0,2,0,8"/>
+                            <Grid Grid.Row="1" ColumnDefinitions="*, Auto" VerticalOptions="End">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="Monto a pagar" FontSize="12" TextColor="#888888" Margin="0,0,0,2"/>
+                                    <Label Text="{Binding Amount, StringFormat='${0:N2}'}" 
+                                           FontSize="24" FontAttributes="Bold" 
+                                           TextColor="{AppThemeBinding Light=#111111, Dark=#FFFFFF}"/>
+                                </VerticalStackLayout>
 
-                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
-                                    <HorizontalStackLayout.Triggers>
-                                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding IsPaid}" Value="True">
+                                <VerticalStackLayout Grid.Column="1" HorizontalOptions="End" VerticalOptions="End">
+
+                                    <VerticalStackLayout HorizontalOptions="End">
+                                        <VerticalStackLayout.Triggers>
+                                            <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsPaid}" Value="True">
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </VerticalStackLayout.Triggers>
+                                        <Label Text="Vencimiento" FontSize="11" TextColor="#888888" HorizontalOptions="End"/>
+                                        <Label Text="{Binding ExpDate, StringFormat='{0:dd MMM yyyy}'}" FontSize="13" FontAttributes="Bold" HorizontalOptions="End" TextColor="{Binding ExpDate, Converter={StaticResource DateToColorConverter}}"/>
+                                    </VerticalStackLayout>
+
+                                    <VerticalStackLayout HorizontalOptions="End" IsVisible="False">
+                                        <VerticalStackLayout.Triggers>
+                                            <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsPaid}" Value="True">
+                                                <Setter Property="IsVisible" Value="True"/>
+                                            </DataTrigger>
+                                        </VerticalStackLayout.Triggers>
+                                        <Label Text="Abonado el" FontSize="11" TextColor="#888888" HorizontalOptions="End"/>
+                                        <Label Text="{Binding PaymentDate, StringFormat='{0:dd MMM yyyy}'}" FontSize="13" FontAttributes="Bold" TextColor="#198754" HorizontalOptions="End"/>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <Grid Grid.Row="2" Margin="0,5,0,0">
+
+                                <Button Text="Pagar Ahora" 
+                                        BackgroundColor="#005fb8"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        CornerRadius="22"
+                                        HeightRequest="44"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.PayCommand}"
+                                        CommandParameter="{Binding}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPaid}" Value="True">
                                             <Setter Property="IsVisible" Value="False"/>
                                         </DataTrigger>
-                                    </HorizontalStackLayout.Triggers>
-                                    <Label Text="Vence:" FontSize="12" TextColor="{Binding ExpDate, Converter={StaticResource DateToColorConverter}}"/>
-                                    <Label Text="{Binding ExpDate, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" FontAttributes="Bold" TextColor="{Binding ExpDate, Converter={StaticResource DateToColorConverter}}"/>
-                                </HorizontalStackLayout>
+                                    </Button.Triggers>
+                                </Button>
 
-                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5" IsVisible="False">
-                                    <HorizontalStackLayout.Triggers>
-                                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding IsPaid}" Value="True">
+                                <Border BackgroundColor="{AppThemeBinding Light=#E8F5E9, Dark=#0F291E}" 
+                                        Stroke="{AppThemeBinding Light=#C8E6C9, Dark=#1B4532}" 
+                                        StrokeShape="RoundRectangle 22" 
+                                        HeightRequest="44" IsVisible="False">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsPaid}" Value="True">
                                             <Setter Property="IsVisible" Value="True"/>
                                         </DataTrigger>
-                                    </HorizontalStackLayout.Triggers>
-                                    <Label Text="Pagado el:" FontSize="12" TextColor="#2E7D32"/>
-                                    <Label Text="{Binding PaymentDate, StringFormat='{0:dd/MM/yyyy}'}" FontSize="12" FontAttributes="Bold" TextColor="#2E7D32"/>
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-
-                            <Button Grid.Row="2" 
-                                    Text="Pagar Ahora" 
-                                    BackgroundColor="#005fb8"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    CornerRadius="8"
-                                    HeightRequest="45"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.PayCommand}"
-                                    CommandParameter="{Binding}">
-                                <Button.Triggers>
-                                    <DataTrigger TargetType="Button" Binding="{Binding IsPaid}" Value="True">
-                                        <Setter Property="IsVisible" Value="False"/>
-                                    </DataTrigger>
-                                </Button.Triggers>
-                            </Button>
-
-                            <Border Grid.Row="2" BackgroundColor="#E8F5E9" Stroke="Transparent" 
-                                    StrokeShape="RoundRectangle 6" HeightRequest="35" IsVisible="False">
-                                <Border.Triggers>
-                                    <DataTrigger TargetType="Border" Binding="{Binding IsPaid}" Value="True">
-                                        <Setter Property="IsVisible" Value="True"/>
-                                    </DataTrigger>
-                                </Border.Triggers>
-                                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
-                                    <Label Text="✓" FontAttributes="Bold" TextColor="#2E7D32" VerticalOptions="Center"/>
-                                    <Label Text="PAGADO" FontAttributes="Bold" TextColor="#2E7D32" VerticalOptions="Center"/>
-                                </HorizontalStackLayout>
-                            </Border>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
+                                        <Label Text="✓" FontAttributes="Bold" TextColor="#198754" VerticalOptions="Center" FontSize="16"/>
+                                        <Label Text="PAGADO" FontAttributes="Bold" TextColor="#198754" VerticalOptions="Center" FontSize="13" CharacterSpacing="1"/>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
 
                         </Grid>
                     </Border>

@@ -1,4 +1,5 @@
-﻿using Services.Implementations;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Services.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ViewModels
 {
@@ -22,6 +24,21 @@ namespace ViewModels
             {
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 return $"v{version?.Major}.{version?.Minor}.{version?.Build} - Tandil Bank";
+            }
+        }
+
+        private bool _isDarkMode;
+
+        public bool IsDarkMode
+        {
+            get => _isDarkMode;
+            set
+            {
+                if (_isDarkMode != value)
+                {
+                    _isDarkMode = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
