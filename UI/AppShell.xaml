@@ -43,35 +43,40 @@
         <FlyoutItem.Icon>
             <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Home}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" Shell.NavBarIsVisible="False" />
+        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" 
+                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Transferencias" >
         <FlyoutItem.Icon>
             <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transfer}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate pages:TransferPage}" Shell.NavBarIsVisible="False" />
+        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate pages:TransferPage}" 
+                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Pagos de Servicios" >
         <FlyoutItem.Icon>
             <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Pagos}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate pages:PaymentsPage}" Shell.NavBarIsVisible="False"/>
+        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate pages:PaymentsPage}" 
+                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Últimos Movimientos" >
         <FlyoutItem.Icon>
             <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transactions}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate pages:TransactionsPage}" Shell.NavBarIsVisible="False"/>
+        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate pages:TransactionsPage}" 
+                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Configuración" >
         <FlyoutItem.Icon>
             <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Settings}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
         </FlyoutItem.Icon>
-        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate pages:SettingsPage}" Shell.NavBarIsVisible="False" />
+        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate pages:SettingsPage}" 
+                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
     </FlyoutItem>
 
     <Shell.FlyoutFooter>
@@ -91,5 +96,4 @@
             </HorizontalStackLayout>
         </Grid>
     </Shell.FlyoutFooter>
-
 </Shell>

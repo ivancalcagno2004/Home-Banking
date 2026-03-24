@@ -17,7 +17,7 @@
         </VerticalStackLayout>
 
         <ScrollView Grid.Row="1">
-            <VerticalStackLayout Spacing="20" MaximumWidthRequest="1000" HorizontalOptions="Start" WidthRequest="600">
+            <VerticalStackLayout Spacing="20" MaximumWidthRequest="700" HorizontalOptions="Center">
 
                 <VerticalStackLayout Spacing="8">
                     <Label Text="Mi Perfil" FontAttributes="Bold" TextColor="Gray"/>
