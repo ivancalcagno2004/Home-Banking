@@ -40,9 +40,11 @@ namespace ViewModels
             _accountService = accountService;
             _dialogService = dialogService;
 
+
             WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
             Accounts = new ObservableCollection<AccountDTO>();
             ClaimGiftCommand = new RelayCommand(ExecuteClaimGift);
+
             _ = LoadData();
         }
 

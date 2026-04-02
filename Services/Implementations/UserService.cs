@@ -97,32 +97,6 @@ namespace Services.Implementations
             return user;
         }
 
-        public async Task<IEnumerable<UserProfileDTO>> GetAllAsync()
-        {
-            var users = await _unitOfWork.Users.GetAllAsync();
-
-            var dtoList = users.Select(u => new UserProfileDTO
-            {
-                Email = u.Email,
-                FullName = u.FullName,
-                UserName = u.UserName,
-            }).ToList();
-
-            return dtoList;
-        }
-
-        public async Task<UserProfileDTO?> GetByIdAsync(int id)
-        {
-            var user = await _unitOfWork.Users.GetByIdAsync(id);
-
-            return new UserProfileDTO
-            {
-                FullName = user?.FullName,
-                Email = user?.Email,
-                UserName = user?.UserName,
-            };
-        }
-
         public async Task UpdateUser(User user)
         {
             _unitOfWork.Users.Update(user); 

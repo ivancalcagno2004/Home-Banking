@@ -67,6 +67,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Platforms\Android\Resources\drawable\ic_notification.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="appsettings.json" />
 	</ItemGroup>
 
@@ -75,6 +79,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Include="Platforms\Android\Resources\drawable\ic_notification.png" />
 	  <MauiImage Include="Resources\AppIcon\ico_tandilbank.ico" />
 	</ItemGroup>
 
@@ -83,6 +88,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 		<PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
+		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
 		<PackageReference Include="System.DirectoryServices" Version="10.0.3" />
 	</ItemGroup>
 

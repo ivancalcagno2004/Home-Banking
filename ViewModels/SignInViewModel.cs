@@ -16,8 +16,9 @@ namespace ViewModels
     {
         private readonly UserSession _userSession;
         private readonly ICredentialService _credentialService;
+        private readonly INotificationService _notificationService;
 
-private string? _userName;
+        private string? _userName;
         public string? UserName
         {
             get => _userName;
@@ -51,13 +52,16 @@ private string? _userName;
 
         public ICommand ChangeUserCommand { get; }
 
-        public SignInViewModel(IUserService userService, UserSession userSession, IDialogService dialogService, INavigationService navigationService, ICredentialService credentialService)
+        public SignInViewModel(IUserService userService, UserSession userSession, IDialogService dialogService, INavigationService navigationService, ICredentialService credentialService, INotificationService notificationService, IPaymentService paymentService)
         {
             _userService = userService;
             _userSession = userSession;
             _dialogService = dialogService;
             _navigationService = navigationService;
             _credentialService = credentialService;
+            _notificationService = notificationService;
+            _paymentService = paymentService;
+
             ShowInputUser = true;
             ShowWelcomeMessage = false;
 
@@ -158,6 +162,8 @@ private string? _userName;
                     _userSession.CurrentUser = user;
 
                     await _credentialService.SaveCredentialsAsync(UserName, password);
+                    
+                    await LoadNotifications();
 
                     await _navigationService!.NavigateToAsync("//HomePage");
                 }
@@ -178,6 +184,13 @@ private string? _userName;
                     $"Ocurrió un error al intentar iniciar sesión: {ex.Message}",
                     "OK");
             }
+        }
+
+        private async Task LoadNotifications()
+        {
+            var pagos = await _paymentService!.GetPendingPaymentsAsync(_userSession.CurrentUser!.UserId, false);
+
+            await _notificationService.CheckAndNotifyServicesAsync(pagos);
         }
 
         private async void NavigateToSignUp(object parameter)

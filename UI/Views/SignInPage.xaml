@@ -68,20 +68,21 @@
                         HeightRequest="45"
                         Margin="0,16,0,0"/>
 
+                <Button Text="Entrar con Huella" 
+                    Command="{Binding BiometricLoginCommand}" 
+                    BackgroundColor="Transparent"
+                    TextColor="#003a94"
+                    FontAttributes="Bold"
+                    Margin="0,10,0,0"
+                    IsEnabled="{Binding ShowWelcomeMessage}"
+                    IsVisible="{OnPlatform WinUI=False, Default=True}"/>
+                
                 <Button Text="No tengo cuenta, quiero registrarme"
                         Command="{Binding NavigateToSignUpCommand}"
                         BackgroundColor="Transparent"
                         TextColor="#005fb8"
                         FontAttributes="Bold"
                         Margin="0,8,0,0"/>
-
-                <Button Text="Entrar con Huella" 
-                    Command="{Binding BiometricLoginCommand}" 
-                    BackgroundColor="Transparent"
-                    TextColor="#004a94"
-                    FontAttributes="Bold"
-                    Margin="0,10,0,0"
-                    IsVisible="{OnPlatform WinUI=False, Default=True}"/>
 
                 <Button Text="Ingresar con otro usuario" 
                     Command="{Binding ChangeUserCommand}" 

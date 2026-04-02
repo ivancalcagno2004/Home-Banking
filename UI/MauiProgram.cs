@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Models;
+using Plugin.LocalNotification;
 using Services.Implementations;
 using Services.Interfaces;
 using System.Reflection;
@@ -11,6 +12,7 @@ using UI.Services;
 using UI.Views;
 using UI.Views.Pages;
 using ViewModels;
+using INotificationService = Services.Interfaces.INotificationService;
 
 namespace UI
 {
@@ -21,6 +23,7 @@ namespace UI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -46,6 +49,7 @@ namespace UI
             builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
             builder.Services.AddSingleton<ICredentialService, CredentialService>();
+            builder.Services.AddSingleton<INotificationService, NotificationService>();
             builder.Services.AddSingleton<UserSession>();
 
             // 4. Inyección de Dependencias: Capa ViewModels
@@ -58,7 +62,6 @@ namespace UI
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<TransactionsViewModel>();
             builder.Services.AddTransient<TransferViewModel>();
-            builder.Services.AddTransient<UserViewModel>();
 
             // 5. Inyección de Dependencias: Capa Views (Pantallas)
             builder.Services.AddTransient<SignInPage>(); 

@@ -12,9 +12,6 @@ namespace Services.Interfaces
     public interface IUserService
     {
         Task<User> CreateAsync(User user);
-        Task<UserProfileDTO?> GetByIdAsync(int id);
-
-        Task<IEnumerable<UserProfileDTO>> GetAllAsync();
 
         Task<User?> ValidateUserAsync(string username, string password);
 
