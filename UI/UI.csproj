@@ -54,7 +54,7 @@
 		<MauiIcon Include="Resources\AppIcon\logo_app.png" Color="#004a94" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Images\logo_tandilbank.png" Color="#004a94" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\AppIcon\logo_app.png" Color="#004a94" BaseSize="128,128" />	
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -67,6 +67,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiImage Include="Resources\AppIcon\ico_tandilbank.ico" />
 	</ItemGroup>
 
@@ -74,6 +82,7 @@
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
 		<PackageReference Include="System.DirectoryServices" Version="10.0.3" />
 	</ItemGroup>
 

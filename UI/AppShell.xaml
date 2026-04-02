@@ -6,9 +6,11 @@
     xmlns:views="clr-namespace:UI.Views"
     xmlns:pages="clr-namespace:UI.Views.Pages"
     xmlns:helpers="clr-namespace:UI.Resources.Helpers"
-    Shell.FlyoutBehavior="{OnIdiom Desktop=Locked, Phone=Flyout}"
-    Title="Tandil Bank">
-
+    Title="Tandil Bank"
+    Shell.TabBarBackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+    Shell.TabBarTitleColor="#004a94" 
+    Shell.TabBarForegroundColor="#004a94"
+    Shell.TabBarUnselectedColor="Gray">
     <Shell.Resources>
         <ResourceDictionary>
             <Color x:Key="PrimaryColor">#005fb8</Color>
@@ -33,51 +35,29 @@
         </Grid>
     </Shell.FlyoutHeader>
 
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="Auto, *, Auto" Padding="15,0,15,0">
+            <Image Grid.Column="0" 
+                   Source="logo_tandilbank.png" 
+                   HeightRequest="32" 
+                   WidthRequest="32" 
+                   VerticalOptions="Center" />
+
+            <Label Grid.Column="1" 
+                   Text="Tandil Bank" 
+                   TextColor="{AppThemeBinding Dark=White, Light=Black}" 
+                   FontAttributes="Bold" 
+                   FontSize="20" 
+                   VerticalOptions="Center" 
+                   Margin="10,0,0,0" />
+        </Grid>
+    </Shell.TitleView>
+
     <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate views:SignInPage}" 
                   Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" Shell.FlyoutBehavior="Disabled" />
 
     <ShellContent Route="SignUpPage" ContentTemplate="{DataTemplate views:SignUpPage}" 
                   Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" Shell.FlyoutBehavior="Disabled"/>
-
-    <FlyoutItem Title="Inicio" >
-        <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Home}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
-        </FlyoutItem.Icon>
-        <ShellContent Title="Mi Resumen" Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" 
-                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="Transferencias" >
-        <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transfer}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
-        </FlyoutItem.Icon>
-        <ShellContent Title="Transferir Dinero" Route="TransferPage" ContentTemplate="{DataTemplate pages:TransferPage}" 
-                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
-    </FlyoutItem>
-
-    <FlyoutItem Title="Pagos de Servicios" >
-        <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Pagos}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
-        </FlyoutItem.Icon>
-        <ShellContent Title="Pagar Impuestos" Route="PaymentsPage" ContentTemplate="{DataTemplate pages:PaymentsPage}" 
-                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}"/>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Últimos Movimientos" >
-        <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Transactions}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
-        </FlyoutItem.Icon>
-        <ShellContent Title="Historial" Route="TransactionsPage" ContentTemplate="{DataTemplate pages:TransactionsPage}" 
-                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}"/>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Configuración" >
-        <FlyoutItem.Icon>
-            <FontImageSource FontFamily="MaterialDesign" Glyph="{x:Static helpers:IconFont.Settings}" Color="{AppThemeBinding Light=Black, Dark=White}" Size="22"/>
-        </FlyoutItem.Icon>
-        <ShellContent Title="Ajustes" Route="SettingsPage" ContentTemplate="{DataTemplate pages:SettingsPage}" 
-                      Shell.NavBarIsVisible="{OnIdiom Desktop=False, Phone=True}" />
-    </FlyoutItem>
 
     <Shell.FlyoutFooter>
         <Grid Padding="20,15,20,25">
@@ -87,13 +67,9 @@
 
             <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
                 <Label Text="🚪" FontSize="20" VerticalOptions="Center" />
-
-                <Label Text="Cerrar Sesión" 
-                       TextColor="#dc3545" 
-                       FontAttributes="Bold" 
-                       FontSize="16"
-                       VerticalOptions="Center" />
+                <Label Text="Cerrar Sesión" TextColor="#dc3545" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" />
             </HorizontalStackLayout>
         </Grid>
     </Shell.FlyoutFooter>
+
 </Shell>

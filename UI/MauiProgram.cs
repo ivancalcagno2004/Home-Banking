@@ -1,10 +1,12 @@
 ﻿using HomeBanking.Data.Context;
 using HomeBanking.Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Models;
 using Services.Implementations;
 using Services.Interfaces;
+using System.Reflection;
 using UI.Services;
 using UI.Views;
 using UI.Views.Pages;
@@ -26,12 +28,12 @@ namespace UI
                     fonts.AddFont("materialdesignicons-webfont.ttf", "MaterialDesign");
                 });
 
-            // 1. Configurar la Base de Datos (SQLite)
-            // En MAUI, la base de datos debe guardarse en una ruta segura del teléfono o PC
+            // 1. Configurar la Base de Datos
+            // lee json
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
-
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite($"Data Source={dbPath}"));
+            
+                builder.Services.AddDbContext<AppDbContext>(options => 
+                    options.UseSqlite($"Data Source={dbPath}"));
 
             // 2. Inyección de Dependencias: Capa Data
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -43,6 +45,7 @@ namespace UI
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
+            builder.Services.AddSingleton<ICredentialService, CredentialService>();
             builder.Services.AddSingleton<UserSession>();
 
             // 4. Inyección de Dependencias: Capa ViewModels

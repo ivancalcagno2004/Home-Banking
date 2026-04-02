@@ -4,6 +4,11 @@
              x:Class="UI.Views.Pages.HomePage"
              Title="Inicio"
              BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#121212}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Configuración" Clicked="OnSettingsClicked" Order="Secondary" />
+        <ToolbarItem Text="Cerrar Sesión" Clicked="OnLogoutClicked" Order="Secondary" />
+    </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="Auto, Auto, *" Padding="20">
 

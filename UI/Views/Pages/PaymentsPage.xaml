@@ -5,6 +5,11 @@
              x:Class="UI.Views.Pages.PaymentsPage"
              Title="Pagos"
              BackgroundColor="{AppThemeBinding Light=#F8F9FA, Dark=#0A0A0A}">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Configuración" Clicked="OnSettingsClicked" Order="Secondary" />
+        <ToolbarItem Text="Cerrar Sesión" Clicked="OnLogoutClicked" Order="Secondary" />
+    </ContentPage.ToolbarItems>
 
     <ContentPage.Resources>
         <converters:DateToColorConverter x:Key="DateToColorConverter"/>

@@ -38,11 +38,19 @@
                        HorizontalOptions="Center" 
                        Margin="0,-10,0,16"/>
 
-                <Label Text="Usuario" TextColor="Gray" Margin="0,0,0,-8"/>
+                <Label Text="Usuario" TextColor="Gray" Margin="0,0,0,-8" IsVisible="{Binding ShowInputUser}"/>
                 <Entry Text="{Binding UserName}"
                        Placeholder="Ingrese su usuario"
                        ClearButtonVisibility="WhileEditing"
+                       IsVisible="{Binding ShowInputUser}"
                        HeightRequest="45"/>
+                
+                <Label Text="{Binding WelcomeMessage}" 
+                       IsVisible="{Binding ShowWelcomeMessage}" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                       HorizontalOptions="Center"/>
 
                 <Label Text="Contraseña" TextColor="Gray" Margin="0,0,0,-8"/>
                 <Entry x:Name="TxtPasswordLogin"
@@ -66,6 +74,22 @@
                         TextColor="#005fb8"
                         FontAttributes="Bold"
                         Margin="0,8,0,0"/>
+
+                <Button Text="Entrar con Huella" 
+                    Command="{Binding BiometricLoginCommand}" 
+                    BackgroundColor="Transparent"
+                    TextColor="#004a94"
+                    FontAttributes="Bold"
+                    Margin="0,10,0,0"
+                    IsVisible="{OnPlatform WinUI=False, Default=True}"/>
+
+                <Button Text="Ingresar con otro usuario" 
+                    Command="{Binding ChangeUserCommand}" 
+                    BackgroundColor="Transparent"
+                    TextColor="Gray"
+                    FontAttributes="Bold"
+                    Margin="0,10,0,0"
+                    IsVisible="{Binding ShowWelcomeMessage}"/>
 
             </VerticalStackLayout>
         </Border>

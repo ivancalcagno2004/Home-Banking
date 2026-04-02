@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Diagnostics;
 using Services.Implementations;
 using Models.DTO;
 
@@ -51,6 +52,7 @@ namespace ViewModels
 
             try
             {
+                Debug.WriteLine("[UserAction] ClaimGift: procesando...");
                 var mainAccount = Accounts.FirstOrDefault();
                 if (mainAccount == null) return;
 
@@ -76,6 +78,8 @@ namespace ViewModels
                     "¡Regalo reclamado!",
                     $"Has recibido un regalo de {regalo:C} en tu cuenta principal.",
                     "Ok");
+
+                Debug.WriteLine("[UserAction] ClaimGift OK.");
             }
             catch (Exception ex)
             {
@@ -87,6 +91,8 @@ namespace ViewModels
                     "Error",
                     $"Ocurrió un error al reclamar el regalo: {ex.Message}",
                     "Ok");
+
+                Debug.WriteLine($"[UserAction] ClaimGift excepción: {ex}");
             }
         }
 

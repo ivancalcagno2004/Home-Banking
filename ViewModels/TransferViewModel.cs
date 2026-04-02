@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
 
 namespace ViewModels
 {
@@ -65,25 +66,29 @@ namespace ViewModels
 
         private async void ExecuteTransfer(object obj)
         {
+            Debug.WriteLine("[UserAction] TransferCommand ejecutado.");
             if (SelectedOriginAccount == null)
             {
+                Debug.WriteLine("[UserAction] Transfer: sin cuenta de origen seleccionada.");
                 await _dialogService!.ShowAlertAsync("Cuenta de origen no seleccionada", "Por favor, seleccioná una cuenta de origen para realizar la transferencia.", "Ok");
                 return;
             }
             if (Amount <= 0)
             {
+                Debug.WriteLine($"[UserAction] Transfer: monto inválido Amount={Amount}.");
                 await _dialogService!.ShowAlertAsync("Monto inválido", "Por favor, ingresá un monto mayor a cero para la transferencia.", "Ok");
                 return;
             }
             if (string.IsNullOrWhiteSpace(DestinationCBU_Alias))
             {
+                Debug.WriteLine("[UserAction] Transfer: destino vacío.");
                 await _dialogService!.ShowAlertAsync("Cuenta de destino vacía", "Por favor, ingresá el CBU o Alias de la cuenta de destino para realizar la transferencia.", "Ok");
                 return;
             }
 
             try
             {
-
+                Debug.WriteLine($"[UserAction] Transfer: solicitando confirmación. From='{SelectedOriginAccount.Alias}' To='{DestinationCBU_Alias}' Amount={Amount}.");
                 bool result = await _dialogService!.ShowConfirmationAsync(
                     "Confirmar transferencia",
                     $"¿Estás seguro que querés transferir ${Amount:N2} desde {SelectedOriginAccount.Alias} a {DestinationCBU_Alias}?",
@@ -91,9 +96,15 @@ namespace ViewModels
                     "No, cancelar"
                 );
 
-                if (!result) return;
+                if (!result)
+                {
+                    Debug.WriteLine("[UserAction] Transfer cancelada por el usuario.");
+                    return;
+                }
 
                 await _transactionService!.TransferToAsync(SelectedOriginAccount.Id, DestinationCBU_Alias, Amount);
+
+                Debug.WriteLine("[UserAction] Transfer OK.");
 
                 await _dialogService.ShowAlertAsync(
                     "Transferencia exitosa",
@@ -108,6 +119,7 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
+                Debug.WriteLine($"[UserAction] Transfer excepción: {ex}");
                 await _dialogService!.ShowAlertAsync(
                     "Error en la transferencia",
                     $"Ocurrió un error al intentar realizar la transferencia: {ex.Message}",
