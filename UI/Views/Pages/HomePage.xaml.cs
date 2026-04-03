@@ -20,4 +20,14 @@ public partial class HomePage : ContentPage
         System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] Cerrando sesión desde el dropdown.");
         await Shell.Current.GoToAsync("//SignInPage");
     }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is ViewModels.HomeViewModel viewModel)
+        {
+            await viewModel.LoadData();
+        }
+    }
 }

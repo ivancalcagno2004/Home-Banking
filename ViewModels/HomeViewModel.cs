@@ -44,8 +44,6 @@ namespace ViewModels
             WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
             Accounts = new ObservableCollection<AccountDTO>();
             ClaimGiftCommand = new RelayCommand(ExecuteClaimGift);
-
-            _ = LoadData();
         }
 
         private async void ExecuteClaimGift(object o)
@@ -98,7 +96,7 @@ namespace ViewModels
             }
         }
 
-        private async Task LoadData()
+        public async Task LoadData()
         {
             var userAccounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
 
