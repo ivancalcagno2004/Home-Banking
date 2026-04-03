@@ -61,7 +61,7 @@
                            HeightRequest="45"/>
 
                     <Label Text="Monto a transferir" TextColor="Gray" Margin="0,0,0,-8"/>
-                    <Entry Text="{Binding Amount}" 
+                    <Entry Text="" 
                            Placeholder="$ 0.00"
                            Keyboard="Numeric"
                            FontAttributes="Bold"

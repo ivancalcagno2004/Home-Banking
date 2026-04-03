@@ -8,8 +8,6 @@ namespace UI
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("SignUpPage", typeof(Views.SignUpPage));
-
             ConstruirMenuResponsive();
         }
 
@@ -47,7 +45,6 @@ namespace UI
         private Tab CrearTab(string titulo, string icono, Type pagina, string ruta)
         {
             var fontImage = new FontImageSource { FontFamily = "MaterialDesign", Glyph = icono, Size = 22, Color = Colors.Blue };
-            //fontImage.SetAppThemeColor(FontImageSource.ColorProperty, Colors.Blue, Colors.Blue);
 
             var shellContent = new ShellContent
             {

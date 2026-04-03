@@ -4,10 +4,12 @@ namespace UI.Views.Pages;
 
 public partial class TransactionsPage : ContentPage
 {
-	public TransactionsPage(TransactionsViewModel vm)
+    private readonly TransactionsViewModel _viewModel;
+    public TransactionsPage(TransactionsViewModel vm)
 	{
 		InitializeComponent();
-		BindingContext = vm;
+        _viewModel = vm;
+		BindingContext = _viewModel;
     }
 
     private async void OnSettingsClicked(object sender, EventArgs e)
@@ -19,5 +21,11 @@ public partial class TransactionsPage : ContentPage
     {
         System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] Cerrando sesión desde el dropdown.");
         await Shell.Current.GoToAsync("//SignInPage");
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.LoadTransactions();
     }
 }

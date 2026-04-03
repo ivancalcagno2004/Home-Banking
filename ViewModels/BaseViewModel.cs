@@ -17,8 +17,16 @@ namespace ViewModels
         protected INavigationService? _navigationService;
         protected IDialogService? _dialogService;
         protected IPaymentService? _paymentService;
+        protected ICredentialService? _credentialService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set { _isBusy = value; OnPropertyChanged(); }
+        }
 
         protected void OnPropertyChanged([CallerMemberName]string? propertyName = null)
         {

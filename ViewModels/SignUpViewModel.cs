@@ -1,4 +1,5 @@
 ﻿using Models;
+using Models.DTO;
 using Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,12 @@ namespace ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand NavigateToSignInCommand { get; }
 
-        public SignUpViewModel(IUserService userService, INavigationService navigationService, IDialogService dialogService)
+        public SignUpViewModel(IUserService userService, INavigationService navigationService, IDialogService dialogService, ICredentialService credentialService)
         {
             _userService = userService;
             _navigationService = navigationService;
             _dialogService = dialogService;
+            _credentialService = credentialService;
             RegisterCommand = new RelayCommand(Register);
             
             NavigateToSignInCommand = new RelayCommand(param => _navigationService.NavigateToAsync("//SignInPage"));
@@ -43,22 +45,20 @@ namespace ViewModels
                 return;
             }
 
+            UserProfileDTO? user = await _userService!.GetUserByName(UserName);
+
+            if (user != null)
+            {
+                await _dialogService!.ShowAlertAsync("Usuario Existente", "El nombre de usuario ya está en uso. Por favor, inicia sesión o elige otro.", "Ok");
+                return;
+            }
+
             try
             {
-                var newUser = new User
-                {
-                    FullName = FullName,
-                    UserName = UserName,
-                    Email = Email,
-                    Password = password,
-                    CreatedAt = DateTime.UtcNow,
-                    IsGiftClaimed = false
-                };
+                await _userService!.CreateAsync(FullName, UserName, Email, password, DateTime.UtcNow, false);
+                await _credentialService!.ClearCredentialsAsync();
 
-                await _userService!.CreateAsync(newUser);
                 await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
-
-                await Task.Delay(3000);
                 await _navigationService!.NavigateToAsync("//SignInPage");
             }
             catch (Exception e)

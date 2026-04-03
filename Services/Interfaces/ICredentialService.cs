@@ -10,5 +10,6 @@ namespace Services.Interfaces
     {
         Task SaveCredentialsAsync(string username, string password);
         Task<(string? username, string? password)> GetCredentialsAsync();
+        Task ClearCredentialsAsync();
     }
 }

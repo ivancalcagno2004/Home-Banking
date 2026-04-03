@@ -15,7 +15,6 @@ namespace ViewModels
     public class SignInViewModel : BaseViewModel
     {
         private readonly UserSession _userSession;
-        private readonly ICredentialService _credentialService;
         private readonly INotificationService _notificationService;
 
         private string? _userName;
@@ -75,7 +74,7 @@ namespace ViewModels
 
         private async Task CheckSavedUserAsync()
         {
-            var credentials = await _credentialService.GetCredentialsAsync();
+            var credentials = await _credentialService!.GetCredentialsAsync();
 
             if (!string.IsNullOrEmpty(credentials.username))
             {
@@ -96,7 +95,7 @@ namespace ViewModels
 
         private async void ExecuteBiometricLogin(object obj)
         {
-            var credentials = await _credentialService.GetCredentialsAsync();
+            var credentials = await _credentialService!.GetCredentialsAsync();
 
             if (string.IsNullOrEmpty(credentials.username) || string.IsNullOrEmpty(credentials.password))
             {
@@ -117,8 +116,12 @@ namespace ViewModels
 
             if (result.Authenticated)
             {
+                if (IsBusy) return;
+
                 try
                 {
+                    IsBusy = true;
+                    await Task.Delay(1000);
                     var user = await _userService!.ValidateUserAsync(credentials.username, credentials.password);
                     if (user != null)
                     {
@@ -131,6 +134,7 @@ namespace ViewModels
                 {
                     await _dialogService!.ShowAlertAsync("Error", $"Ocurrió un problema al leer tus credenciales: {ex.Message}", "OK");
                 }
+                finally {IsBusy = false;}
             }
             else
             {
@@ -151,9 +155,10 @@ namespace ViewModels
                     "OK");
                 return;
             }
-
+            if(IsBusy) return;
             try
             {
+                IsBusy= true;
                 Debug.WriteLine($"[UserAction] SignIn: validando usuario='{UserName}'.");
                 var user = await _userService!.ValidateUserAsync(UserName, password);
                 if (user != null)
@@ -161,7 +166,7 @@ namespace ViewModels
                     Debug.WriteLine($"[UserAction] SignIn OK. UserId={user.UserId} UserName='{user.UserName}'.");
                     _userSession.CurrentUser = user;
 
-                    await _credentialService.SaveCredentialsAsync(UserName, password);
+                    await _credentialService!.SaveCredentialsAsync(UserName, password);
                     
                     await LoadNotifications();
 
@@ -184,6 +189,7 @@ namespace ViewModels
                     $"Ocurrió un error al intentar iniciar sesión: {ex.Message}",
                     "OK");
             }
+            finally { IsBusy = false; }
         }
 
         private async Task LoadNotifications()

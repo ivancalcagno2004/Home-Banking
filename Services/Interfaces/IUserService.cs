@@ -11,10 +11,12 @@ namespace Services.Interfaces
 {
     public interface IUserService
     {
-        Task<User> CreateAsync(User user);
+        Task CreateAsync(string fullname, string username, string email, string password, DateTime date, Boolean isGiftClaimed);
 
         Task<User?> ValidateUserAsync(string username, string password);
 
         public Task UpdateUser(User user);
+
+        Task<UserProfileDTO?> GetUserByName(string username);
     }
 }

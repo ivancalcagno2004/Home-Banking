@@ -20,5 +20,11 @@ namespace UI.Services
 
             return (user, pass);
         }
+
+        public async Task ClearCredentialsAsync()
+        {
+            SecureStorage.Default.Remove("saved_username");
+            SecureStorage.Default.Remove("saved_password");
+        }
     }
 }

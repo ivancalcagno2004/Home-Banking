@@ -22,14 +22,24 @@ namespace Services.Implementations
             _accountService = accountService;
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task CreateAsync(string fullname, string username, string email, string password, DateTime date, Boolean isGiftClaimed)
         {
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password); // hashing
+            var newUser = new User
+            {
+                FullName = fullname,
+                UserName = username,
+                Email = email,
+                Password = password,
+                CreatedAt = DateTime.UtcNow,
+                IsGiftClaimed = false
+            };
 
-            await _unitOfWork.Users.AddAsync(user);
+            newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password); // hashing
+
+            await _unitOfWork.Users.AddAsync(newUser);
             await _unitOfWork.SaveChangesAsync();
 
-            await _accountService.CreateAccountAsync(user);
+            await _accountService.CreateAccountAsync(newUser);
 
             var random = new Random();
 
@@ -38,8 +48,8 @@ namespace Services.Implementations
             {
                 new ServicePayment
                 {
-                    UserId = user.UserId, 
-                    User = user,
+                    UserId = newUser.UserId, 
+                    User = newUser,
                     CategoryId = 3,
                     ServiceName = "USINA TANDIL",
                     Amount = random.Next(2500, 8000), 
@@ -48,8 +58,8 @@ namespace Services.Implementations
                 },
                 new ServicePayment
                 {
-                    UserId = user.UserId,
-                    User = user,
+                    UserId = newUser.UserId,
+                    User = newUser,
                     CategoryId = 3,
                     ServiceName = "CAMUZZI GAS",
                     Amount = random.Next(2500, 8000),
@@ -58,8 +68,8 @@ namespace Services.Implementations
                 },
                 new ServicePayment
                 {
-                    UserId = user.UserId,
-                    User = user,
+                    UserId = newUser.UserId,
+                    User = newUser,
                     CategoryId = 4,
                     ServiceName = "ARBA AUTOMOTOR",
                     Amount = random.Next(18000, 38000),
@@ -68,8 +78,8 @@ namespace Services.Implementations
                 },
                 new ServicePayment
                 {
-                    UserId = user.UserId,
-                    User = user,
+                    UserId = newUser.UserId,
+                    User = newUser,
                     CategoryId = 2,
                     ServiceName = "PERSONAL FLOW",
                     Amount = random.Next(2500, 8000),
@@ -78,8 +88,8 @@ namespace Services.Implementations
                 },
                 new ServicePayment
                 {
-                    UserId = user.UserId,
-                    User = user,
+                    UserId = newUser.UserId,
+                    User = newUser,
                     CategoryId = 1,
                     ServiceName = "TASAS MUNICIPALES",
                     Amount = random.Next(2500, 8000),
@@ -93,14 +103,26 @@ namespace Services.Implementations
                 await _unitOfWork.Payments.AddAsync(service);
             }
             await _unitOfWork.SaveChangesAsync();
-
-            return user;
         }
 
         public async Task UpdateUser(User user)
         {
             _unitOfWork.Users.Update(user); 
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<UserProfileDTO?> GetUserByName(string username) { 
+        
+            User? user = await _unitOfWork.Users.GetByUsernameAsync(username);
+
+            if (user == null) return null;
+
+            return new UserProfileDTO
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                UserName = user.UserName
+            };
         }
 
         public async Task<User?> ValidateUserAsync(string username, string password)

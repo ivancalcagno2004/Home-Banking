@@ -23,10 +23,9 @@ namespace ViewModels
             _transactionService = transactionService;
             Transactions = new ObservableCollection<TransactionDTO>();
 
-            LoadTransactions();
         }
 
-        private async void LoadTransactions()
+        public async Task LoadTransactions()
         {
             try
             {

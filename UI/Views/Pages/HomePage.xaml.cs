@@ -4,10 +4,12 @@ namespace UI.Views.Pages;
 
 public partial class HomePage : ContentPage
 {
-	public HomePage(HomeViewModel vm)
+    private readonly HomeViewModel _viewModel;
+    public HomePage(HomeViewModel vm)
 	{
 		InitializeComponent();
-		BindingContext = vm;
+        _viewModel = vm;
+		BindingContext = _viewModel;
     }
 
     private async void OnSettingsClicked(object sender, EventArgs e)
@@ -25,9 +27,7 @@ public partial class HomePage : ContentPage
     {
         base.OnAppearing();
 
-        if (BindingContext is ViewModels.HomeViewModel viewModel)
-        {
-            await viewModel.LoadData();
-        }
+        System.Diagnostics.Debug.WriteLine("⏳ [HOME] Cargando datos del resumen...");
+        await _viewModel.LoadData();
     }
 }
