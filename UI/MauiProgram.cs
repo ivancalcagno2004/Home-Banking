@@ -1,4 +1,5 @@
-﻿using HomeBanking.Data.Context;
+﻿using DataAccess.Context;
+using HomeBanking.Data.Context;
 using HomeBanking.Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,10 +34,8 @@ namespace UI
 
             // 1. Configurar la Base de Datos
             //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
-            string connectionString = "Server=tcp:otrosv.database.windows.net,1433;Initial Catalog=tandil-bank;Persist Security Info=False;User ID=CloudSA66e855f8;Password=Cocodepapa318;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
             builder.Services.AddDbContext<AppDbContext>(options => 
-                    options.UseSqlServer(connectionString));
+                    options.UseSqlServer(DatabaseSecrets.ConnectionString));
 
             // 2. Inyección de Dependencias: Capa Data
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -73,9 +72,9 @@ namespace UI
             builder.Services.AddTransient<TransferPage>();
             builder.Services.AddTransient<TransactionsPage>();
 
-#if DEBUG
-            builder.Logging.AddDebug();
-#endif
+            #if DEBUG
+                builder.Logging.AddDebug();
+            #endif
 
             var app = builder.Build();
 

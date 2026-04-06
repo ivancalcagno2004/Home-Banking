@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -16,9 +17,7 @@ namespace HomeBanking.Data.Context
         {
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            string connectionString = "Server=tcp:otrosv.database.windows.net,1433;Initial Catalog=tandil-bank;Persist Security Info=False;User ID=CloudSA66e855f8;Password=Cocodepapa318;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
-            builder.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
+            builder.UseSqlServer(DatabaseSecrets.ConnectionString, sqlServerOptionsAction: sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,
