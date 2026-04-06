@@ -80,7 +80,7 @@
                         IsEnabled="{Binding ShowWelcomeMessage}"
                         IsVisible="{OnPlatform WinUI=False, Default=True}"/>
 
-                <Button Text="No tengo cuenta, quiero registrarme"
+                <Button Text="Quiero registrarme"
                         Command="{Binding NavigateToSignUpCommand}"
                         BackgroundColor="Transparent"
                         TextColor="#005fb8"

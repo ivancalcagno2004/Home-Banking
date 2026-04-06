@@ -10,114 +10,125 @@
         <ToolbarItem Text="Cerrar Sesión" Clicked="OnLogoutClicked" Order="Secondary" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto, Auto, *" Padding="20">
+    <RefreshView x:Name="MiRefreshView" Refreshing="OnRefreshViewRefreshing" RefreshColor="#004a94">
+        <Grid RowDefinitions="Auto, Auto, *" Padding="20">
 
-        <Border Grid.Row="0" 
-                Margin="0,0,0,24" 
-                Stroke="Transparent"
-                BackgroundColor="Transparent">
+            <Border Grid.Row="0" 
+                    Margin="0,0,0,24" 
+                    Stroke="Transparent"
+                    BackgroundColor="Transparent">
 
-            <Grid ColumnDefinitions="*, Auto">
+                <Grid ColumnDefinitions="*, Auto">
 
-                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Label Text="{Binding WelcomeMessage}" 
-                           FontSize="20" 
-                           FontAttributes="Bold" 
-                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                    <Label Text="Resumen de tus productos" 
-                           FontSize="13" 
-                           TextColor="Gray"/>
-                </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                        <Label Text="{Binding WelcomeMessage}" 
+                               FontSize="20" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        <Label Text="Resumen de tus cuentas" 
+                               FontSize="13" 
+                               TextColor="Gray"/>
+                    </VerticalStackLayout>
 
-                <Border Grid.Column="1"
-                        IsVisible="{Binding IsGiftAvailable}"
-                        BackgroundColor="#005fb8"
-                        StrokeShape="RoundRectangle 8"
-                        Padding="15,8"
-                        VerticalOptions="Center">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ClaimGiftCommand}"/>
-                    </Border.GestureRecognizers>
+                    <Border Grid.Column="1"
+                            IsVisible="{Binding IsGiftAvailable}"
+                            BackgroundColor="#005fb8"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="15,8"
+                            VerticalOptions="Center">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ClaimGiftCommand}"/>
+                        </Border.GestureRecognizers>
 
-                    <HorizontalStackLayout Spacing="8">
-                        <Label Text="🎁" FontSize="18" VerticalOptions="Center"/>
-                        <VerticalStackLayout>
-                            <Label Text="Reclamar Regalo" FontAttributes="Bold" TextColor="White" FontSize="12"/>
-                            <Label Text="$ 50.000" FontSize="10" TextColor="#D1E4F9"/>
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
-                </Border>
-            </Grid>
-        </Border>
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="🎁" FontSize="18" VerticalOptions="Center"/>
+                            <VerticalStackLayout>
+                                <Label Text="Reclamar Regalo" FontAttributes="Bold" TextColor="White" FontSize="12"/>
+                                <Label Text="$ 50.000" FontSize="10" TextColor="#D1E4F9"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+            </Border>
 
-        <Label Grid.Row="1" 
-               Text="Mis Cuentas" 
-               FontSize="18" 
-               FontAttributes="Bold" 
-               Margin="0,0,0,15"
-               TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+            <Label Grid.Row="1" 
+                   Text="Mis Cuentas" 
+                   FontSize="18" 
+                   FontAttributes="Bold" 
+                   Margin="0,0,0,15"
+                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
 
-        <CollectionView Grid.Row="2" 
-                        ItemsSource="{Binding Accounts}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
+            <CollectionView Grid.Row="2" 
+                            ItemsSource="{Binding Accounts}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
 
-                    <Border Margin="0,0,0,15" 
-                            Padding="20" 
-                            StrokeShape="RoundRectangle 12"
-                            Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
-                            BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+                        <Border Margin="0,0,0,15" 
+                                Padding="20" 
+                                StrokeShape="RoundRectangle 12"
+                                Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
 
-                        <Border.Shadow>
-                            <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
-                        </Border.Shadow>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
+                            </Border.Shadow>
 
-                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
+                            <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto" ColumnSpacing="15" RowSpacing="8">
 
-                            <Border Grid.Column="0" 
+                                <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
                                     WidthRequest="50" HeightRequest="50" 
                                     StrokeShape="RoundRectangle 25" 
                                     BackgroundColor="#EDF2FA"
-                                    Stroke="Transparent">
-                                <Label Text="💳" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center"/>
-                            </Border>
+                                    Stroke="Transparent"
+                                    VerticalOptions="Start">
+                                    <Label Text="💳" FontSize="24" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Border>
 
-                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                <Label Text="Caja de Ahorro" FontSize="13" TextColor="Gray"/>
+                                <VerticalStackLayout Grid.Row="0" Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="Caja de Ahorro" FontSize="13" TextColor="Gray"/>
+                                    <Label LineBreakMode="TailTruncation" MaxLines="1" Margin="0,2">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Alias: " FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#333, Dark=#CCC}"/>
+                                                <Span Text="{Binding Alias}" FontSize="14" FontAttributes="Bold" TextColor="#005fb8"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
 
-                                <HorizontalStackLayout Spacing="5" Margin="0,2">
-                                    <Label Text="Alias:" FontSize="14" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#333, Dark=#CCC}"/>
-                                    <Label Text="{Binding Alias}" FontSize="14" FontAttributes="Bold" TextColor="#005fb8"/>
-                                </HorizontalStackLayout>
-
-                                <Label Text="{Binding Balance, StringFormat='${0:N2}'}" 
-                                       FontSize="24" 
-                                       FontAttributes="Bold" 
-                                       MaxLines="1"
-                                       TextColor="{AppThemeBinding Light=Black, Dark=White}" 
-                                       Margin="0,2"/>
-
-                                <HorizontalStackLayout Spacing="5">
-                                    <Label Text="CBU:" FontSize="12" TextColor="Gray"/>
-                                    <Label Text="{Binding CBU}" FontSize="12" TextColor="Gray"/>
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-
-                            <Button Grid.Column="2" 
+                                <Button Grid.Row="0" Grid.Column="2" 
                                     Text="Ver Detalle"
+                                    Clicked="OnViewDetailsClicked"
                                     BackgroundColor="Transparent"
                                     TextColor="#005fb8"
                                     BorderColor="#005fb8"
                                     BorderWidth="1"
                                     CornerRadius="8"
-                                    HeightRequest="30"
+                                    HeightRequest="35"
                                     VerticalOptions="Center"
                                     Padding="10,0"/>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+
+                                <VerticalStackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" Margin="0,5,0,0">
+
+                                    <Label Text="{Binding Balance, StringFormat='${0:N2}'}" 
+                                       FontSize="24" 
+                                       FontAttributes="Bold" 
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                                       Margin="0,0,0,4"/>
+
+                                    <HorizontalStackLayout Spacing="5">
+                                        <Label Text="CBU:" FontSize="12" TextColor="Gray"/>
+                                        <Label Text="{Binding CBU}" FontSize="12" TextColor="Gray"/>
+                                    </HorizontalStackLayout>
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </RefreshView>
 </ContentPage>

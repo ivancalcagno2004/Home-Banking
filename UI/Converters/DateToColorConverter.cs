@@ -10,7 +10,7 @@ namespace HomeBanking.Data.Converters
 {
     public class DateToColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is DateTime date)
             {
@@ -33,7 +33,7 @@ namespace HomeBanking.Data.Converters
             return Colors.Gray;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }

@@ -31,8 +31,8 @@
 		<ApplicationId>com.tandilbank.app</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>2.0</ApplicationDisplayVersion>
+		<ApplicationVersion>2</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -46,6 +46,12 @@
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' And '$(TargetFramework)' == 'net10.0-android'">
+		<PublishTrimmed>false</PublishTrimmed>
+		<RunAOTCompilation>false</RunAOTCompilation>
+		<RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\logo_app.png" Color="#004a94" />
@@ -90,7 +96,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 		<PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
-		<PackageReference Include="System.DirectoryServices" Version="10.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

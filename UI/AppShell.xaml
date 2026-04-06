@@ -53,6 +53,8 @@
         </Grid>
     </Shell.TitleView>
 
+    <ShellContent Title="Cargando" ContentTemplate="{DataTemplate pages:LoadingPage}" Route="LoadingPage" Shell.NavBarIsVisible="False" Shell.FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"/>
+
     <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate views:SignInPage}" 
                   Shell.FlyoutItemIsVisible="False" Shell.NavBarIsVisible="False" Shell.FlyoutBehavior="Disabled" />
 

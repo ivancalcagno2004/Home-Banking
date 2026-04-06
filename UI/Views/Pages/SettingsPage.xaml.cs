@@ -10,9 +10,10 @@ public partial class SettingsPage : ContentPage
 		BindingContext = vm;
 
         vm.IsDarkMode = Preferences.Get("DarkMode", false);
+        VersionLabel.Text = $"v{AppInfo.Current.VersionString} - Tandil Bank";
     }
 
-    private void OnThemeSwitchToggled(object sender, ToggledEventArgs e)
+    private void OnThemeSwitchToggled(object? sender, ToggledEventArgs e)
     {
         bool isDarkMode = e.Value;
 
@@ -24,7 +25,7 @@ public partial class SettingsPage : ContentPage
         Preferences.Set("DarkMode", isDarkMode);
     }
 
-    private async void OnLogoutClicked(object sender, EventArgs e)
+    private async void OnLogoutClicked(object? sender, EventArgs e)
     {
         System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] Cerrando sesión desde el dropdown.");
         await Shell.Current.GoToAsync("//SignInPage");

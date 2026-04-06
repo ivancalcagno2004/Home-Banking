@@ -18,14 +18,6 @@ namespace ViewModels
         public string FullName => _userSession.CurrentUser?.FullName ?? "Usuario";
         public string Email => _userSession.CurrentUser?.Email ?? "usuario@email.com";
         public string Initials => !string.IsNullOrEmpty(FullName) ? FullName[0].ToString() : "U";
-        public string AppVersion
-        {
-            get
-            {
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                return $"v{version?.Major}.{version?.Minor}.{version?.Build} - Tandil Bank";
-            }
-        }
 
         private bool _isDarkMode;
 

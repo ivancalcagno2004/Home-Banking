@@ -66,6 +66,7 @@ namespace Services.Implementations
             using var smtp = new SmtpClient();
             try
             {
+                smtp.CheckCertificateRevocation = false;
                 // Conectar a los servidores de Gmail
                 await smtp.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
                 await smtp.AuthenticateAsync(_bancoEmail, _bancoPassword);

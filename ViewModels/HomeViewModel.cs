@@ -13,6 +13,7 @@ using System.Diagnostics;
 using Services.Implementations;
 using Models.DTO;
 
+
 namespace ViewModels
 {
     public class HomeViewModel : BaseViewModel
@@ -44,6 +45,10 @@ namespace ViewModels
             WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
             Accounts = new ObservableCollection<AccountDTO>();
             ClaimGiftCommand = new RelayCommand(ExecuteClaimGift);
+        }
+
+        public async Task<AccountDTO?> GetAccountData() {
+            return Accounts!.FirstOrDefault();
         }
 
         private async void ExecuteClaimGift(object o)

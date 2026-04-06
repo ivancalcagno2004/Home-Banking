@@ -62,6 +62,7 @@ namespace UI
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<TransactionsViewModel>();
             builder.Services.AddTransient<TransferViewModel>();
+            builder.Services.AddTransient<LoadingViewModel>();
 
             // 5. Inyección de Dependencias: Capa Views (Pantallas)
             builder.Services.AddTransient<SignInPage>(); 
@@ -71,6 +72,7 @@ namespace UI
             builder.Services.AddTransient<SettingsPage>();
             builder.Services.AddTransient<TransferPage>();
             builder.Services.AddTransient<TransactionsPage>();
+            builder.Services.AddTransient<LoadingPage>();
 
             #if DEBUG
                 builder.Logging.AddDebug();
@@ -79,7 +81,7 @@ namespace UI
             var app = builder.Build();
 
             // Inicializar la Base de datos al arrancar
-            InitializeDatabase(app);
+            //InitializeDatabase(app);
 
             return app;
         }

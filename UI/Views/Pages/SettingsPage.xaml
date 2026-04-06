@@ -34,31 +34,43 @@
                             <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
                         </Border.Shadow>
 
-                        <Grid ColumnDefinitions="Auto, Auto, Auto" ColumnSpacing="15">
+                        <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
+
                             <Border Grid.Column="0" WidthRequest="60" HeightRequest="60" 
-                                    StrokeShape="RoundRectangle 30" 
-                                    BackgroundColor="#005fb8" 
-                                    Stroke="Transparent">
+                                StrokeShape="RoundRectangle 30" 
+                                BackgroundColor="#005fb8" 
+                                Stroke="Transparent">
                                 <Label Text="{Binding Initials}" 
-                                       TextColor="White" FontSize="24" FontAttributes="Bold" 
-                                       HorizontalOptions="Center" VerticalOptions="Center"/>
+                                   TextColor="White" FontSize="24" FontAttributes="Bold" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
                             </Border>
 
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
-                                <Label Text="{Binding FullName}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                                <Label Text="{Binding Email}" FontSize="14" TextColor="Gray" LineBreakMode="TailTruncation" MaxLines="1" MaximumWidthRequest="160"/>
+
+                                <Label Text="{Binding FullName}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                   LineBreakMode="TailTruncation" 
+                                   MaxLines="1"/>
+
+                                <Label Text="{Binding Email}" 
+                                   FontSize="14" 
+                                   TextColor="Gray" 
+                                   LineBreakMode="TailTruncation" 
+                                   MaxLines="1"/>
                             </VerticalStackLayout>
 
                             <Button Grid.Column="2" 
-                                    Text="Editar" 
-                                    BackgroundColor="Transparent"
-                                    TextColor="#005fb8"
-                                    BorderColor="#005fb8"
-                                    BorderWidth="1"
-                                    CornerRadius="8"
-                                    HeightRequest="40"
-                                    Padding="15,0"
-                                    VerticalOptions="Center"/>
+                                Text="Editar" 
+                                BackgroundColor="Transparent"
+                                TextColor="#005fb8"
+                                BorderColor="#005fb8"
+                                BorderWidth="1"
+                                CornerRadius="8"
+                                HeightRequest="40"
+                                Padding="15,0"
+                                VerticalOptions="Center"/>
                         </Grid>
                     </Border>
                 </VerticalStackLayout>
@@ -110,7 +122,7 @@
                             <Label Text="ℹ️" FontSize="24" VerticalOptions="Center"/>
                             <VerticalStackLayout VerticalOptions="Center">
                                 <Label Text="Tandil Bank App" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                                <Label Text="{Binding AppVersion}" TextColor="Gray"/>
+                                <Label x:Name="VersionLabel" TextColor="Gray" />
                                 <Label Text="© 2026 Tandil Bank S.A. By Jano" Margin="0,5,0,0" FontSize="12" TextColor="Gray"/>
                             </VerticalStackLayout>
                         </HorizontalStackLayout>

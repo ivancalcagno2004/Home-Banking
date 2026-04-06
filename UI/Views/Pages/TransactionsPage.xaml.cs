@@ -12,12 +12,12 @@ public partial class TransactionsPage : ContentPage
 		BindingContext = _viewModel;
     }
 
-    private async void OnSettingsClicked(object sender, EventArgs e)
+    private async void OnSettingsClicked(object? sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("SettingsPageMobile");
     }
 
-    private async void OnLogoutClicked(object sender, EventArgs e)
+    private async void OnLogoutClicked(object? sender, EventArgs e)
     {
         System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] Cerrando sesión desde el dropdown.");
         await Shell.Current.GoToAsync("//SignInPage");

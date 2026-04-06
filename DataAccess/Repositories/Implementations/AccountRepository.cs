@@ -24,7 +24,7 @@ namespace HomeBanking.Data.Repositories.Implementations
 
         public async Task<IEnumerable<Account>> GetAccountsByUserIdAsync(int userId)
         {
-            return await _dbSet.Where(a => a.UserId == userId).ToListAsync();
+            return await _dbSet.AsNoTracking().Where(a => a.UserId == userId).ToListAsync();
         }
     }
 }
