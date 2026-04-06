@@ -32,11 +32,11 @@ namespace UI
                 });
 
             // 1. Configurar la Base de Datos
-            // lee json
-            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
-            
-                builder.Services.AddDbContext<AppDbContext>(options => 
-                    options.UseSqlite($"Data Source={dbPath}"));
+            //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
+            string connectionString = "Server=tcp:otrosv.database.windows.net,1433;Initial Catalog=tandil-bank;Persist Security Info=False;User ID=CloudSA66e855f8;Password=Cocodepapa318;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            builder.Services.AddDbContext<AppDbContext>(options => 
+                    options.UseSqlServer(connectionString));
 
             // 2. Inyección de Dependencias: Capa Data
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -50,6 +50,7 @@ namespace UI
             builder.Services.AddSingleton<IDialogService, DialogService>();
             builder.Services.AddSingleton<ICredentialService, CredentialService>();
             builder.Services.AddSingleton<INotificationService, NotificationService>();
+            builder.Services.AddSingleton<IEmailService, EmailService>();
             builder.Services.AddSingleton<UserSession>();
 
             // 4. Inyección de Dependencias: Capa ViewModels
@@ -89,25 +90,39 @@ namespace UI
             using var scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            // Esto crea el archivo HomeBanking.db en el celular/PC si no existe
-            context.Database.EnsureCreated();
-
-            if (!context.TransactionCategories.Any()) {
+            if (!context.TransactionCategories.Any())
+            {
                 context.TransactionCategories.AddRange(
                     new TransactionCategory { Name = "Impuestos Municipales" },
                     new TransactionCategory { Name = "Telefonía" },
                     new TransactionCategory { Name = "Servicios Públicos" },
                     new TransactionCategory { Name = "Automotor" }
-                    );
+                );
                 context.SaveChanges();
             }
 
-            User sistema = new User { UserName = "Admin", Email = "", Password = "admin", FullName = "Sistema", UserId = 0 };
-            context.Users.Add(sistema);
+            if (!context.Users.Any(u => u.UserName == "Admin"))
+            {
+                User sistema = new User
+                {
+                    UserName = "Admin",
+                    Email = "admin@tandilbank.com",
+                    Password = "admin",
+                    FullName = "Sistema"
+                };
 
-            context.Accounts.Add(new Account { Alias = "PAGOS.SERVICIOS", CBU = "123", User = sistema, Balance = 9999999});
+                context.Users.Add(sistema);
 
-            context.SaveChanges();
+                context.Accounts.Add(new Account
+                {
+                    Alias = "PAGOS.SERVICIOS",
+                    CBU = "0000000000000000000123",
+                    User = sistema,
+                    Balance = 9999999
+                });
+
+                context.SaveChanges();
+            }
         }
     }
 }

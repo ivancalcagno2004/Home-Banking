@@ -46,7 +46,7 @@
 
                             <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                                 <Label Text="{Binding FullName}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                                <Label Text="{Binding Email}" FontSize="14" TextColor="Gray" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                <Label Text="{Binding Email}" FontSize="14" TextColor="Gray" LineBreakMode="TailTruncation" MaxLines="1" MaximumWidthRequest="160"/>
                             </VerticalStackLayout>
 
                             <Button Grid.Column="2" 

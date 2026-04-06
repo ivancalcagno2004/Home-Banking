@@ -14,21 +14,19 @@ namespace HomeBanking.Data.Context
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
-                .Build();
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            var connectionString = configuration
-                .GetConnectionString("DefaultConnection");
+            string connectionString = "Server=tcp:otrosv.database.windows.net,1433;Initial Catalog=tandil-bank;Persist Security Info=False;User ID=CloudSA66e855f8;Password=Cocodepapa318;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer(connectionString);
-            Console.WriteLine(connectionString);
+            builder.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: null);
+            });
 
-
-
-            return new AppDbContext(optionsBuilder.Options);
+            return new AppDbContext(builder.Options);
         }
     }
 }

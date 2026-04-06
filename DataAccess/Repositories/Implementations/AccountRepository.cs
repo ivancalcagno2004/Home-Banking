@@ -19,7 +19,7 @@ namespace HomeBanking.Data.Repositories.Implementations
         {
             return await _dbSet
                 .Include(a => a.User)
-                .FirstOrDefaultAsync(a => a.CBU == cbuOrAlias || a.Alias == cbuOrAlias);
+                .FirstOrDefaultAsync(a => a.CBU.ToLower() == cbuOrAlias.ToLower() || a.Alias.ToLower() == cbuOrAlias.ToLower());
         }
 
         public async Task<IEnumerable<Account>> GetAccountsByUserIdAsync(int userId)

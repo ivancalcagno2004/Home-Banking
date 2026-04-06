@@ -17,6 +17,7 @@ namespace ViewModels
     public class TransferViewModel : BaseViewModel
     {
         private readonly User _currentUser;
+        private readonly IEmailService _emailService;
 
         public ObservableCollection<AccountDTO> MyAccounts { get; set; }
 
@@ -39,13 +40,15 @@ namespace ViewModels
 
         public string Titulo { get; }
 
-        public TransferViewModel(UserSession user, IAccountService accountService, ITransactionService transactionService, IDialogService dialogService)
+        public TransferViewModel(UserSession user, IAccountService accountService, ITransactionService transactionService, IDialogService dialogService, IEmailService emailService, IUserService userService)
         {
             Titulo = "Transferencias";
             _currentUser = user.CurrentUser!;
             _accountService = accountService;
             _transactionService = transactionService;
             _dialogService = dialogService;
+            _emailService = emailService;
+            _userService = userService;
 
             MyAccounts = new ObservableCollection<AccountDTO>();
 
@@ -86,12 +89,20 @@ namespace ViewModels
                 return;
             }
 
+            UserProfileDTO? userDest = await _userService!.GetUserByCBUoAlias(DestinationCBU_Alias);
+
+            if (userDest == null)
+            {
+                await _dialogService!.ShowAlertAsync("Cuenta de destino inexistente", "Por favor, ingresá el CBU o Alias de la cuenta de destino para realizar la transferencia.", "Ok");
+                return;
+            }
+
             try
             {
                 Debug.WriteLine($"[UserAction] Transfer: solicitando confirmación. From='{SelectedOriginAccount.Alias}' To='{DestinationCBU_Alias}' Amount={Amount}.");
                 bool result = await _dialogService!.ShowConfirmationAsync(
                     "Confirmar transferencia",
-                    $"¿Estás seguro que querés transferir ${Amount:N2} desde {SelectedOriginAccount.Alias} a {DestinationCBU_Alias}?",
+                    $"¿Estás seguro que querés transferir ${Amount:N2} desde {SelectedOriginAccount.Alias} a {userDest.FullName} en su cuenta {DestinationCBU_Alias}?",
                     "Sí, transferir",
                     "No, cancelar"
                 );
@@ -108,9 +119,14 @@ namespace ViewModels
 
                 await _dialogService.ShowAlertAsync(
                     "Transferencia exitosa",
-                    $"Se han transferido ${Amount:N2} desde {SelectedOriginAccount.Alias} a {DestinationCBU_Alias}.",
+                    $"Se han transferido ${Amount:N2} desde {SelectedOriginAccount.Alias} a {userDest.FullName} en su cuenta {DestinationCBU_Alias}.",
                     "Ok"
                 );
+
+                if (!string.IsNullOrWhiteSpace(userDest.Email))
+                {
+                    await _emailService.SendTransferNotificationAsync(userDest.Email, userDest.FullName!, _currentUser.FullName ,SelectedOriginAccount.Alias!, Amount);
+                }
 
                 // Recargar las cuentas para actualizar saldos
                 LoadAccounts();

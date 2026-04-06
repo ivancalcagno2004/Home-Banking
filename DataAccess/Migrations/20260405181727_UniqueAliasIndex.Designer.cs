@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HomeBanking.Migrations
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260208021400_AddPropertyIsGiftClimed")]
-    partial class AddPropertyIsGiftClimed
+    [Migration("20260405181727_UniqueAliasIndex")]
+    partial class UniqueAliasIndex
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace HomeBanking.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HomeBanking.Models.Account", b =>
+            modelBuilder.Entity("Models.Account", b =>
                 {
                     b.Property<int>("AccountId")
                         .ValueGeneratedOnAdd()
@@ -35,7 +35,8 @@ namespace HomeBanking.Migrations
 
                     b.Property<string>("Alias")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Balance")
                         .HasPrecision(18, 2)
@@ -43,22 +44,28 @@ namespace HomeBanking.Migrations
 
                     b.Property<string>("CBU")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(22)
+                        .HasColumnType("nvarchar(22)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("AccountId");
 
+                    b.HasIndex("Alias")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.ServicePayment", b =>
+            modelBuilder.Entity("Models.ServicePayment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +102,7 @@ namespace HomeBanking.Migrations
                     b.ToTable("ServicePayments");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.Transaction", b =>
+            modelBuilder.Entity("Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
@@ -108,18 +115,22 @@ namespace HomeBanking.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("FromAccountId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ToAccountId")
                         .HasColumnType("int");
@@ -130,10 +141,10 @@ namespace HomeBanking.Migrations
 
                     b.HasIndex("ToAccountId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.TransactionCategory", b =>
+            modelBuilder.Entity("Models.TransactionCategory", b =>
                 {
                     b.Property<int>("TransactionCategoryId")
                         .ValueGeneratedOnAdd()
@@ -143,14 +154,15 @@ namespace HomeBanking.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("TransactionCategoryId");
 
-                    b.ToTable("TransactionCategories");
+                    b.ToTable("TransactionCategories", (string)null);
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.TransactionCategoryMap", b =>
+            modelBuilder.Entity("Models.TransactionCategoryMap", b =>
                 {
                     b.Property<int>("TransactionId")
                         .HasColumnType("int");
@@ -162,10 +174,10 @@ namespace HomeBanking.Migrations
 
                     b.HasIndex("TransactionCategoryId");
 
-                    b.ToTable("TransactionCategoryMaps");
+                    b.ToTable("TransactionCategoryMap", (string)null);
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.User", b =>
+            modelBuilder.Entity("Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -174,18 +186,23 @@ namespace HomeBanking.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsGiftClaimed")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -193,16 +210,17 @@ namespace HomeBanking.Migrations
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.Account", b =>
+            modelBuilder.Entity("Models.Account", b =>
                 {
-                    b.HasOne("HomeBanking.Models.User", "User")
+                    b.HasOne("Models.User", "User")
                         .WithMany("Accounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,15 +229,15 @@ namespace HomeBanking.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.ServicePayment", b =>
+            modelBuilder.Entity("Models.ServicePayment", b =>
                 {
-                    b.HasOne("HomeBanking.Models.TransactionCategory", "Category")
+                    b.HasOne("Models.TransactionCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HomeBanking.Models.User", "User")
+                    b.HasOne("Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -230,15 +248,15 @@ namespace HomeBanking.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.Transaction", b =>
+            modelBuilder.Entity("Models.Transaction", b =>
                 {
-                    b.HasOne("HomeBanking.Models.Account", "FromAccount")
+                    b.HasOne("Models.Account", "FromAccount")
                         .WithMany("TransactionsFrom")
                         .HasForeignKey("FromAccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HomeBanking.Models.Account", "ToAccount")
+                    b.HasOne("Models.Account", "ToAccount")
                         .WithMany("TransactionsTo")
                         .HasForeignKey("ToAccountId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -249,15 +267,15 @@ namespace HomeBanking.Migrations
                     b.Navigation("ToAccount");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.TransactionCategoryMap", b =>
+            modelBuilder.Entity("Models.TransactionCategoryMap", b =>
                 {
-                    b.HasOne("HomeBanking.Models.TransactionCategory", "TransactionCategory")
+                    b.HasOne("Models.TransactionCategory", "TransactionCategory")
                         .WithMany("TransactionCategoryMaps")
                         .HasForeignKey("TransactionCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HomeBanking.Models.Transaction", "Transaction")
+                    b.HasOne("Models.Transaction", "Transaction")
                         .WithMany("TransactionCategoryMaps")
                         .HasForeignKey("TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -268,24 +286,24 @@ namespace HomeBanking.Migrations
                     b.Navigation("TransactionCategory");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.Account", b =>
+            modelBuilder.Entity("Models.Account", b =>
                 {
                     b.Navigation("TransactionsFrom");
 
                     b.Navigation("TransactionsTo");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.Transaction", b =>
+            modelBuilder.Entity("Models.Transaction", b =>
                 {
                     b.Navigation("TransactionCategoryMaps");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.TransactionCategory", b =>
+            modelBuilder.Entity("Models.TransactionCategory", b =>
                 {
                     b.Navigation("TransactionCategoryMaps");
                 });
 
-            modelBuilder.Entity("HomeBanking.Models.User", b =>
+            modelBuilder.Entity("Models.User", b =>
                 {
                     b.Navigation("Accounts");
                 });

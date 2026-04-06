@@ -136,5 +136,22 @@ namespace Services.Implementations
 
             return isPasswordValid ? user : null;
         }
+
+        public async Task<UserProfileDTO?> GetUserByCBUoAlias(string CBUoAlias) {
+            Account? account = await _unitOfWork.Accounts.GetAccountByCBUOrAliasAsync(CBUoAlias);
+
+            if (account == null) return null;
+
+            var user = await _unitOfWork.Users.GetByIdAsync(account.UserId);
+
+            if (user == null) return null;
+
+            return new UserProfileDTO
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                UserName = user.UserName
+            };
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace Services.Implementations
                 UserId = user.UserId,
                 User = user,
                 CBU = BankGenerator.GenerateCBU(),
-                Alias = BankGenerator.GenerateAlias(),
+                Alias = await BankGenerator.GenerateUniqueAliasAsync(_unitOfWork),
                 Balance = 0,
                 CreatedAt = DateTime.UtcNow
             };

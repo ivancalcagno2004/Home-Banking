@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HomeBanking.Data.Context;
+using HomeBanking.Data.UnitOfWork;
+using Services.Implementations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,10 +21,28 @@ namespace HomeBanking.Data.Helpers
                 .Select(s => s[_random.Next(s.Length)]).ToArray());
         }
 
-        // Genera un Alias tipo "palabra.palabra.palabra"
-        public static string GenerateAlias()
+        public static async Task<string> GenerateUniqueAliasAsync(IUnitOfWork _unitOfWork)
         {
-            string[] palabras = { "tango", "mate", "rio", "sol", "luna", "pampa", "sur", "norte", "plata", "oro", "azul", "rojo", "madero", "verde", "arbol", "banco", "perro", "casa", "piano", "puerta", "nube", "radio", "camino", "luna", "pasto", "viento"};
+            string newAlias;
+            bool aliasExists;
+
+            do
+            {
+                newAlias = GenerateAlias();
+
+                // Le pregunto a Azure si ese alias ya existe en la tabla Accounts
+                var existingAccount = await _unitOfWork.Accounts.GetAccountByCBUOrAliasAsync(newAlias);
+                aliasExists = existingAccount != null;
+
+            } while (aliasExists);
+
+            return newAlias;
+        }
+
+        // Genera un Alias tipo "palabra.palabra.palabra"
+        private static string GenerateAlias()
+        {
+            string[] palabras = { "tango", "mate", "rio", "sol", "luna", "pampa", "sur", "norte", "plata", "oro", "azul", "rojo", "madero", "verde", "arbol", "banco", "perro", "casa", "piano", "puerta", "nube", "radio", "camino", "luna", "pasto", "viento", "control", "ventana", "cama", "celeste", "arriba"};
             return $"{palabras[_random.Next(palabras.Length)]}.{palabras[_random.Next(palabras.Length)]}.{palabras[_random.Next(palabras.Length)]}";
         }
     }

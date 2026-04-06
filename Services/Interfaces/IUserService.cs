@@ -18,5 +18,7 @@ namespace Services.Interfaces
         public Task UpdateUser(User user);
 
         Task<UserProfileDTO?> GetUserByName(string username);
+
+        Task<UserProfileDTO?> GetUserByCBUoAlias(string cBUoAlias);
     }
 }
