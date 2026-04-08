@@ -5,17 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de carga inicial. Realiza tareas de inicialización de datos (seed)
+    /// al arranque y navega al flujo de autenticación.
+    /// </summary>
     public class LoadingViewModel : BaseViewModel
     {
         private readonly AppDbContext _context;
 
-        public LoadingViewModel(INavigationService navigationService, AppDbContext context)
+        public LoadingViewModel(INavigationService navigationService, AppDbContext context, ILogger<LoadingViewModel> logger)
         {
             _navigationService = navigationService;
             _context = context;
+            _logger = logger;
 
             _ = IniciarAppAsync();
         }
@@ -24,8 +30,10 @@ namespace ViewModels
         {
             try
             {
+                _logger?.LogInformation("LoadingViewModel: iniciando app");
                 if (!await _context.TransactionCategories.AnyAsync())
                 {
+                    _logger?.LogInformation("LoadingViewModel: creando categorías iniciales");
                     _context.TransactionCategories.AddRange(
                         new TransactionCategory { Name = "Impuestos Municipales" },
                         new TransactionCategory { Name = "Telefonía" },
@@ -37,6 +45,7 @@ namespace ViewModels
 
                 if (!await _context.Users.AnyAsync(u => u.UserName == "Admin"))
                 {
+                    _logger?.LogInformation("LoadingViewModel: creando usuario/cuenta del sistema");
                     User sistema = new User
                     {
                         UserName = "Admin",
@@ -59,11 +68,13 @@ namespace ViewModels
                     await _context.SaveChangesAsync();
                 }
 
+                _logger?.LogInformation("LoadingViewModel: navegación a SignInPage");
                 await _navigationService!.NavigateToAsync("//SignInPage");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error crítico al iniciar: {ex.Message}");
+                _logger?.LogError(ex, "LoadingViewModel: error crítico al iniciar");
                 await _navigationService!.NavigateToAsync("//SignInPage");
             }
         }

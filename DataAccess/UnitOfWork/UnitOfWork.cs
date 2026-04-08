@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.UnitOfWork
 {
+    /// <summary>
+    /// Implementación concreta de <see cref="IUnitOfWork"/>.
+    /// Construye los repositorios sobre un único <see cref="AppDbContext"/> y expone
+    /// <see cref="SaveChangesAsync"/> para confirmar cambios.
+    /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
 

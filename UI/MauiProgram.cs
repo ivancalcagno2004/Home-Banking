@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Models;
 using Plugin.LocalNotification;
+using Serilog;
 using Services.Implementations;
 using Services.Interfaces;
 using System.Reflection;
@@ -32,6 +33,19 @@ namespace UI
                     fonts.AddFont("materialdesignicons-webfont.ttf", "MaterialDesign");
                 });
 
+            string rutaLog = Path.Combine(FileSystem.AppDataDirectory, "TandilBank_Log.txt");
+
+            System.Diagnostics.Debug.WriteLine("\n=======================================================");
+            System.Diagnostics.Debug.WriteLine($"ATENCIÓN: EL ARCHIVO DE LOGS SE ESTÁ GUARDANDO EN:");
+            System.Diagnostics.Debug.WriteLine(rutaLog);
+            System.Diagnostics.Debug.WriteLine("=======================================================\n");
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.File(rutaLog, rollingInterval: RollingInterval.Day)
+                .WriteTo.Debug()
+                .CreateLogger();
+
             // 1. Configurar la Base de Datos
             //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
             builder.Services.AddDbContext<AppDbContext>(options => 
@@ -56,7 +70,6 @@ namespace UI
             builder.Services.AddTransient<SignInViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
             builder.Services.AddTransient<AccountViewModel>();
-            builder.Services.AddTransient<DashboardViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PaymentsViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();
@@ -73,6 +86,8 @@ namespace UI
             builder.Services.AddTransient<TransferPage>();
             builder.Services.AddTransient<TransactionsPage>();
             builder.Services.AddTransient<LoadingPage>();
+
+            builder.Services.AddSerilog();
 
             #if DEBUG
                 builder.Logging.AddDebug();

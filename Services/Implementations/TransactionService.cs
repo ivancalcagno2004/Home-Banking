@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace Services.Implementations
 {
+    /// <summary>
+    /// Servicio de transacciones. Expone consultas de movimientos del usuario y
+    /// ejecuta transferencias entre cuentas registrando el historial.
+    /// </summary>
     public class TransactionService : BaseService, ITransactionService
     {
         public TransactionService(IUnitOfWork unitOfWork) : base(unitOfWork)

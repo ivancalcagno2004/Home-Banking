@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace Services.Implementations
 {
+    /// <summary>
+    /// Servicio de pagos. Obtiene vencimientos/historial y ejecuta el pago de servicios,
+    /// afectando balances, marcando facturas como pagadas y registrando transacciones.
+    /// </summary>
     public class PaymentService : BaseService, IPaymentService
     {
         public PaymentService(IUnitOfWork unitOfWork) : base(unitOfWork)

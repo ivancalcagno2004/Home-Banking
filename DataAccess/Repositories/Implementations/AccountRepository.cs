@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Repositories.Implementations
 {
+    /// <summary>
+    /// Repositorio de cuentas. Incluye consultas específicas por CBU/Alias y por usuario.
+    /// </summary>
     public class AccountRepository : GenericRepository<Account>, IAccountRepository
     {
         public AccountRepository(DbContext context) : base(context)

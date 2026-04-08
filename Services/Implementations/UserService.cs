@@ -12,6 +12,11 @@ using Models.DTO;
 
 namespace Services.Implementations
 {
+    /// <summary>
+    /// Servicio de usuarios. Registra nuevos usuarios, valida credenciales, actualiza
+    /// perfil y resuelve usuarios a partir de CBU/Alias. En el alta también crea una cuenta
+    /// inicial y genera servicios a pagar por defecto.
+    /// </summary>
     public class UserService : BaseService, IUserService
     {
 

@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace Services.Implementations
 {
+    /// <summary>
+    /// Servicio de cuentas. Crea cuentas para usuarios, consulta cuentas/saldos,
+    /// actualiza información y gestiona operaciones especiales como el regalo de bienvenida.
+    /// </summary>
     public class AccountService : BaseService, IAccountService
     {
         public AccountService(IUnitOfWork unitOfWork) : base(unitOfWork)

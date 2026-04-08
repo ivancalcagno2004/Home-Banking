@@ -1,4 +1,5 @@
-﻿using Services.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// Clase base para los ViewModels. Implementa <see cref="INotifyPropertyChanged"/>
+    /// y centraliza dependencias de servicios comunes junto con el estado <see cref="IsBusy"/>.
+    /// </summary>
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         protected IAccountService? _accountService;
@@ -18,10 +23,15 @@ namespace ViewModels
         protected IDialogService? _dialogService;
         protected IPaymentService? _paymentService;
         protected ICredentialService? _credentialService;
+        protected ILogger? _logger;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private bool _isBusy;
+        /// <summary>
+        /// Indica si el ViewModel se encuentra ejecutando una operación en curso.
+        /// Útil para bloquear acciones repetidas y mostrar indicadores de carga.
+        /// </summary>
         public bool IsBusy
         {
             get => _isBusy;

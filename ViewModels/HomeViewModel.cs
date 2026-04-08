@@ -12,10 +12,15 @@ using System.Windows.Input;
 using System.Diagnostics;
 using Services.Implementations;
 using Models.DTO;
+using Microsoft.Extensions.Logging;
 
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de la pantalla principal. Carga las cuentas del usuario,
+    /// construye un mensaje de bienvenida y gestiona la acción de reclamar un regalo.
+    /// </summary>
     public class HomeViewModel : BaseViewModel
     {
         private readonly User _currentUser;
@@ -34,12 +39,13 @@ namespace ViewModels
 
         public string WelcomeMessage { get; set; }
 
-        public HomeViewModel(UserSession currentUser, IAccountService accountService, IUserService userService, IDialogService dialogService)
+        public HomeViewModel(UserSession currentUser, IAccountService accountService, IUserService userService, IDialogService dialogService, ILogger<HomeViewModel> logger)
         {
             _currentUser = currentUser.CurrentUser!;
             _userService = userService;
             _accountService = accountService;
             _dialogService = dialogService;
+            _logger = logger;
 
 
             WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
@@ -57,7 +63,7 @@ namespace ViewModels
 
             try
             {
-                Debug.WriteLine("[UserAction] ClaimGift: procesando...");
+                _logger?.LogInformation("HomeViewModel: reclamando regalo");
                 var mainAccount = Accounts.FirstOrDefault();
                 if (mainAccount == null) return;
 
@@ -84,7 +90,7 @@ namespace ViewModels
                     $"Has recibido un regalo de {regalo:C} en tu cuenta principal.",
                     "Ok");
 
-                Debug.WriteLine("[UserAction] ClaimGift OK.");
+                _logger?.LogInformation("HomeViewModel: regalo acreditado");
             }
             catch (Exception ex)
             {
@@ -97,20 +103,32 @@ namespace ViewModels
                     $"Ocurrió un error al reclamar el regalo: {ex.Message}",
                     "Ok");
 
-                Debug.WriteLine($"[UserAction] ClaimGift excepción: {ex}");
+                _logger?.LogError(ex, "HomeViewModel: error al reclamar regalo");
             }
         }
 
         public async Task LoadData()
         {
-            var userAccounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
-
-            Accounts.Clear();
-            foreach (var account in userAccounts)
+            try
             {
-                Accounts.Add(account);
+                _logger?.LogInformation("HomeViewModel: cargando datos");
+
+                var userAccounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
+
+                Accounts.Clear();
+                foreach (var account in userAccounts)
+                {
+                    Accounts.Add(account);
+                }
+                IsGiftAvailable = !_currentUser.IsGiftClaimed;
+
+                _logger?.LogInformation("HomeViewModel: datos cargados");
             }
-            IsGiftAvailable = !_currentUser.IsGiftClaimed;
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "HomeViewModel: error al cargar datos");
+                throw;
+            }
         }
     }
 }

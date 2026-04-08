@@ -8,9 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de registro. Recolecta datos del usuario, valida campos requeridos
+    /// y crea una nueva cuenta mediante <see cref="IUserService"/>.
+    /// </summary>
     public class SignUpViewModel : BaseViewModel
     {
         public string? FullName { get; set; }
@@ -20,12 +25,13 @@ namespace ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand NavigateToSignInCommand { get; }
 
-        public SignUpViewModel(IUserService userService, INavigationService navigationService, IDialogService dialogService, ICredentialService credentialService)
+        public SignUpViewModel(IUserService userService, INavigationService navigationService, IDialogService dialogService, ICredentialService credentialService, ILogger<SignUpViewModel> logger)
         {
             _userService = userService;
             _navigationService = navigationService;
             _dialogService = dialogService;
             _credentialService = credentialService;
+            _logger = logger;
             RegisterCommand = new RelayCommand(Register);
             
             NavigateToSignInCommand = new RelayCommand(param => _navigationService.NavigateToAsync("//SignInPage"));
@@ -55,14 +61,18 @@ namespace ViewModels
 
             try
             {
+                _logger?.LogInformation("SignUpViewModel: registrando usuario");
                 await _userService!.CreateAsync(FullName, UserName, Email, password, DateTime.UtcNow, false);
                 await _credentialService!.ClearCredentialsAsync();
 
                 await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
                 await _navigationService!.NavigateToAsync("//SignInPage");
+
+                _logger?.LogInformation("SignUpViewModel: registro OK");
             }
             catch (Exception e)
             {
+                _logger?.LogError(e, "SignUpViewModel: error en registro");
                 var innerMessage = e.InnerException != null ? e.InnerException.Message : e.Message;
                 await _dialogService!.ShowAlertAsync("Error de Registro", $"Ocurrió un error al crear tu cuenta: {innerMessage}", "Ok");
             }

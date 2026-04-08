@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Repositories.Implementations
 {
+    /// <summary>
+    /// Repositorio de transacciones. Incluye consultas por usuario y por cuenta,
+    /// cargando relaciones necesarias para construir el historial.
+    /// </summary>
     public class TransactionRepository : GenericRepository<Transaction>, ITransactionRepository
     {
         public TransactionRepository(DbContext context) : base(context)

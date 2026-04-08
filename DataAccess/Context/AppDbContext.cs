@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Context
 {
+    /// <summary>
+    /// Contexto de Entity Framework Core para la aplicación.
+    /// Expone los <see cref="DbSet{TEntity}"/> principales y configura el modelo
+    /// (relaciones, precisiones y configuraciones Fluent API).
+    /// </summary>
     public class AppDbContext : DbContext
     {
 

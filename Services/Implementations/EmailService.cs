@@ -8,6 +8,10 @@ using System.Text;
 
 namespace Services.Implementations
 {
+    /// <summary>
+    /// Servicio de email. Envía notificaciones (por ejemplo, transferencia recibida)
+    /// utilizando SMTP a través de MailKit/MimeKit.
+    /// </summary>
     public class EmailService : IEmailService
     {
         private readonly string _bancoEmail = "tandilbank.app@gmail.com";

@@ -9,9 +9,14 @@ using System.Windows.Input;
 using System.Diagnostics;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de inicio de sesión. Valida credenciales, maneja sesión de usuario,
+    /// navega a la pantalla principal y soporta autenticación biométrica si está disponible.
+    /// </summary>
     public class SignInViewModel : BaseViewModel
     {
         private readonly UserSession _userSession;
@@ -51,7 +56,7 @@ namespace ViewModels
 
         public ICommand ChangeUserCommand { get; }
 
-        public SignInViewModel(IUserService userService, UserSession userSession, IDialogService dialogService, INavigationService navigationService, ICredentialService credentialService, INotificationService notificationService, IPaymentService paymentService)
+        public SignInViewModel(IUserService userService, UserSession userSession, IDialogService dialogService, INavigationService navigationService, ICredentialService credentialService, INotificationService notificationService, IPaymentService paymentService, ILogger<SignInViewModel> logger)
         {
             _userService = userService;
             _userSession = userSession;
@@ -60,6 +65,7 @@ namespace ViewModels
             _credentialService = credentialService;
             _notificationService = notificationService;
             _paymentService = paymentService;
+            _logger = logger;
 
             ShowInputUser = true;
             ShowWelcomeMessage = false;
@@ -78,6 +84,7 @@ namespace ViewModels
 
             if (!string.IsNullOrEmpty(credentials.username))
             {
+                _logger?.LogInformation("SignInViewModel: usuario guardado detectado");
                 UserName = credentials.username;
                 WelcomeMessage = $"¡Hola de nuevo, {UserName}! 👋";
 
@@ -121,6 +128,7 @@ namespace ViewModels
                 try
                 {
                     IsBusy = true;
+                    _logger?.LogInformation("SignInViewModel: login biométrico autenticado");
                     await Task.Delay(1000);
                     var user = await _userService!.ValidateUserAsync(credentials.username, credentials.password);
                     if (user != null)
@@ -132,6 +140,7 @@ namespace ViewModels
                 }
                 catch (Exception ex)
                 {
+                    _logger?.LogError(ex, "SignInViewModel: error en login biométrico");
                     await _dialogService!.ShowAlertAsync("Error", $"Ocurrió un problema al leer tus credenciales: {ex.Message}", "OK");
                 }
                 finally {IsBusy = false;}
@@ -159,11 +168,11 @@ namespace ViewModels
             try
             {
                 IsBusy= true;
-                Debug.WriteLine($"[UserAction] SignIn: validando usuario='{UserName}'.");
+                _logger?.LogInformation("SignInViewModel: intentando iniciar sesión");
                 var user = await _userService!.ValidateUserAsync(UserName, password);
                 if (user != null)
                 {
-                    Debug.WriteLine($"[UserAction] SignIn OK. UserId={user.UserId} UserName='{user.UserName}'.");
+                    _logger?.LogInformation("SignInViewModel: login OK (UserId={UserId})", user.UserId);
                     _userSession.CurrentUser = user;
 
                     await _credentialService!.SaveCredentialsAsync(UserName, password);
@@ -174,7 +183,7 @@ namespace ViewModels
                 }
                 else
                 {
-                    Debug.WriteLine($"[UserAction] SignIn fallido: credenciales inválidas para user='{UserName}'.");
+                    _logger?.LogWarning("SignInViewModel: login fallido");
                     await _dialogService!.ShowAlertAsync(
                         "Error de autenticación",
                         "Nombre de usuario o contraseña incorrectos. Inténtalo de nuevo.",
@@ -183,7 +192,7 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[UserAction] SignIn excepción: {ex}");
+                _logger?.LogError(ex, "SignInViewModel: error en inicio de sesión");
                 await _dialogService!.ShowAlertAsync(
                     "Error",
                     $"Ocurrió un error al intentar iniciar sesión: {ex.Message}",
@@ -201,7 +210,7 @@ namespace ViewModels
 
         private async void NavigateToSignUp(object parameter)
         {
-            Debug.WriteLine("[UserAction] NavigateToSignUpCommand ejecutado. Navegando a SignUpPage.");
+            _logger?.LogInformation("SignInViewModel: navegando a SignUpPage");
             await _navigationService!.NavigateToAsync("//SignUpPage");
         }
     }

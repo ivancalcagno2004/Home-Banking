@@ -11,6 +11,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de configuración. Expone datos del usuario en sesión y opciones
+    /// de preferencias locales (modo oscuro / notificaciones) para la UI.
+    /// </summary>
     public class SettingsViewModel : BaseViewModel
     {
         private readonly UserSession _userSession;

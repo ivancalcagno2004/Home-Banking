@@ -7,9 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Services.Interfaces;
 using Models.DTO;
+using Microsoft.Extensions.Logging;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de cuentas. Expone la colección de cuentas del usuario para
+    /// ser consumida por la UI y carga la información desde <see cref="IAccountService"/>.
+    /// </summary>
     public class AccountViewModel : BaseViewModel
     {
         public ObservableCollection<AccountDTO> Accounts { get; }
@@ -25,21 +30,33 @@ namespace ViewModels
             }
         }
 
-        public AccountViewModel(IAccountService accountService)
+        public AccountViewModel(IAccountService accountService, ILogger<AccountViewModel> logger)
         {
             _accountService = accountService;
             Accounts = new ObservableCollection<AccountDTO>();
+            _logger = logger;
             LoadAccountAsync();
         }
 
         private async void LoadAccountAsync()
         {
-            var accounts = await _accountService!.GetAllAsync();
-            Accounts.Clear();
-
-            foreach (var account in accounts)
+            try
             {
-                Accounts.Add(account);
+                _logger?.LogInformation("AccountViewModel: cargando cuentas");
+
+                var accounts = await _accountService!.GetAllAsync();
+                Accounts.Clear();
+
+                foreach (var account in accounts)
+                {
+                    Accounts.Add(account);
+                }
+
+                _logger?.LogInformation("AccountViewModel: cuentas cargadas ({Count})", Accounts.Count);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "AccountViewModel: error al cargar cuentas");
             }
         }
     }

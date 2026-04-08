@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Repositories.Implementations
 {
+    /// <summary>
+    /// Repositorio de pagos de servicios (<see cref="ServicePayment"/>).
+    /// Permite consultar pagos pendientes o históricos por usuario e incluye la categoría asociada.
+    /// </summary>
     public class PaymentServiceRepository : GenericRepository<ServicePayment>, IPaymentServiceRepository
     {
         public PaymentServiceRepository(AppDbContext context): base(context)

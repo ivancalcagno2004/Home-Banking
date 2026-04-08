@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Repositories.Implementations
 {
+    /// <summary>
+    /// Repositorio de usuarios. Provee búsquedas por email y nombre de usuario.
+    /// </summary>
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
         public UserRepository(DbContext context) : base(context)

@@ -1,20 +1,31 @@
 using Models.DTO;
 using ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace UI.Views.Pages;
 
+/// <summary>
+/// Página principal. Inicializa el <see cref="HomeViewModel"/> como BindingContext
+/// y gestiona acciones de UI (ver detalles de cuenta, refrescar, navegación a
+/// configuración y cierre de sesión).
+/// </summary>
 public partial class HomePage : ContentPage
 {
     private readonly HomeViewModel _viewModel;
-    public HomePage(HomeViewModel vm)
+
+    private readonly ILogger<HomePage> _logger;
+
+    public HomePage(HomeViewModel vm, ILogger<HomePage> logger)
 	{
 		InitializeComponent();
         _viewModel = vm;
+        _logger = logger;
 		BindingContext = _viewModel;
     }
 
     private async void OnViewDetailsClicked(object? sender, EventArgs e)
     {
+        _logger.LogInformation("HomePage: ver detalles de cuenta");
         AccountDTO? cuenta = _viewModel.GetAccountData().Result;
 
         if (cuenta == null) return;
@@ -49,6 +60,7 @@ public partial class HomePage : ContentPage
 
     private async void OnRefreshViewRefreshing(object? sender, EventArgs e)
     {
+        _logger.LogInformation("HomePage: refrescando datos");
         await Task.Delay(1000);
 
         await _viewModel.LoadData();
@@ -58,12 +70,13 @@ public partial class HomePage : ContentPage
 
     private async void OnSettingsClicked(object? sender, EventArgs e)
     {
+        _logger.LogInformation("HomePage: navegar a configuración");
         await Shell.Current.GoToAsync("SettingsPageMobile");
     }
 
     private async void OnLogoutClicked(object? sender, EventArgs e)
     {
-        System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] Cerrando sesión desde el dropdown.");
+        _logger.LogInformation("HomePage: logout");
         await Shell.Current.GoToAsync("//SignInPage");
     }
 
@@ -71,7 +84,7 @@ public partial class HomePage : ContentPage
     {
         base.OnAppearing();
 
-        System.Diagnostics.Debug.WriteLine("⏳ [HOME] Cargando datos del resumen...");
+        _logger.LogInformation("HomePage: appearing");
         await _viewModel.LoadData();
     }
 }

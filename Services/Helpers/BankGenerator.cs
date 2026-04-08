@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Helpers
 {
+    /// <summary>
+    /// Utilidades para generación de datos bancarios de prueba (CBU y alias).
+    /// Incluye soporte para generar un alias único consultando persistence vía <see cref="IUnitOfWork"/>.
+    /// </summary>
     public class BankGenerator
     {
         private static readonly Random _random = new Random();

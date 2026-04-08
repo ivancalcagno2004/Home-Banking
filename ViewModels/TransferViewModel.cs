@@ -11,9 +11,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// ViewModel de transferencias. Permite seleccionar cuenta origen, ingresar
+    /// destino (CBU/Alias) y monto, confirmar la operación y ejecutar la transferencia.
+    /// Además, notifica por email al destinatario cuando corresponde.
+    /// </summary>
     public class TransferViewModel : BaseViewModel
     {
         private readonly User _currentUser;
@@ -40,7 +46,7 @@ namespace ViewModels
 
         public string Titulo { get; }
 
-        public TransferViewModel(UserSession user, IAccountService accountService, ITransactionService transactionService, IDialogService dialogService, IEmailService emailService, IUserService userService)
+        public TransferViewModel(UserSession user, IAccountService accountService, ITransactionService transactionService, IDialogService dialogService, IEmailService emailService, IUserService userService, ILogger<TransferViewModel> logger)
         {
             Titulo = "Transferencias";
             _currentUser = user.CurrentUser!;
@@ -49,6 +55,7 @@ namespace ViewModels
             _dialogService = dialogService;
             _emailService = emailService;
             _userService = userService;
+            _logger = logger;
 
             MyAccounts = new ObservableCollection<AccountDTO>();
 
@@ -59,9 +66,19 @@ namespace ViewModels
 
         private async void LoadAccounts()
         {
-            var accounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
-            MyAccounts.Clear();
-            foreach (var acc in accounts) MyAccounts.Add(acc);
+            try
+            {
+                _logger?.LogInformation("TransferViewModel: cargando cuentas de origen");
+
+                var accounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
+                MyAccounts.Clear();
+                foreach (var acc in accounts) MyAccounts.Add(acc);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "TransferViewModel: error al cargar cuentas");
+                return;
+            }
 
             // Seleccionar la primera por defecto para ahorrarle un clic al usuario
             if (MyAccounts.Count > 0) SelectedOriginAccount = MyAccounts[0];
@@ -69,7 +86,7 @@ namespace ViewModels
 
         private async void ExecuteTransfer(object obj)
         {
-            Debug.WriteLine("[UserAction] TransferCommand ejecutado.");
+            _logger?.LogInformation("TransferViewModel: iniciando transferencia");
             if (SelectedOriginAccount == null)
             {
                 Debug.WriteLine("[UserAction] Transfer: sin cuenta de origen seleccionada.");
@@ -115,7 +132,7 @@ namespace ViewModels
 
                 await _transactionService!.TransferToAsync(SelectedOriginAccount.Id, DestinationCBU_Alias, Amount);
 
-                Debug.WriteLine("[UserAction] Transfer OK.");
+                _logger?.LogInformation("TransferViewModel: transferencia OK");
 
                 await _dialogService.ShowAlertAsync(
                     "Transferencia exitosa",
@@ -136,6 +153,7 @@ namespace ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine($"[UserAction] Transfer excepción: {ex}");
+                _logger?.LogError(ex, "TransferViewModel: error en transferencia");
                 await _dialogService!.ShowAlertAsync(
                     "Error en la transferencia",
                     $"Ocurrió un error al intentar realizar la transferencia: {ex.Message}",

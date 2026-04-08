@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Repositories.Implementations
 {
+    /// <summary>
+    /// Repositorio genérico basado en EF Core para operaciones CRUD básicas.
+    /// Sirve como clase base para repositorios específicos.
+    /// </summary>
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly DbContext _context;

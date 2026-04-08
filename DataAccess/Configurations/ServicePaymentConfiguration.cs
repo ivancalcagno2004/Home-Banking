@@ -13,10 +13,12 @@ namespace HomeBanking.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<ServicePayment> builder)
         {
-            // 2. Clave Primaria
+            builder.ToTable("ServicePayments");
+
+            // Clave Primaria
             builder.HasKey(p => p.Id);
 
-            // 3. PROPIEDADES
+            // PROPIEDADES
             builder.Property(p => p.ServiceName)
                    .IsRequired()
                    .HasMaxLength(100);
@@ -28,11 +30,11 @@ namespace HomeBanking.Data.Configurations
             builder.Property(p => p.ExpDate)
                    .IsRequired();
 
-            // 4. RELACIONES (Foreign Keys)
+            // RELACIONES (Foreign Keys)
 
             // Relación con Usuario
             builder.HasOne(p => p.User)
-                   .WithMany() // O .WithMany(u => u.Payments) si agregaste la lista en User
+                   .WithMany()
                    .HasForeignKey(p => p.UserId)
                    .OnDelete(DeleteBehavior.Cascade); // Si borro user, borro sus deudas
 
@@ -40,7 +42,7 @@ namespace HomeBanking.Data.Configurations
             builder.HasOne(p => p.Category)
                    .WithMany()
                    .HasForeignKey(p => p.CategoryId)
-                   .OnDelete(DeleteBehavior.Restrict); // Protegemos la categoría
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

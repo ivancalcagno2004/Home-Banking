@@ -3,6 +3,10 @@ using System.Windows.Input;
 
 namespace ViewModels
 {
+    /// <summary>
+    /// Implementación simple de <see cref="ICommand"/> para patrones MVVM.
+    /// Permite enlazar acciones y validación (<c>CanExecute</c>) desde la UI.
+    /// </summary>
     public class RelayCommand : ICommand
     {
         private readonly Action<object> _execute;

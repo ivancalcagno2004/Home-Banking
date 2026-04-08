@@ -10,6 +10,11 @@ using INotificationService = Services.Interfaces.INotificationService;
 
 namespace UI.Services
 {
+    /// <summary>
+    /// Servicio de notificaciones locales para la capa UI.
+    /// Evalúa vencimientos de servicios y envía notificaciones usando
+    /// <c>Plugin.LocalNotification</c> mediante la abstracción <see cref="INotificationService"/>.
+    /// </summary>
     public class NotificationService : INotificationService
     {
         public async Task CheckAndNotifyServicesAsync(IEnumerable<PaymentDTO> servicios)

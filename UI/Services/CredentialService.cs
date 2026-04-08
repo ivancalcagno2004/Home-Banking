@@ -5,6 +5,11 @@ using System.Text;
 
 namespace UI.Services
 {
+    /// <summary>
+    /// Servicio de credenciales para la capa UI.
+    /// Persiste y recupera usuario/contraseña utilizando <see cref="SecureStorage"/>
+    /// a través de la abstracción <see cref="ICredentialService"/>.
+    /// </summary>
     public class CredentialService : ICredentialService
     {
         public async Task SaveCredentialsAsync(string username, string password)

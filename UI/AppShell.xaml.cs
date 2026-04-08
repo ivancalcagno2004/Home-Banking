@@ -84,7 +84,6 @@ namespace UI
 
         private async void OnLogOutClicked(object? sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("🚪 [NAVEGACIÓN] El usuario hizo clic en Cerrar Sesión.");
             await Current.GoToAsync("//SignInPage");
         }
     }

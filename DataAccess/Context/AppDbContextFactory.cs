@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.Context
 {
+    /// <summary>
+    /// Factory de diseño para EF Core (migraciones).
+    /// Permite crear un <see cref="AppDbContext"/> fuera del runtime de la app,
+    /// usando la cadena de conexión definida en <see cref="DatabaseSecrets"/>.
+    /// </summary>
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         public AppDbContext CreateDbContext(string[] args)

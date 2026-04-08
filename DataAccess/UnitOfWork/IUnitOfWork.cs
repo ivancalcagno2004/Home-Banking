@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace HomeBanking.Data.UnitOfWork
 {
+    /// <summary>
+    /// Patrón Unit of Work. Agrupa repositorios y coordina la persistencia mediante
+    /// una operación de guardado unificada.
+    /// </summary>
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository Users { get; }
