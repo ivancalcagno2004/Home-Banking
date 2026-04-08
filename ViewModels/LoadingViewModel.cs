@@ -73,7 +73,6 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error crítico al iniciar: {ex.Message}");
                 _logger?.LogError(ex, "LoadingViewModel: error crítico al iniciar");
                 await _navigationService!.NavigateToAsync("//SignInPage");
             }

@@ -78,6 +78,28 @@
 
                 </VerticalStackLayout>
             </Border>
+            <Grid BackgroundColor="#80000000"
+              IsVisible="{Binding IsBusy}"
+              ZIndex="999">
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </Grid.GestureRecognizers>
+
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                           Color="#005fb8"
+                           WidthRequest="60"
+                           HeightRequest="60" />
+
+                    <Label Text="Creando cuenta..." 
+                       TextColor="White" 
+                       FontAttributes="Bold" 
+                       FontSize="16" 
+                       HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
         </Grid>
     </ScrollView>
 </ContentPage>

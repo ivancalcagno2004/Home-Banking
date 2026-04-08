@@ -18,8 +18,11 @@ public partial class SettingsPage : ContentPage
 		BindingContext = vm;
 
         vm.IsDarkMode = Preferences.Get("DarkMode", true);
-        VersionLabel.Text = $"v{AppInfo.Current.VersionString} - Tandil Bank";
-       _logger.LogInformation("SettingsPage: inicializada");
+        
+        var version = AppInfo.Current.Version;
+
+        VersionLabel.Text = $"v{version.Major}.{version.Minor} - Tandil Bank";
+        _logger.LogInformation("SettingsPage: inicializada");
     }
 
     private void OnThemeSwitchToggled(object? sender, ToggledEventArgs e)

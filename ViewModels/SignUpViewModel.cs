@@ -59,14 +59,15 @@ namespace ViewModels
                 return;
             }
 
+            if (IsBusy) return;
+           
             try
             {
                 _logger?.LogInformation("SignUpViewModel: registrando usuario");
+                IsBusy = true;
+                await Task.Delay(1000);
                 await _userService!.CreateAsync(FullName, UserName, Email, password, DateTime.UtcNow, false);
                 await _credentialService!.ClearCredentialsAsync();
-
-                await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
-                await _navigationService!.NavigateToAsync("//SignInPage");
 
                 _logger?.LogInformation("SignUpViewModel: registro OK");
             }
@@ -75,6 +76,12 @@ namespace ViewModels
                 _logger?.LogError(e, "SignUpViewModel: error en registro");
                 var innerMessage = e.InnerException != null ? e.InnerException.Message : e.Message;
                 await _dialogService!.ShowAlertAsync("Error de Registro", $"Ocurrió un error al crear tu cuenta: {innerMessage}", "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
+                await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
+                await _navigationService!.NavigateToAsync("//SignInPage");
             }
         }
     }

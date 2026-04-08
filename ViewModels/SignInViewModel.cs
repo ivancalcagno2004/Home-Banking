@@ -157,7 +157,7 @@ namespace ViewModels
 
             if (string.IsNullOrWhiteSpace(UserName) || string.IsNullOrWhiteSpace(password))
             {
-                Debug.WriteLine("[UserAction] SignIn: campos vacíos.");
+                _logger?.LogInformation("SignInViewModel: campos vacíos");
                 await _dialogService!.ShowAlertAsync(
                     "Campos vacíos",
                     "Por favor, ingresa tu nombre de usuario y contraseña.",
