@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="UI.Views.Components.FloatingChatView">
+
+    <Grid>
+        <Border IsVisible="{Binding IsChatVisible}"
+                WidthRequest="320"
+                HeightRequest="500"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#1E1E1E}"
+                StrokeShape="RoundRectangle 15"
+                Stroke="#0052CC"
+                StrokeThickness="2">
+
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,10" Radius="20" Opacity="0.2"/>
+            </Border.Shadow>
+
+            <Grid RowDefinitions="Auto, *, Auto">
+                <Grid Grid.Row="0" BackgroundColor="#0052CC" Padding="15,5" ColumnDefinitions="*, Auto">
+
+                    <Label Grid.Column="0" 
+                       Text="🤖  Asistente Tandil Bank" 
+                       TextColor="White" 
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center"/>
+
+                    <Button Grid.Column="1" 
+                        Text="✕" 
+                        Command="{Binding ActivarChatCommand}"
+                        BackgroundColor="Transparent" 
+                        TextColor="White"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        WidthRequest="40" 
+                        HeightRequest="40"
+                        VerticalOptions="Center"
+                        Padding="0"/>
+                </Grid>
+
+                <CollectionView Grid.Row="1" ItemsSource="{Binding ListaMensajes}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+
+                            <Grid HorizontalOptions="Fill">
+
+                                <HorizontalStackLayout Margin="0,5" Spacing="8">
+
+                                    <HorizontalStackLayout.Triggers>
+                                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding EsMio}" Value="True">
+                                            <Setter Property="HorizontalOptions" Value="End" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="HorizontalStackLayout" Binding="{Binding EsMio}" Value="False">
+                                            <Setter Property="HorizontalOptions" Value="Start" />
+                                        </DataTrigger>
+                                    </HorizontalStackLayout.Triggers>
+
+                                    <Border WidthRequest="30" HeightRequest="30" StrokeShape="RoundRectangle 30" BackgroundColor="#0052CC" VerticalOptions="End"
+                                        IsVisible="{Binding EsBot}" Stroke="Transparent">
+                                        <Label Text="🤖" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+
+                                    <Border Padding="12,8" MaximumWidthRequest="220" Stroke="Transparent">
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border" Binding="{Binding EsMio}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="#DCF8C6" />
+                                                <Setter Property="StrokeShape" Value="RoundRectangle 15,15,15,0" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Border" Binding="{Binding EsMio}" Value="False">
+                                                <Setter Property="BackgroundColor" Value="#FFFFFF" />
+                                                <Setter Property="StrokeShape" Value="RoundRectangle 15,15,0,15" />
+                                            </DataTrigger>
+                                        </Border.Triggers>
+
+                                        <Label Text="{Binding Texto}" TextType="Html" TextColor="Black" FontSize="14" />
+                                    </Border>
+
+                                    <Border WidthRequest="30" HeightRequest="30" StrokeShape="RoundRectangle 30" Stroke="Transparent" BackgroundColor="#4A4A4A" VerticalOptions="End"
+                                        IsVisible="{Binding EsMio}">
+                                        <Label Text="{Binding Initials}" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Border>
+
+                                </HorizontalStackLayout>
+
+                            </Grid>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Border Grid.Row="2" 
+                    Margin="10"
+                    StrokeShape="RoundRectangle 25"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2C2C2C}"
+                    StrokeThickness="1">
+
+                    <Border.Stroke>
+                        <SolidColorBrush Color="{AppThemeBinding Light=#CCCCCC, Dark=Transparent}" />
+                    </Border.Stroke>
+
+                    <Grid ColumnDefinitions="*, Auto" Padding="15,5">
+
+                        <Entry Grid.Column="0" 
+                           Placeholder="Escribir..." 
+                           Text="{Binding MensajeEscrito}" 
+                           ReturnCommand="{Binding EnviarMensajeCommand}"
+                           BackgroundColor="Transparent"
+                           VerticalOptions="Center"/>
+
+                        <Button Grid.Column="1" 
+                            Text="▶" 
+                            Command="{Binding EnviarMensajeCommand}" 
+                            BackgroundColor="Transparent" 
+                            TextColor="#0052CC" 
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"/>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Button Text="🤖"
+                Command="{Binding ActivarChatCommand}"
+                FontSize="Medium"
+                WidthRequest="60" HeightRequest="60"
+                CornerRadius="30"
+                BackgroundColor="#0052CC"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Shadow="{Shadow Brush=Black, Offset='0,4', Radius=5, Opacity=0.3}">
+
+            <Button.Triggers>
+                <DataTrigger TargetType="Button" Binding="{Binding IsChatVisible}" Value="True">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+    </Grid>
+
+</ContentView>

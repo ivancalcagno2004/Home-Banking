@@ -29,8 +29,8 @@ namespace HomeBanking.Data.Configurations
 
             builder.Property(u => u.FullName).IsRequired();
 
-            builder.Property(u => u.CreatedAt)
-                .HasDefaultValueSql("GETDATE()");
+            builder.Property(u => u.CreatedAt);
+                //.HasDefaultValueSql("GETDATE()");
 
             builder.Property(u => u.IsGiftClaimed)
                 .HasDefaultValue(false);

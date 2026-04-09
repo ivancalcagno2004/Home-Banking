@@ -12,6 +12,7 @@ using Services.Interfaces;
 using System.Reflection;
 using UI.Services;
 using UI.Views;
+using UI.Views.Components;
 using UI.Views.Pages;
 using ViewModels;
 using INotificationService = Services.Interfaces.INotificationService;
@@ -49,7 +50,7 @@ namespace UI
             // 1. Configurar la Base de Datos
             //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
             builder.Services.AddDbContext<AppDbContext>(options => 
-                    options.UseSqlServer(DatabaseSecrets.ConnectionString));
+                    options.UseSqlServer(DatabaseSecrets.ConnectionStringAzure));
 
             // 2. Inyección de Dependencias: Capa Data
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -64,6 +65,7 @@ namespace UI
             builder.Services.AddSingleton<ICredentialService, CredentialService>();
             builder.Services.AddSingleton<INotificationService, NotificationService>();
             builder.Services.AddSingleton<IEmailService, EmailService>();
+            builder.Services.AddSingleton<IGroqChatService, GroqChatService>();
             builder.Services.AddSingleton<UserSession>();
 
             // 4. Inyección de Dependencias: Capa ViewModels
@@ -76,6 +78,7 @@ namespace UI
             builder.Services.AddTransient<TransactionsViewModel>();
             builder.Services.AddTransient<TransferViewModel>();
             builder.Services.AddTransient<LoadingViewModel>();
+            builder.Services.AddSingleton<ChatViewModel>();
 
             // 5. Inyección de Dependencias: Capa Views (Pantallas)
             builder.Services.AddTransient<SignInPage>(); 
@@ -86,6 +89,7 @@ namespace UI
             builder.Services.AddTransient<TransferPage>();
             builder.Services.AddTransient<TransactionsPage>();
             builder.Services.AddTransient<LoadingPage>();
+            builder.Services.AddSingleton<FloatingChatView>();
 
             builder.Services.AddSerilog();
 
@@ -99,46 +103,6 @@ namespace UI
             //InitializeDatabase(app);
 
             return app;
-        }
-
-        private static void InitializeDatabase(MauiApp app)
-        {
-            using var scope = app.Services.CreateScope();
-            var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-            if (!context.TransactionCategories.Any())
-            {
-                context.TransactionCategories.AddRange(
-                    new TransactionCategory { Name = "Impuestos Municipales" },
-                    new TransactionCategory { Name = "Telefonía" },
-                    new TransactionCategory { Name = "Servicios Públicos" },
-                    new TransactionCategory { Name = "Automotor" }
-                );
-                context.SaveChanges();
-            }
-
-            if (!context.Users.Any(u => u.UserName == "Admin"))
-            {
-                User sistema = new User
-                {
-                    UserName = "Admin",
-                    Email = "admin@tandilbank.com",
-                    Password = "admin",
-                    FullName = "Sistema"
-                };
-
-                context.Users.Add(sistema);
-
-                context.Accounts.Add(new Account
-                {
-                    Alias = "PAGOS.SERVICIOS",
-                    CBU = "0000000000000000000123",
-                    User = sistema,
-                    Balance = 9999999
-                });
-
-                context.SaveChanges();
-            }
         }
     }
 }

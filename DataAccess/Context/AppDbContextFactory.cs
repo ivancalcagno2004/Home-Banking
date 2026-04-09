@@ -22,7 +22,7 @@ namespace HomeBanking.Data.Context
         {
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            builder.UseSqlServer(DatabaseSecrets.ConnectionString, sqlServerOptionsAction: sqlOptions =>
+            builder.UseSqlServer(DatabaseSecrets.ConnectionStringAzure, sqlServerOptionsAction: sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,

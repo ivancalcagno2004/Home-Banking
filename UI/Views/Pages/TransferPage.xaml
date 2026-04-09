@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:components="clr-namespace:UI.Views.Components"
              x:Class="UI.Views.Pages.TransferPage"
              Title="Transferir"
              BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#121212}">
@@ -10,65 +11,68 @@
         <ToolbarItem Text="Cerrar Sesión" Clicked="OnLogoutClicked" Order="Secondary" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
-        <Grid RowDefinitions="Auto, *" Padding="20">
+    <AbsoluteLayout>
+        <ScrollView AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+            <Grid RowDefinitions="Auto, *" Padding="20">
 
-            <VerticalStackLayout Grid.Row="0" Margin="0,0,0,20">
-                <Label Text="Transferencias" 
-                       FontSize="24" FontAttributes="Bold" 
-                       TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                <Label Text="Realiza una transferencia" 
-                       FontSize="14" 
-                       TextColor="Gray"/>
-            </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="0" Margin="0,0,0,20">
+                    <Label Text="Transferencias" 
+                           FontSize="24" FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                    <Label Text="Realiza una transferencia" 
+                           FontSize="14" 
+                           TextColor="Gray"/>
+                </VerticalStackLayout>
 
-            <Border Grid.Row="1" 
-                    VerticalOptions="Start"
-                    StrokeShape="RoundRectangle 12"
-                    Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
-                    BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
-                    Padding="25">
+                <Border Grid.Row="1" 
+                        VerticalOptions="Start"
+                        HorizontalOptions="Center"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="{AppThemeBinding Light=#E5E5E5, Dark=#333333}"
+                        StrokeThickness="1"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                        Padding="25">
 
-                <Border.Shadow>
-                    <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
-                </Border.Shadow>
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,5" Radius="10" Opacity="0.05" />
+                    </Border.Shadow>
 
-                <VerticalStackLayout Spacing="16">
+                    <VerticalStackLayout Spacing="16">
 
-                    <HorizontalStackLayout Spacing="15" Margin="0,0,0,15" HorizontalOptions="Center">
-                        <Border WidthRequest="50" HeightRequest="50" StrokeShape="RoundRectangle 25" 
-                                BackgroundColor="#EDF2FA" Stroke="Transparent">
-                            <Label Text="⇆" TextColor="#005fb8" FontSize="24" 
-                                   HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
-                        </Border>
-                        <VerticalStackLayout VerticalOptions="Center">
-                            <Label Text="Nueva Transferencia" FontSize="20" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
-                            <Label Text="Envía dinero al instante" FontSize="13" TextColor="Gray"/>
-                        </VerticalStackLayout>
-                    </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="15" Margin="0,0,0,15" HorizontalOptions="Center">
+                            <Border WidthRequest="50" HeightRequest="50" StrokeShape="RoundRectangle 25" 
+                                    BackgroundColor="#EDF2FA" Stroke="Transparent">
+                                <Label Text="⇆" TextColor="#005fb8" FontSize="24" 
+                                       HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
+                            </Border>
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Nueva Transferencia" FontSize="20" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                <Label Text="Envía dinero al instante" FontSize="13" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
 
-                    <Label Text="Desde tu cuenta" TextColor="Gray" Margin="0,0,0,-4"/>
-                    <Picker ItemsSource="{Binding MyAccounts}" 
-                            SelectedItem="{Binding SelectedOriginAccount}"
-                            ItemDisplayBinding="{Binding Alias}"
-                            Title="Selecciona una cuenta"
-                            HeightRequest="70"/>
+                        <Label Text="Desde tu cuenta" TextColor="Gray" Margin="0,0,0,-4"/>
+                            <Picker ItemsSource="{Binding MyAccounts}" 
+                                SelectedItem="{Binding SelectedOriginAccount}"
+                                ItemDisplayBinding="{Binding Alias}"
+                                Title="Selecciona una cuenta"
+                                HeightRequest="70"/>
 
-                    <Label Text="Hacia (CBU o Alias)" TextColor="Gray" Margin="0,0,0,-8"/>
-                    <Entry Text="{Binding DestinationCBU_Alias}" 
-                           Placeholder="Ej: MI.ALIAS.BANCO"
-                           ClearButtonVisibility="WhileEditing"
-                           HeightRequest="45"/>
+                        <Label Text="Hacia (CBU o Alias)" TextColor="Gray" Margin="0,0,0,-8"/>
+                            <Entry Text="{Binding DestinationCBU_Alias}" 
+                               Placeholder="Ej: MI.ALIAS.BANCO"
+                               ClearButtonVisibility="WhileEditing"
+                               HeightRequest="45"/>
+                        
+                        <Label Text="Monto a transferir" TextColor="Gray" Margin="0,0,0,-8"/>
+                            <Entry Text="{Binding Amount, StringFormat='{0:N2}'}" 
+                            Placeholder="$ 0.00"
+                            Keyboard="Numeric"
+                            FontAttributes="Bold"
+                            ClearButtonVisibility="WhileEditing"
+                            HeightRequest="45"/>
 
-                    <Label Text="Monto a transferir" TextColor="Gray" Margin="0,0,0,-8"/>
-                    <Entry Text="{Binding Amount, StringFormat='{0:N2}'}" 
-                           Placeholder="$ 0.00"
-                           Keyboard="Numeric"
-                           FontAttributes="Bold"
-                           ClearButtonVisibility="WhileEditing"
-                           HeightRequest="45"/>
-
-                    <Button Command="{Binding TransferCommand}"
+                        <Button Command="{Binding TransferCommand}"
                             Text="Confirmar Transferencia"
                             BackgroundColor="#005fb8"
                             TextColor="White"
@@ -77,8 +81,10 @@
                             HeightRequest="45"
                             Margin="0,15,0,0"/>
 
-                </VerticalStackLayout>
-            </Border>
-        </Grid>
-    </ScrollView>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </ScrollView>
+        <components:FloatingChatView AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize" AbsoluteLayout.LayoutFlags="PositionProportional" Margin="20"/>
+    </AbsoluteLayout>
 </ContentPage>

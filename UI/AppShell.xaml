@@ -53,6 +53,54 @@
         </Grid>
     </Shell.TitleView>
 
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Border Padding="15,12" Margin="10,5" StrokeThickness="0" StrokeShape="RoundRectangle 10">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                    <Setter TargetName="MenuLabel" Property="Label.FontAttributes" Value="None" />
+                                    <Setter TargetName="MenuLabel" Property="Label.TextColor" Value="{AppThemeBinding Light=#333333, Dark=#FFFFFF}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#E6F0FA}" />
+
+                                    <Setter TargetName="MenuLabel" Property="Label.TextColor" Value="{AppThemeBinding Light=#004a94, Dark=#FFFFFF}" />
+
+                                    <Setter TargetName="MenuLabel" Property="Label.FontAttributes" Value="Bold" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+
+                <Grid ColumnDefinitions="Auto, *">
+                    <Image Grid.Column="0" 
+                           Source="{Binding Icon}" 
+                           WidthRequest="22" 
+                           HeightRequest="22" 
+                           VerticalOptions="Center" 
+                           Margin="0,0,15,0" />
+
+                    <Label x:Name="MenuLabel"
+                           Grid.Column="1" 
+                           Text="{Binding Title}" 
+                           FontSize="16" 
+                           VerticalOptions="Center" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
     <ShellContent Title="Cargando" ContentTemplate="{DataTemplate pages:LoadingPage}" Route="LoadingPage" Shell.NavBarIsVisible="False" Shell.FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled"/>
 
     <ShellContent Route="SignInPage" ContentTemplate="{DataTemplate views:SignInPage}" 

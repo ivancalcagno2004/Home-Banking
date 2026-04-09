@@ -35,8 +35,8 @@ namespace Services.Implementations
                 UserName = username,
                 Email = email,
                 Password = password,
-                CreatedAt = DateTime.UtcNow,
-                IsGiftClaimed = false
+                CreatedAt = date,
+                IsGiftClaimed = isGiftClaimed
             };
 
             newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password); // hashing

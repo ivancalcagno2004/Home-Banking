@@ -152,7 +152,6 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[UserAction] Transfer excepción: {ex}");
                 _logger?.LogError(ex, "TransferViewModel: error en transferencia");
                 await _dialogService!.ShowAlertAsync(
                     "Error en la transferencia",
