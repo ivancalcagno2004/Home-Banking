@@ -64,7 +64,7 @@
                 <Button Text="Ingresar de forma segura"
                         Command="{Binding SignInCommand}"
                         CommandParameter="{Binding Source={x:Reference TxtPasswordLogin}, Path=Text}"
-                        BackgroundColor="#005fb8"
+                        BackgroundColor="{StaticResource Primary}"
                         TextColor="White"
                         FontAttributes="Bold"
                         CornerRadius="8"
@@ -74,16 +74,19 @@
                 <Button Text="Entrar con Huella" 
                         Command="{Binding BiometricLoginCommand}" 
                         BackgroundColor="Transparent"
-                        TextColor="#003a94"
+                        TextColor="{StaticResource Primary}"
                         FontAttributes="Bold"
+                        BorderColor="{StaticResource Secondary}"
+                        BorderWidth="1"
                         Margin="0,10,0,0"
+                        CornerRadius="8"
                         IsEnabled="{Binding ShowWelcomeMessage}"
-                        IsVisible="{OnPlatform WinUI=False, Default=True}"/>
+                        IsVisible="{OnIdiom Desktop=False, Default=True}"/>
 
                 <Button Text="Quiero registrarme"
                         Command="{Binding NavigateToSignUpCommand}"
                         BackgroundColor="Transparent"
-                        TextColor="#005fb8"
+                        TextColor="{StaticResource Secondary}"
                         FontAttributes="Bold"
                         Margin="0,8,0,0"/>
 
@@ -109,7 +112,7 @@
             <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
 
                 <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                   Color="#005fb8"
+                                   Color="{StaticResource Primary}"
                                    WidthRequest="60"
                                    HeightRequest="60" />
 

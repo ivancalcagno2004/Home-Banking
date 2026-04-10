@@ -62,7 +62,7 @@
                     <Button Text="Crear mi cuenta"
                             Command="{Binding RegisterCommand}"
                             CommandParameter="{Binding Source={x:Reference TxtPasswordRegister}, Path=Text}"
-                            BackgroundColor="#005fb8"
+                            BackgroundColor="{StaticResource Primary}"
                             TextColor="White"
                             FontAttributes="Bold"
                             CornerRadius="8"
@@ -72,7 +72,7 @@
                     <Button Text="¿Ya tenés cuenta? Iniciá sesión acá"
                             Command="{Binding NavigateToSignInCommand}"
                             BackgroundColor="Transparent"
-                            TextColor="#005fb8"
+                            TextColor="{StaticResource Secondary}"
                             FontAttributes="Bold"
                             Margin="0,8,0,0"/>
 
@@ -89,7 +89,7 @@
                 <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="15">
 
                     <ActivityIndicator IsRunning="{Binding IsBusy}"
-                           Color="#005fb8"
+                           Color="{StaticResource Primary}"
                            WidthRequest="60"
                            HeightRequest="60" />
 

@@ -40,7 +40,7 @@
 
                                 <Border Grid.Column="0" WidthRequest="60" HeightRequest="60" 
                                     StrokeShape="RoundRectangle 30" 
-                                    BackgroundColor="#005fb8" 
+                                    BackgroundColor="{StaticResource Primary}" 
                                     Stroke="Transparent">
                                     <Label Text="{Binding Initials}" 
                                        TextColor="White" FontSize="24" FontAttributes="Bold" 
@@ -66,8 +66,8 @@
                                 <Button Grid.Column="2" 
                                     Text="Editar" 
                                     BackgroundColor="Transparent"
-                                    TextColor="#005fb8"
-                                    BorderColor="#005fb8"
+                                    TextColor="{StaticResource Primary}"
+                                    BorderColor="{StaticResource Primary}"
                                     BorderWidth="1"
                                     CornerRadius="8"
                                     HeightRequest="40"
@@ -95,7 +95,7 @@
                                         <Label Text="Modo Oscuro" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
                                         <Label Text="Cambiar la apariencia de la aplicación" FontSize="12" TextColor="Gray"/>
                                     </VerticalStackLayout>
-                                    <Switch Grid.Column="1" IsToggled="{Binding IsDarkMode}" OnColor="#005fb8" Toggled="OnThemeSwitchToggled"/>
+                                    <Switch Grid.Column="1" IsToggled="{Binding IsDarkMode}" OnColor="{StaticResource Primary}" Toggled="OnThemeSwitchToggled"/>
                                 </Grid>
 
                                 <BoxView HeightRequest="1" Color="{AppThemeBinding Light=#E5E5E5, Dark=#333333}" />
@@ -105,7 +105,7 @@
                                         <Label Text="Notificaciones" FontAttributes="Bold" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
                                         <Label Text="Recibir alertas de transferencias y pagos" FontSize="12" TextColor="Gray"/>
                                     </VerticalStackLayout>
-                                    <Switch Grid.Column="1" IsToggled="{Binding NotificationsEnabled}" OnColor="#005fb8"/>
+                                    <Switch Grid.Column="1" IsToggled="{Binding NotificationsEnabled}" OnColor="{StaticResource Primary}"/>
                                 </Grid>
 
                             </VerticalStackLayout>

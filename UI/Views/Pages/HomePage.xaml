@@ -15,7 +15,7 @@
 
         <RefreshView x:Name="MiRefreshView" 
                      Refreshing="OnRefreshViewRefreshing" 
-                     RefreshColor="#004a94"
+                     RefreshColor="{StaticResource Primary}"
                      AbsoluteLayout.LayoutBounds="0, 0, 1, 1" 
                      AbsoluteLayout.LayoutFlags="All">
 
@@ -40,7 +40,7 @@
 
                         <Border Grid.Column="1"
                                 IsVisible="{Binding IsGiftAvailable}"
-                                BackgroundColor="#005fb8"
+                                BackgroundColor="{StaticResource Secondary}"
                                 StrokeShape="RoundRectangle 8"
                                 Padding="15,8"
                                 VerticalOptions="Center">
@@ -109,8 +109,8 @@
                                         Text="Ver Detalle"
                                         Clicked="OnViewDetailsClicked"
                                         BackgroundColor="Transparent"
-                                        TextColor="#005fb8"
-                                        BorderColor="#005fb8"
+                                        TextColor="{StaticResource Primary}"
+                                        BorderColor="{StaticResource Primary}"
                                         BorderWidth="1"
                                         CornerRadius="8"
                                         HeightRequest="35"

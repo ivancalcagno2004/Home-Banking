@@ -8,14 +8,13 @@
     xmlns:helpers="clr-namespace:UI.Resources.Helpers"
     Title="Tandil Bank"
     Shell.TabBarBackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
-    Shell.TabBarTitleColor="#004a94" 
-    Shell.TabBarForegroundColor="#004a94"
+    Shell.TabBarTitleColor="{StaticResource Primary}" 
+    Shell.TabBarForegroundColor="{StaticResource Primary}"
     Shell.TabBarUnselectedColor="Gray">
     <Shell.Resources>
         <ResourceDictionary>
-            <Color x:Key="PrimaryColor">#005fb8</Color>
             <Style TargetType="Element" x:Key="BaseStyle">
-                <Setter Property="Shell.BackgroundColor" Value="{StaticResource PrimaryColor}" />
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.ForegroundColor" Value="White" />
                 <Setter Property="Shell.TitleColor" Value="White" />
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
@@ -26,7 +25,7 @@
     </Shell.Resources>
 
     <Shell.FlyoutHeader>
-        <Grid HeightRequest="150" BackgroundColor="#004a94" Padding="20">
+        <Grid HeightRequest="150" BackgroundColor="{StaticResource Primary}" Padding="20">
             <VerticalStackLayout VerticalOptions="End" Spacing="5">
                 <Image Source="logo_tandilbank.png" HeightRequest="60" HorizontalOptions="Start" />
                 <Label Text="Tandil Bank" TextColor="White" FontAttributes="Bold" FontSize="18" />

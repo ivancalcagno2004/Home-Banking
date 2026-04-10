@@ -42,7 +42,7 @@
                         <HorizontalStackLayout Spacing="15" Margin="0,0,0,15" HorizontalOptions="Center">
                             <Border WidthRequest="50" HeightRequest="50" StrokeShape="RoundRectangle 25" 
                                     BackgroundColor="#EDF2FA" Stroke="Transparent">
-                                <Label Text="⇆" TextColor="#005fb8" FontSize="24" 
+                                <Label Text="⇆" TextColor="{StaticResource Primary}" FontSize="24" 
                                        HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold"/>
                             </Border>
                             <VerticalStackLayout VerticalOptions="Center">

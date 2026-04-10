@@ -11,7 +11,7 @@
                 VerticalOptions="End"
                 BackgroundColor="{AppThemeBinding Light=#F3F3F3, Dark=#1E1E1E}"
                 StrokeShape="RoundRectangle 15"
-                Stroke="#0052CC"
+                Stroke="{StaticResource Acent}"
                 StrokeThickness="2">
 
             <Border.Shadow>
@@ -19,7 +19,7 @@
             </Border.Shadow>
 
             <Grid RowDefinitions="Auto, *, Auto">
-                <Grid Grid.Row="0" BackgroundColor="#0052CC" Padding="15,5" ColumnDefinitions="*, Auto">
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource Acent}" Padding="15,5" ColumnDefinitions="*, Auto">
 
                     <Label Grid.Column="0" 
                        Text="🤖  Asistente Tandil Bank" 
@@ -113,7 +113,7 @@
                             Text="▶" 
                             Command="{Binding EnviarMensajeCommand}" 
                             BackgroundColor="Transparent" 
-                            TextColor="#0052CC" 
+                            TextColor="{StaticResource Primary}" 
                             FontAttributes="Bold"
                             VerticalOptions="Center"/>
                     </Grid>
@@ -123,10 +123,10 @@
 
         <Button Text="🤖"
                 Command="{Binding ActivarChatCommand}"
-                FontSize="Medium"
+                FontSize="20"
                 WidthRequest="60" HeightRequest="60"
                 CornerRadius="30"
-                BackgroundColor="#0052CC"
+                BackgroundColor="{StaticResource Primary}"
                 HorizontalOptions="End"
                 VerticalOptions="End"
                 Shadow="{Shadow Brush=Black, Offset='0,4', Radius=5, Opacity=0.3}">
