@@ -49,7 +49,7 @@ Una vez finalizado, encontrarás tu instalador firmado y listo para usar en:
 
 ## 📦 Descargas (Releases)
 ¿No querés compilar el código y solo querés probar la app? 
-Puedes descargar la última versión lista para instalar (APK para Android o MSIX para Windows) directamente desde la **[Pestaña de Releases](https://github.com/tu-usuario/tu-repo/releases)** del repositorio.
+Puedes descargar la última versión lista para instalar (APK para Android o MSIX para Windows) directamente desde la **[Pestaña de Releases](https://github.com/ivancalcagno2004/Home-Banking/releases)** del repositorio.
 
 ---
 
