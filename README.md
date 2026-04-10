@@ -2,14 +2,6 @@
 
 Tandil Bank es un proyecto de Home Banking desarrollado con **.NET 10 MAUI**. El objetivo de esta app es ofrecer un cliente bancario moderno, robusto y 100% funcional que corra de forma nativa tanto en teléfonos Android e iOS, como en escritorio (Windows/macOS), compartiendo la misma base de código.
 
----
-
-## 📦 Descargas (Releases)
-¿No querés compilar el código y solo querés probar la app? 
-Puedes descargar la última versión lista para instalar (APK para Android o MSIX para Windows) directamente desde la **[Pestaña de Releases](https://github.com/tu-usuario/tu-repo/releases)** del repositorio.
-
----
-
 ## ✨ Características Principales
 * **Asistente Inteligente (NUEVO):** Chatbot integrado de baja latencia potenciado por la API de **Groq** para asistencia al usuario en tiempo real.
 * **Seguridad y Accesos:** Inicio de sesión clásico y soporte para autenticación biométrica (huella dactilar).
@@ -52,5 +44,13 @@ dotnet publish -f net10.0-android -c Release
 
 Una vez finalizado, encontrarás tu instalador firmado y listo para usar en:
 `UI\bin\Release\net10.0-android\com.tandilbank.app-Signed.apk`
+
+---
+
+## 📦 Descargas (Releases)
+¿No querés compilar el código y solo querés probar la app? 
+Puedes descargar la última versión lista para instalar (APK para Android o MSIX para Windows) directamente desde la **[Pestaña de Releases](https://github.com/tu-usuario/tu-repo/releases)** del repositorio.
+
+---
 
 ***Desarrollado por Jano en Tandil, Buenos Aires.***
