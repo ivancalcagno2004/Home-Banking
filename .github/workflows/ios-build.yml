@@ -1,0 +1,29 @@
+name: Compilar iOS (Tandil Bank)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest 
+
+    steps:
+    - name: 📦 Descargar el código
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Instalar .NET 10
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: 🛠️ Instalar motor de .NET MAUI
+      run: dotnet workload install maui
+
+    - name: 🚀 Compilar para iOS (Bypass de Firma)
+      run: dotnet publish UI/UI.csproj -f net10.0-ios -c Release -r ios-arm64 /p:BuildIpa=true /p:EnableCodeSigning=false
+
+    - name: 💾 Guardar Instalador Generado
+      uses: actions/upload-artifact@v4
+      with:
+        name: TandilBank-iOS-App
+        path: UI/bin/Release/net10.0-ios/ios-arm64/
