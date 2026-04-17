@@ -9,13 +9,22 @@ namespace UI.Views.Pages;
 /// </summary>
 public partial class PaymentsPage : ContentPage
 {
-   private readonly ILogger<PaymentsPage> _logger;
+    private readonly ILogger<PaymentsPage> _logger;
+    private readonly PaymentsViewModel _viewModel;
 
     public PaymentsPage(PaymentsViewModel vm, ILogger<PaymentsPage> logger)
 	{
 		InitializeComponent();
+        _viewModel = vm;
         _logger = logger;
-		BindingContext = vm;
+		BindingContext = _viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        _logger.LogInformation("PaymentsPage: cargando datos");
+        await _viewModel.LoadData();
     }
 
     private async void OnSettingsClicked(object? sender, EventArgs e)

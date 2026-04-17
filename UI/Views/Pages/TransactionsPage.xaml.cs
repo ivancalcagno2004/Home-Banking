@@ -36,7 +36,7 @@ public partial class TransactionsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        _logger.LogInformation("TransactionsPage: appearing");
+        _logger.LogInformation("TransactionsPage: cargando transacciones");
         await _viewModel.LoadTransactions();
     }
 }

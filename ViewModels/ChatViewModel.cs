@@ -1,47 +1,36 @@
-﻿using Markdig;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Markdig;
+using Microsoft.Extensions.Logging;
 using Models.DTO;
-using Services;
 using Services.Implementations;
 using Services.Interfaces;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ViewModels
 {
-    public class ChatViewModel : BaseViewModel
+    public partial class ChatViewModel : BaseViewModel
     {
         private readonly IGroqChatService _chatService;
         private readonly UserSession _userSession;
+
         public string FullName => _userSession.CurrentUser?.FullName ?? "Usuario";
         public string Initials => !string.IsNullOrEmpty(FullName) ? FullName[0].ToString() : "U";
 
+        [ObservableProperty]
         private bool _isChatVisible;
-        public bool IsChatVisible
-        {
-            get => _isChatVisible;
-            set { _isChatVisible = value; OnPropertyChanged(); }
-        }
 
+        [ObservableProperty]
         private string? _mensajeEscrito;
-        public string? MensajeEscrito
-        {
-            get => _mensajeEscrito;
-            set { _mensajeEscrito = value; OnPropertyChanged(); }
-        }
 
-        public ObservableCollection<MessageChatDTO> ListaMensajes { get; set; } = new ObservableCollection<MessageChatDTO>();
+        public ObservableCollection<MessageChatDTO> ListaMensajes { get; } = [];
 
-        public ICommand ActivarChatCommand { get; }
-        public ICommand EnviarMensajeCommand { get; }
-
-        public ChatViewModel(IGroqChatService chatService, UserSession userSession)
+        public ChatViewModel(IGroqChatService chatService, UserSession userSession, ILogger<ChatViewModel> logger)
         {
             _chatService = chatService;
             _userSession = userSession;
-            IsChatVisible = false;
-            ActivarChatCommand = new RelayCommand(param => IsChatVisible = !IsChatVisible);
-            EnviarMensajeCommand = new RelayCommand(SendMessage);
+            _logger = logger;
+            _isChatVisible = false;
 
             ListaMensajes.Add(new MessageChatDTO
             {
@@ -50,7 +39,14 @@ namespace ViewModels
             });
         }
 
-        private async void SendMessage(object o)
+        [RelayCommand]
+        private void ActivarChat()
+        {
+            IsChatVisible = !IsChatVisible;
+        }
+
+        [RelayCommand]
+        private async Task EnviarMensaje()
         {
             if (string.IsNullOrWhiteSpace(MensajeEscrito)) return;
 
@@ -64,14 +60,21 @@ namespace ViewModels
                 Initials = Initials
             });
 
-            string? respuestaGroq = await _chatService.SendMessageAsync(mensajeUsuario);
-            string respuestaFormateada = Markdown.ToHtml(respuestaGroq ?? string.Empty);
-
-            ListaMensajes.Add(new MessageChatDTO
+            try
             {
-                EsMio = false,
-                Texto = respuestaFormateada
-            });
+                string? respuestaGroq = await _chatService.SendMessageAsync(mensajeUsuario);
+                string respuestaFormateada = Markdown.ToHtml(respuestaGroq ?? string.Empty);
+
+                ListaMensajes.Add(new MessageChatDTO
+                {
+                    EsMio = false,
+                    Texto = respuestaFormateada
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger!.LogError(ex, "Error al enviar el mensaje al servicio de chat.");
+            }
         }
     }
 }

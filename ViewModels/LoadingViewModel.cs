@@ -1,9 +1,6 @@
 ﻿using HomeBanking.Data.Context;
 using Models;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +10,7 @@ namespace ViewModels
     /// ViewModel de carga inicial. Realiza tareas de inicialización de datos (seed)
     /// al arranque y navega al flujo de autenticación.
     /// </summary>
-    public class LoadingViewModel : BaseViewModel
+    public partial class LoadingViewModel : BaseViewModel
     {
         private readonly AppDbContext _context;
 
@@ -22,11 +19,9 @@ namespace ViewModels
             _navigationService = navigationService;
             _context = context;
             _logger = logger;
-
-            _ = IniciarAppAsync();
         }
 
-        private async Task IniciarAppAsync()
+        public async Task InitAppAsync()
         {
             try
             {

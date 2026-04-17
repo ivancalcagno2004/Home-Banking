@@ -71,7 +71,6 @@ namespace UI
             // 4. Inyección de Dependencias: Capa ViewModels
             builder.Services.AddTransient<SignInViewModel>();
             builder.Services.AddTransient<SignUpViewModel>();
-            builder.Services.AddTransient<AccountViewModel>();
             builder.Services.AddTransient<HomeViewModel>();
             builder.Services.AddTransient<PaymentsViewModel>();
             builder.Services.AddTransient<SettingsViewModel>();

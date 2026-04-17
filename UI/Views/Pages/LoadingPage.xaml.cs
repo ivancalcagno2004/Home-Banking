@@ -10,11 +10,21 @@ namespace UI.Views.Pages;
 public partial class LoadingPage : ContentPage
 {
 	private readonly ILogger<LoadingPage> _logger;
-	public LoadingPage(LoadingViewModel vm, ILogger<LoadingPage> logger)
+    private readonly LoadingViewModel _viewModel;
+    public LoadingPage(LoadingViewModel vm, ILogger<LoadingPage> logger)
 	{
 		InitializeComponent();
-		BindingContext = vm;
+        _viewModel = vm;
+        BindingContext = _viewModel;
 		_logger = logger;
         _logger.LogInformation("========== INICIANDO TANDIL BANK ==========");
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await _viewModel.InitAppAsync();
+        
     }
 }

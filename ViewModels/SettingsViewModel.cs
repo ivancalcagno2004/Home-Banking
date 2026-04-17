@@ -1,13 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Services.Implementations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ViewModels
 {
@@ -15,7 +7,7 @@ namespace ViewModels
     /// ViewModel de configuración. Expone datos del usuario en sesión y opciones
     /// de preferencias locales (modo oscuro / notificaciones) para la UI.
     /// </summary>
-    public class SettingsViewModel : BaseViewModel
+    public partial class SettingsViewModel : BaseViewModel
     {
         private readonly UserSession _userSession;
 
@@ -23,36 +15,23 @@ namespace ViewModels
         public string Email => _userSession.CurrentUser?.Email ?? "usuario@email.com";
         public string Initials => !string.IsNullOrEmpty(FullName) ? FullName[0].ToString() : "U";
 
+        [ObservableProperty]
         private bool _isDarkMode;
 
-        public bool IsDarkMode
-        {
-            get => _isDarkMode;
-            set
-            {
-                if (_isDarkMode != value)
-                {
-                    _isDarkMode = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
+        [ObservableProperty]
         private bool _notificationsEnabled = true;
-
-        public bool NotificationsEnabled
-        {
-            get => _notificationsEnabled;
-            set
-            {
-                _notificationsEnabled = value;
-                OnPropertyChanged();
-            }
-        }
 
         public SettingsViewModel(UserSession userSession)
         {
             _userSession = userSession;
+        }
+
+        partial void OnIsDarkModeChanging(bool value)
+        {
+            if (_isDarkMode != value)
+            {
+                _isDarkMode = value;
+            }
         }
     }
 }

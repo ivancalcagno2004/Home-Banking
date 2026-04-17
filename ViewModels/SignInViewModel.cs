@@ -1,15 +1,10 @@
 ﻿using Services.Implementations;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Diagnostics;
 using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ViewModels
 {
@@ -17,44 +12,22 @@ namespace ViewModels
     /// ViewModel de inicio de sesión. Valida credenciales, maneja sesión de usuario,
     /// navega a la pantalla principal y soporta autenticación biométrica si está disponible.
     /// </summary>
-    public class SignInViewModel : BaseViewModel
+    public partial class SignInViewModel : BaseViewModel
     {
         private readonly UserSession _userSession;
         private readonly INotificationService _notificationService;
 
+        [ObservableProperty]
         private string? _userName;
-        public string? UserName
-        {
-            get => _userName;
-            set { _userName = value; OnPropertyChanged(); }
-        }
 
+        [ObservableProperty]
         private string? _welcomeMessage;
-        public string? WelcomeMessage
-        {
-            get => _welcomeMessage;
-            set { _welcomeMessage = value; OnPropertyChanged(); }
-        }
 
+        [ObservableProperty]
         private bool _showWelcomeMessage;
-        public bool ShowWelcomeMessage
-        {
-            get => _showWelcomeMessage;
-            set { _showWelcomeMessage = value; OnPropertyChanged(); }
-        }
 
+        [ObservableProperty]
         private bool _showInputUser;
-        public bool ShowInputUser
-        {
-            get => _showInputUser;
-            set { _showInputUser = value; OnPropertyChanged(); }
-        }
-
-        public ICommand SignInCommand { get; }
-        public ICommand NavigateToSignUpCommand { get; }
-        public ICommand BiometricLoginCommand { get; }
-
-        public ICommand ChangeUserCommand { get; }
 
         public SignInViewModel(IUserService userService, UserSession userSession, IDialogService dialogService, INavigationService navigationService, ICredentialService credentialService, INotificationService notificationService, IPaymentService paymentService, ILogger<SignInViewModel> logger)
         {
@@ -67,18 +40,11 @@ namespace ViewModels
             _paymentService = paymentService;
             _logger = logger;
 
-            ShowInputUser = true;
-            ShowWelcomeMessage = false;
-
-            SignInCommand = new RelayCommand(SignIn);
-            NavigateToSignUpCommand = new RelayCommand(NavigateToSignUp);
-            BiometricLoginCommand = new RelayCommand(ExecuteBiometricLogin);
-            ChangeUserCommand = new RelayCommand(ChangeUser);
-
-            _ = CheckSavedUserAsync();
+            _showInputUser = true;
+            _showWelcomeMessage = false;
         }
 
-        private async Task CheckSavedUserAsync()
+        public async Task CheckSavedUserAsync()
         {
             var credentials = await _credentialService!.GetCredentialsAsync();
 
@@ -93,14 +59,16 @@ namespace ViewModels
             }
         }
 
-        private void ChangeUser(object obj)
+        [RelayCommand]
+        private void ChangeUser()
         {
             UserName = string.Empty;
             ShowWelcomeMessage = false;
             ShowInputUser = true;
         }
 
-        private async void ExecuteBiometricLogin(object obj)
+        [RelayCommand]
+        private async Task BiometricLogin()
         {
             var credentials = await _credentialService!.GetCredentialsAsync();
 
@@ -151,7 +119,8 @@ namespace ViewModels
             }
         }
 
-        private async void SignIn(object parameter)
+        [RelayCommand]
+        private async Task SignIn(object parameter)
         {
             var password = parameter as string;
 
@@ -208,7 +177,8 @@ namespace ViewModels
             await _notificationService.CheckAndNotifyServicesAsync(pagos);
         }
 
-        private async void NavigateToSignUp(object parameter)
+        [RelayCommand]
+        private async Task NavigateToSignUp()
         {
             _logger?.LogInformation("SignInViewModel: navegando a SignUpPage");
             await _navigationService!.NavigateToAsync("//SignUpPage");

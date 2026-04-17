@@ -1,19 +1,11 @@
-﻿using Models;
-using Services;
-using Services.Interfaces;
-using ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Diagnostics;
-using Services.Implementations;
-using Models.DTO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-
+using Models;
+using Models.DTO;
+using Services.Implementations;
+using Services.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace ViewModels
 {
@@ -21,63 +13,55 @@ namespace ViewModels
     /// ViewModel de la pantalla principal. Carga las cuentas del usuario,
     /// construye un mensaje de bienvenida y gestiona la acción de reclamar un regalo.
     /// </summary>
-    public class HomeViewModel : BaseViewModel
+    public partial class HomeViewModel : BaseViewModel
     {
         private readonly User _currentUser;
 
+        [ObservableProperty]
         private bool _isGiftAvailable;
 
-        public bool IsGiftAvailable
+        [ObservableProperty]
+        private string _welcomeMessage;
+
+        public ObservableCollection<AccountDTO> Accounts { get; } = new();
+
+        public HomeViewModel(UserSession userSession, IAccountService accountService, IUserService userService, IDialogService dialogService, ILogger<HomeViewModel> logger)
         {
-            get => _isGiftAvailable;
-            set { _isGiftAvailable = value; OnPropertyChanged(); }
-        }
-
-        public ICommand ClaimGiftCommand { get; }
-
-        public ObservableCollection<AccountDTO> Accounts { get; set; }
-
-        public string WelcomeMessage { get; set; }
-
-        public HomeViewModel(UserSession currentUser, IAccountService accountService, IUserService userService, IDialogService dialogService, ILogger<HomeViewModel> logger)
-        {
-            _currentUser = currentUser.CurrentUser!;
+            _currentUser = userSession.CurrentUser!;
             _userService = userService;
             _accountService = accountService;
             _dialogService = dialogService;
             _logger = logger;
 
-
-            WelcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
-            Accounts = new ObservableCollection<AccountDTO>();
-            ClaimGiftCommand = new RelayCommand(ExecuteClaimGift);
+            _welcomeMessage = $"Bienvenido/a, {_currentUser.FullName}!";
         }
 
         public async Task<AccountDTO?> GetAccountData() {
             return Accounts!.FirstOrDefault();
         }
 
-        private async void ExecuteClaimGift(object o)
+        [RelayCommand]
+        private async Task ClaimGift()
         {
-            if (!IsGiftAvailable) return;
+            if (!IsGiftAvailable || IsBusy) return;
 
             try
             {
+                IsBusy = true; 
                 _logger?.LogInformation("HomeViewModel: reclamando regalo");
+
                 var mainAccount = Accounts.FirstOrDefault();
                 if (mainAccount == null) return;
 
                 decimal regalo = 50000m;
 
-                mainAccount.Balance += regalo;
                 IsGiftAvailable = false;
                 _currentUser.IsGiftClaimed = true;
-
 
                 await _accountService!.ClaimGiftAsync(mainAccount.Id, regalo);
                 await _userService!.UpdateUser(_currentUser);
 
-
+                mainAccount.Balance += regalo;
                 var index = Accounts.IndexOf(mainAccount);
                 if (index != -1)
                 {
@@ -94,7 +78,6 @@ namespace ViewModels
             }
             catch (Exception ex)
             {
-                
                 IsGiftAvailable = true;
                 _currentUser.IsGiftClaimed = false;
 
@@ -105,12 +88,19 @@ namespace ViewModels
 
                 _logger?.LogError(ex, "HomeViewModel: error al reclamar regalo");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public async Task LoadData()
         {
+            if (IsBusy) return;
+
             try
             {
+                IsBusy = true;
                 _logger?.LogInformation("HomeViewModel: cargando datos");
 
                 var userAccounts = await _accountService!.GetAccountsByUserId(_currentUser.UserId);
@@ -120,6 +110,7 @@ namespace ViewModels
                 {
                     Accounts.Add(account);
                 }
+
                 IsGiftAvailable = !_currentUser.IsGiftClaimed;
 
                 _logger?.LogInformation("HomeViewModel: datos cargados");
@@ -127,7 +118,15 @@ namespace ViewModels
             catch (Exception ex)
             {
                 _logger?.LogError(ex, "HomeViewModel: error al cargar datos");
-                throw;
+
+                await _dialogService!.ShowAlertAsync(
+                    "Error de conexión",
+                    "No pudimos sincronizar tus cuentas. Revisa tu internet.",
+                    "Ok");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

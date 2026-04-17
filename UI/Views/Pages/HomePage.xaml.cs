@@ -65,6 +65,7 @@ public partial class HomePage : ContentPage
 
         await _viewModel.LoadData();
         
+
         MiRefreshView.IsRefreshing = false;
     }
 
@@ -84,7 +85,8 @@ public partial class HomePage : ContentPage
     {
         base.OnAppearing();
 
-        _logger.LogInformation("HomePage: appearing");
+        _logger.LogInformation("HomePage: cargando datos");
         await _viewModel.LoadData();
+
     }
 }

@@ -9,7 +9,7 @@ namespace UI.Services
 {
     /// <summary>
     /// Servicio de diálogos de la capa UI.
-    /// Encapsula el uso de <see cref="Page.DisplayAlertAsync"/> para mostrar alertas
+    /// Encapsula el uso de <see cref="Page.DisplayAlertAsync(string, string, string)"/> para mostrar alertas
     /// y confirmaciones desde ViewModels mediante <see cref="IDialogService"/>.
     /// </summary>
     public class DialogService : IDialogService

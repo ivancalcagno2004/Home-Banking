@@ -1,14 +1,7 @@
-﻿using Models;
-using Models.DTO;
+﻿using Models.DTO;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ViewModels
 {
@@ -16,14 +9,11 @@ namespace ViewModels
     /// ViewModel de registro. Recolecta datos del usuario, valida campos requeridos
     /// y crea una nueva cuenta mediante <see cref="IUserService"/>.
     /// </summary>
-    public class SignUpViewModel : BaseViewModel
+    public partial class SignUpViewModel : BaseViewModel
     {
         public string? FullName { get; set; }
         public string? Email { get; set; }
         public string? UserName { get; set; }
-
-        public ICommand RegisterCommand { get; }
-        public ICommand NavigateToSignInCommand { get; }
 
         public SignUpViewModel(IUserService userService, INavigationService navigationService, IDialogService dialogService, ICredentialService credentialService, ILogger<SignUpViewModel> logger)
         {
@@ -32,13 +22,18 @@ namespace ViewModels
             _dialogService = dialogService;
             _credentialService = credentialService;
             _logger = logger;
-            RegisterCommand = new RelayCommand(Register);
-            
-            NavigateToSignInCommand = new RelayCommand(param => _navigationService.NavigateToAsync("//SignInPage"));
-
         }
 
-        private async void Register(object parameter)
+        [RelayCommand]
+        private async Task NavigateToSignIn()
+        {
+            _logger?.LogInformation("SignUpViewModel: navegando a SignInPage");
+            await _navigationService!.NavigateToAsync("//SignInPage");
+        }
+
+
+        [RelayCommand]
+        private async Task Register(object parameter)
         {
             var password = parameter as string;
 
@@ -70,6 +65,8 @@ namespace ViewModels
                 await _credentialService!.ClearCredentialsAsync();
 
                 _logger?.LogInformation("SignUpViewModel: registro OK");
+                await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
+                await _navigationService!.NavigateToAsync("//SignInPage");
             }
             catch (Exception e)
             {
@@ -80,8 +77,6 @@ namespace ViewModels
             finally
             {
                 IsBusy = false;
-                await _dialogService!.ShowAlertAsync("Registro Exitoso", "Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.", "Ok");
-                await _navigationService!.NavigateToAsync("//SignInPage");
             }
         }
     }

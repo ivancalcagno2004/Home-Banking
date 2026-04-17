@@ -116,7 +116,7 @@
                                         FontAttributes="Bold"
                                         CornerRadius="22"
                                         HeightRequest="44"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.PayCommand}"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ExecutePayCommand}"
                                         CommandParameter="{Binding}">
                                         <Button.Triggers>
                                             <DataTrigger TargetType="Button" Binding="{Binding IsPaid}" Value="True">

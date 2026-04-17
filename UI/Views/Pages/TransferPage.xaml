@@ -52,27 +52,27 @@
                         </HorizontalStackLayout>
 
                         <Label Text="Desde tu cuenta" TextColor="Gray" Margin="0,0,0,-4"/>
-                            <Picker ItemsSource="{Binding MyAccounts}" 
+                        <Picker ItemsSource="{Binding MyAccounts}" 
                                 SelectedItem="{Binding SelectedOriginAccount}"
                                 ItemDisplayBinding="{Binding Alias}"
                                 Title="Selecciona una cuenta"
                                 HeightRequest="70"/>
 
                         <Label Text="Hacia (CBU o Alias)" TextColor="Gray" Margin="0,0,0,-8"/>
-                            <Entry Text="{Binding DestinationCBU_Alias}" 
+                        <Entry Text="{Binding DestinationCBU_Alias}" 
                                Placeholder="Ej: MI.ALIAS.BANCO"
                                ClearButtonVisibility="WhileEditing"
                                HeightRequest="45"/>
-                        
+
                         <Label Text="Monto a transferir" TextColor="Gray" Margin="0,0,0,-8"/>
-                            <Entry Text="{Binding Amount, StringFormat='{0:N2}'}" 
+                        <Entry Text="{Binding Amount, StringFormat='{0:N2}'}" 
                             Placeholder="$ 0.00"
                             Keyboard="Numeric"
                             FontAttributes="Bold"
                             ClearButtonVisibility="WhileEditing"
                             HeightRequest="45"/>
 
-                        <Button Command="{Binding TransferCommand}"
+                        <Button Command="{Binding ExecuteTransferCommand}"
                             Text="Confirmar Transferencia"
                             BackgroundColor="#005fb8"
                             TextColor="White"

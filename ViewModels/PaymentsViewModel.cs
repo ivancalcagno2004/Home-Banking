@@ -1,16 +1,11 @@
 ﻿using Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 using Services.Interfaces;
 using Services.Implementations;
 using Models.DTO;
 using Microsoft.Extensions.Logging;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ViewModels
 {
@@ -18,30 +13,14 @@ namespace ViewModels
     /// ViewModel de pagos. Carga vencimientos o historial según <see cref="ShowHistory"/>
     /// y ejecuta el pago de un servicio utilizando una cuenta del usuario.
     /// </summary>
-    public class PaymentsViewModel : BaseViewModel
+    public partial class PaymentsViewModel : BaseViewModel
     {
         private readonly User _currentUser;
 
         public ObservableCollection<PaymentDTO> PendingPayments { get; set; }
 
-        public ICommand PayCommand { get; }
-
+        [ObservableProperty]
         private bool _showHistory;
-
-
-        public bool ShowHistory
-        {
-            get => _showHistory;
-            set
-            {
-                if (_showHistory != value)
-                {
-                    _showHistory = value;
-                    OnPropertyChanged();
-                    LoadData();
-                }
-            }
-        }
 
         public string Title => ShowHistory ? "Historial de Pagos" : "Mis Vencimientos";
 
@@ -54,12 +33,21 @@ namespace ViewModels
             _logger = logger;
 
             PendingPayments = new ObservableCollection<PaymentDTO>();
-            PayCommand = new RelayCommand(ExecutePay);
-
-            LoadData();
         }
 
-        private async void LoadData()
+        async partial void OnShowHistoryChanged(bool value)
+        {
+            try{
+                await LoadData();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "PaymentsViewModel: error al cambiar historial (ShowHistory={ShowHistory})", ShowHistory);
+                await _dialogService!.ShowAlertAsync("Error al cargar pagos", $"No se pudieron cargar los pagos: {ex.Message}", "Ok");
+            }
+        }
+
+        public async Task LoadData()
         {
             try
             {
@@ -79,7 +67,8 @@ namespace ViewModels
             }
         }
 
-        private async void ExecutePay(object parameter)
+        [RelayCommand]
+        private async Task ExecutePay(object parameter)
         {
             if (parameter is PaymentDTO paymentToPay)
             {
@@ -111,7 +100,7 @@ namespace ViewModels
 
                     _logger?.LogInformation("PaymentsViewModel: pago OK (PaymentId={PaymentId})", paymentToPay.Id);
 
-                    LoadData();
+                    await LoadData();
                 }
                 catch (Exception ex)
                 {

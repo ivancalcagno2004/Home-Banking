@@ -2,12 +2,7 @@
 using Models.DTO;
 using Services.Implementations;
 using Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace ViewModels
@@ -16,7 +11,7 @@ namespace ViewModels
     /// ViewModel de transacciones. Obtiene y expone el listado de movimientos del usuario
     /// desde <see cref="ITransactionService"/> para ser mostrado en la UI.
     /// </summary>
-    public class TransactionsViewModel : BaseViewModel
+    public partial class TransactionsViewModel : BaseViewModel
     {
         private readonly User _currentUser;
 
@@ -28,7 +23,6 @@ namespace ViewModels
             _transactionService = transactionService;
             Transactions = new ObservableCollection<TransactionDTO>();
             _logger = logger;
-
         }
 
         public async Task LoadTransactions()

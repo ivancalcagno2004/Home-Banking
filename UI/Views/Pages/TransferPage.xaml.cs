@@ -9,13 +9,21 @@ namespace UI.Views.Pages;
 /// </summary>
 public partial class TransferPage : ContentPage
 {
-   private readonly ILogger<TransferPage> _logger;
+    private readonly ILogger<TransferPage> _logger;
+    private readonly TransferViewModel _viewModel;
 
     public TransferPage(TransferViewModel vm, ILogger<TransferPage> logger)
 	{
 		InitializeComponent();
         _logger = logger;
-		BindingContext = vm;
+        _viewModel = vm;
+		BindingContext = _viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await _viewModel.LoadAccounts();
     }
 
     private async void OnSettingsClicked(object? sender, EventArgs e)
