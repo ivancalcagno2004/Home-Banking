@@ -27,7 +27,7 @@ La solución está construida bajo una arquitectura limpia y modularizada:
 * **`UI`**: El proyecto principal de MAUI. Contiene la navegación (`AppShell`), las vistas XAML, componentes personalizados y recursos gráficos.
 * **`ViewModels`**: La capa de presentación que maneja el estado de la aplicación y la lógica de la interfaz.
 * **`Services`**: Lógica de negocio, integración con APIs externas (Groq) y llamadas a repositorios.
-* **`DataAccess`**: Configuración del `AppDbContext` de Entity Framework, migraciones y conexión a SQLite.
+* **`DataAccess`**: Configuración del `AppDbContext` de Entity Framework, migraciones y conexión a *Microsoft Azure*.
 * **`Models`**: Entidades centrales del dominio y Data Transfer Objects (DTOs).
 
 ## 🚀 Cómo levantar el proyecto para Desarrollo
