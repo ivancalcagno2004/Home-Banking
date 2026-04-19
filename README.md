@@ -13,7 +13,9 @@ Tandil Bank es un proyecto de Home Banking desarrollado con **.NET 10 MAUI**. El
 ## 🛠️ Stack Tecnológico
 * **Framework:** .NET 10 MAUI.
 * **Arquitectura:** MVVM (Model-View-ViewModel).
-* **Base de Datos:** Entity Framework Core con **SQLite** (Ideal para desarrollo local y emuladores offline).
+* **Base de Datos:**
+  * **ORM:** Entity Framework Core.
+  * **Alojamiento en la nube:** *Microsoft Azure*.
 * **Paquetes Destacados:**
   * `Plugin.Fingerprint` (Biometría).
   * `Plugin.LocalNotification` (Alertas locales).
