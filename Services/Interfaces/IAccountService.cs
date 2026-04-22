@@ -13,7 +13,7 @@ namespace Services.Interfaces
         Task<Account> CreateAccountAsync(User user);
         Task<decimal> GetBalanceAsync(int accountId);
         Task<List<AccountDTO>> GetAllAsync();
-        Task ClaimGiftAsync(int accountId, decimal amount);
+        Task<TransactionDTO> ClaimGiftAsync(int accountId, decimal amount);
         Task<List<AccountDTO>> GetAccountsByUserId(int userId);
         public Task UpdateAccount(Account account);
     }

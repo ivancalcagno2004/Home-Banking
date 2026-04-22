@@ -23,7 +23,7 @@ public partial class LoadingPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
+        await Task.Delay(150);
         await _viewModel.InitAppAsync();
         
     }

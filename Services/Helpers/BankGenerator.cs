@@ -34,7 +34,7 @@ namespace HomeBanking.Data.Helpers
             {
                 newAlias = GenerateAlias();
 
-                // Le pregunto a Azure si ese alias ya existe en la tabla Accounts
+                // Le pregunto a la base si ese alias ya existe en la tabla Accounts
                 var existingAccount = await _unitOfWork.Accounts.GetAccountByCBUOrAliasAsync(newAlias);
                 aliasExists = existingAccount != null;
 
@@ -46,8 +46,27 @@ namespace HomeBanking.Data.Helpers
         // Genera un Alias tipo "palabra.palabra.palabra"
         private static string GenerateAlias()
         {
-            string[] palabras = { "tango", "mate", "rio", "sol", "luna", "pampa", "sur", "norte", "plata", "oro", "azul", "rojo", "madero", "verde", "arbol", "banco", "perro", "casa", "piano", "puerta", "nube", "radio", "camino", "luna", "pasto", "viento", "control", "ventana", "cama", "celeste", "arriba"};
-            return $"{palabras[_random.Next(palabras.Length)]}.{palabras[_random.Next(palabras.Length)]}.{palabras[_random.Next(palabras.Length)]}";
+            string[] palabrasOriginales = {
+                "tango", "mate", "rio", "sol", "luna", "pampa", "sur", "norte", "plata", "oro",
+                "azul", "rojo", "madero", "verde", "arbol", "banco", "perro", "casa", "piano",
+                "puerta", "nube", "radio", "camino", "pasto", "viento", "control", "ventana",
+                "cama", "celeste", "arriba", "derecha", "izquierda", "fuego", "agua", "tierra", "aire", "estrella", "mar",
+                "cielo", "montaña", "valle", "bosque", "flor", "hoja", "lago", "playa", "ciudad", "campo",
+            };
+
+            var disponibles = palabrasOriginales.ToList();
+            var partes = new List<string>();
+
+            for (int i = 0; i < 3; i++)
+            {
+                int indice = _random.Next(disponibles.Count);
+
+                partes.Add(disponibles[indice]);
+
+                disponibles.RemoveAt(indice);
+            }
+
+            return string.Join(".", partes);
         }
     }
 }

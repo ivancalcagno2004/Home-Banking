@@ -10,5 +10,6 @@ namespace Services.Interfaces
     {
         Task ShowAlertAsync(string title, string message, string buttonText);
         Task<bool> ShowConfirmationAsync(string title, string message, string confirmText, string cancelText);
+        Task<string?> ShowActionSheetAsync(string title, string cancelText, string? destructionText, params string[] buttons);
     }
 }

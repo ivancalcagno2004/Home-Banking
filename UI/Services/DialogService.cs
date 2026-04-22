@@ -33,5 +33,15 @@ namespace UI.Services
             }
             return false;
         }
+
+        public async Task<string?> ShowActionSheetAsync(string title, string cancelText, string? destructionText, params string[] buttons)
+        {
+            var window = Application.Current?.Windows.FirstOrDefault();
+            if (window?.Page != null)
+            {
+                return await window.Page.DisplayActionSheetAsync(title, cancelText, destructionText, buttons);
+            }
+            return null;
+        }
     }
 }

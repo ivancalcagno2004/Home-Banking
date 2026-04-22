@@ -87,33 +87,40 @@ namespace Services.Implementations
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task ClaimGiftAsync(int accountId, decimal amount)
+        public async Task<TransactionDTO> ClaimGiftAsync(int accountId, decimal amount)
         {
             var account = await _unitOfWork.Accounts.GetByIdAsync(accountId);
 
             if (account == null)
-            {
-                throw new Exception("No se encontró la cuenta para depositar el regalo.");
-            }
+                throw new Exception("No se encontró la cuenta.");
 
             account.Balance += amount;
-
             _unitOfWork.Accounts.Update(account);
 
             Account? sistema = await _unitOfWork.Accounts.GetAccountByCBUOrAliasAsync("PAGOS.SERVICIOS");
+
             var giftTransaction = new Transaction
             {
                 FromAccount = sistema!,
                 ToAccountId = account.AccountId,
                 ToAccount = account,
                 Amount = amount,
-                Description = "Regalo de Bienvenida - Tandil Bank",
+                Description = "Regalo de Bienvenida - Tandil Bank 🎁",
                 CreatedAt = DateTime.UtcNow,
                 Status = "Completed"
             };
-            await _unitOfWork.Transactions.AddAsync(giftTransaction);
 
+            await _unitOfWork.Transactions.AddAsync(giftTransaction);
             await _unitOfWork.SaveChangesAsync();
+
+            return new TransactionDTO
+            {
+                Description = giftTransaction.Description,
+                Amount = $"+ ${giftTransaction.Amount:N2}",    
+                Date = giftTransaction.CreatedAt.ToLocalTime(),
+                Color = "#2E7D32",
+                Icon = "📈"
+            };
         }
     }
 }

@@ -12,5 +12,7 @@ namespace HomeBanking.Data.Repositories.Interfaces
         Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(int accountId);
 
         Task<IEnumerable<Transaction>> GetByUserIdAsync(int userId);
+
+        Task<IEnumerable<Transaction>> GetRecentByUserIdAsync(int userId, int count);
     }
 }

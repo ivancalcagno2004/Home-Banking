@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace Models.DTO
         public decimal Balance { get; set; }
 
         public string PickerDisplayName => $"{Alias} - {Balance:C2}";
+        public ObservableCollection<TransactionDTO> RecentTransactions { get; set; } = new();
     }
 }

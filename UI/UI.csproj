@@ -80,14 +80,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="appsettings.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Include="appsettings.json" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiImage Include="Platforms\Android\Resources\drawable\ic_notification.png" />
 	  <MauiImage Include="Resources\AppIcon\ico_tandilbank.ico" />
 	</ItemGroup>

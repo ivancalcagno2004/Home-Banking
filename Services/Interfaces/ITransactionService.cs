@@ -15,5 +15,7 @@ namespace Services.Interfaces
         Task TransferToAsync(int fromAccountId, string toCBUOrAlias, decimal amount);
 
         Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId);
+
+        Task<IEnumerable<TransactionDTO>> GetRecentTransactions(int userId, int count);
     }
 }

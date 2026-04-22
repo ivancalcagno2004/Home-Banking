@@ -20,6 +20,27 @@ namespace Services.Implementations
         {
         }
 
+        public async Task<IEnumerable<TransactionDTO>> GetRecentTransactions(int userId, int count)
+        {
+            var transactions = await _unitOfWork.Transactions.GetRecentByUserIdAsync(userId, count);
+
+            var dtoList = transactions.Select(t =>
+            {
+                bool isIncome = t.ToAccount != null && t.ToAccount.UserId == userId;
+
+                return new TransactionDTO
+                {
+                    Date = t.CreatedAt,
+                    Description = t.Description,
+                    Amount = isIncome ? $"+ ${t.Amount:N2}" : $"- ${t.Amount:N2}",
+                    Color = isIncome ? "#2E7D32" : "#dc3545",
+                    Icon = isIncome ? "📈" : "📉"
+                };
+            }).ToList();
+
+            return dtoList;
+        }
+
         public async Task<IEnumerable<TransactionDTO>> GetTransactionsByUserIdAsync(int userId)
         {
             var transactions = await _unitOfWork.Transactions.GetByUserIdAsync(userId);
@@ -41,42 +62,6 @@ namespace Services.Implementations
 
             return dtoList;
         }
-
-        /*public async Task TransferAsync(int fromAccountId, int toAccountId, decimal amount)
-        {
-            var fromAccount = await _unitOfWork.Accounts.GetByIdAsync(fromAccountId);
-            var toAccount = await _unitOfWork.Accounts.GetByIdAsync(toAccountId);
-
-            if (fromAccount == null || toAccount == null)
-            {
-                throw new Exception("One or both accounts not found.");
-            }
-
-            if (fromAccount.Balance < amount)
-            {
-                throw new Exception("Insufficient funds.");
-            }
-
-            fromAccount.Balance -= amount;
-            toAccount.Balance += amount;
-
-            _unitOfWork.Accounts.Update(fromAccount);
-            _unitOfWork.Accounts.Update(toAccount);
-
-            await _unitOfWork.Transactions.AddAsync(new Transaction
-            {
-                FromAccountId = fromAccountId,
-                ToAccountId = toAccountId,
-                FromAccount = fromAccount,
-                ToAccount = toAccount,
-                Amount = amount,
-                Status = "Completed",
-                Description = $"",
-                CreatedAt = DateTime.UtcNow
-            });
-
-            await _unitOfWork.SaveChangesAsync();
-        }*/
 
         public async Task TransferToAsync(int fromAccountId, string toCBUOrAlias, decimal amount)
         {

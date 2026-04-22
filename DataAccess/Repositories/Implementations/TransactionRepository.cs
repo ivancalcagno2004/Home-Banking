@@ -29,6 +29,12 @@ namespace HomeBanking.Data.Repositories.Implementations
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Transaction>> GetRecentByUserIdAsync(int userId, int count)
+        {
+            var transactions = await GetByUserIdAsync(userId);
+            return transactions.Take(count);
+        }
+
         public async Task<IEnumerable<Transaction>> GetTransactionsByAccountIdAsync(int accountId)
         {
             return await _dbSet

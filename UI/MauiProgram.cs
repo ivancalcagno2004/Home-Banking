@@ -43,29 +43,43 @@ namespace UI
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.File(rutaLog, rollingInterval: RollingInterval.Day)
+                //.WriteTo.File(rutaLog, rollingInterval: RollingInterval.Day)
                 .WriteTo.Debug()
                 .CreateLogger();
 
             // 1. Configurar la Base de Datos
-            //string dbPath = Path.Combine(FileSystem.AppDataDirectory, "HomeBanking.db");
-            builder.Services.AddDbContext<AppDbContext>(options => 
-                    options.UseSqlServer(DatabaseSecrets.ConnectionStringAzure));
+/*
+ * SQLITE
+string dbPath = Path.Combine(FileSystem.AppDataDirectory, "TandilBankLocal.db");
 
+Directory.CreateDirectory(FileSystem.AppDataDirectory);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite($"Filename={dbPath}"));
+*/
+
+#if DEBUG
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(DatabaseSecrets.ConnectionStringLocal));
+#else
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(DatabaseSecrets.ConnectionStringAzure));
+#endif
             // 2. Inyección de Dependencias: Capa Data
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // 3. Inyección de Dependencias: Capa Services
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IAccountService, AccountService>();
-            builder.Services.AddScoped<ITransactionService, TransactionService>();
-            builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<ITransactionService, TransactionService>();
+            builder.Services.AddTransient<IPaymentService, PaymentService>();
             builder.Services.AddSingleton<INavigationService, NavigationService>();
             builder.Services.AddSingleton<IDialogService, DialogService>();
             builder.Services.AddSingleton<ICredentialService, CredentialService>();
             builder.Services.AddSingleton<INotificationService, NotificationService>();
             builder.Services.AddSingleton<IEmailService, EmailService>();
             builder.Services.AddSingleton<IGroqChatService, GroqChatService>();
+            builder.Services.AddSingleton<IClipboardService, ClipboardService>();
             builder.Services.AddSingleton<UserSession>();
 
             // 4. Inyección de Dependencias: Capa ViewModels
@@ -92,16 +106,33 @@ namespace UI
 
             builder.Services.AddSerilog();
 
-            #if DEBUG
+#if DEBUG
                 builder.Logging.AddDebug();
-            #endif
+#endif
 
             var app = builder.Build();
 
-            // Inicializar la Base de datos al arrancar
+            // Inicializar la Base de datos al arrancar SQLITE
             //InitializeDatabase(app);
 
             return app;
+        }
+
+        private static void InitializeDatabase(MauiApp app)
+        {
+            using var scope = app.Services.CreateScope();
+
+            try
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                dbContext.Database.EnsureCreated();
+
+                System.Diagnostics.Debug.WriteLine("[EXITO] Base de datos SQLite creada y estructurada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[ERROR] Falló la creación de la base de datos: {ex.Message}");
+            }
         }
     }
 }

@@ -17,5 +17,7 @@ namespace Models.DTO
         public string? Amount { get; set; }
 
         public string? Color { get; set; }
+
+        public string? Icon { get; set; }
     }
 }
