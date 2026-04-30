@@ -94,6 +94,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
 		<PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />

@@ -48,23 +48,21 @@ namespace UI
                 .CreateLogger();
 
             // 1. Configurar la Base de Datos
-/*
- * SQLITE
-string dbPath = Path.Combine(FileSystem.AppDataDirectory, "TandilBankLocal.db");
 
-Directory.CreateDirectory(FileSystem.AppDataDirectory);
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite($"Filename={dbPath}"));
-*/
-
-#if DEBUG
+#if WINDOWS
             builder.Services.AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(DatabaseSecrets.ConnectionStringLocal));
-#else
+                options.UseNpgsql(DatabaseSecrets.ConnectionStringPostgreSQL));
+#elif ANDROID || IOS
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "TandilBankLocal.db");
+
+            Directory.CreateDirectory(FileSystem.AppDataDirectory);
+
             builder.Services.AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(DatabaseSecrets.ConnectionStringAzure));
+                options.UseSqlite($"Filename={dbPath}"));
 #endif
+            //azure
+            //builder.Services.AddDbContext<AppDbContext>(options =>
+            //      options.UseSqlServer(DatabaseSecrets.ConnectionStringAzure));
             // 2. Inyección de Dependencias: Capa Data
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -112,8 +110,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
             var app = builder.Build();
 
-            // Inicializar la Base de datos al arrancar SQLITE
-            //InitializeDatabase(app);
+            // Inicializar la Base de datos al arrancar
+            InitializeDatabase(app);
 
             return app;
         }
@@ -125,13 +123,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             try
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                dbContext.Database.EnsureCreated();
 
-                System.Diagnostics.Debug.WriteLine("[EXITO] Base de datos SQLite creada y estructurada correctamente.");
+#if WINDOWS
+                dbContext.Database.Migrate();
+                System.Diagnostics.Debug.WriteLine("[EXITO] Migraciones de PostgreSQL aplicadas en Windows.");
+#elif ANDROID || IOS
+                dbContext.Database.EnsureCreated();
+                System.Diagnostics.Debug.WriteLine("[EXITO] Base de datos local SQLite creada en el dispositivo móvil.");
+#endif
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[ERROR] Falló la creación de la base de datos: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[ERROR FATAL DE BD]: {ex.Message}");
             }
         }
     }

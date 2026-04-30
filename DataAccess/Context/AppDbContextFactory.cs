@@ -22,13 +22,17 @@ namespace HomeBanking.Data.Context
         {
             var builder = new DbContextOptionsBuilder<AppDbContext>();
 
-            builder.UseSqlServer(DatabaseSecrets.ConnectionStringAzure, sqlServerOptionsAction: sqlOptions =>
+            /*builder.UseSqlServer(DatabaseSecrets.ConnectionStringAzure, sqlServerOptionsAction: sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                     maxRetryCount: 5,
                     maxRetryDelay: TimeSpan.FromSeconds(30),
                     errorNumbersToAdd: null);
-            });
+            });*/
+
+            string connectionString = DatabaseSecrets.ConnectionStringPostgreSQL;
+
+            builder.UseNpgsql(connectionString);
 
             return new AppDbContext(builder.Options);
         }

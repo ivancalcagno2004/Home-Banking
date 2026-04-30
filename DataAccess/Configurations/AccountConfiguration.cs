@@ -30,7 +30,7 @@ namespace HomeBanking.Data.Configurations
                 .IsRequired();
                 
             builder.Property(a => a.CreatedAt)
-                .HasDefaultValueSql("GETDATE()")
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .IsRequired();
         }
     }

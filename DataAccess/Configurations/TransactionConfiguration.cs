@@ -23,7 +23,7 @@ namespace HomeBanking.Data.Configurations
 
             builder.Property(t => t.Description).HasMaxLength(500);
 
-            builder.Property(t => t.CreatedAt).HasDefaultValueSql("GETDATE()").IsRequired();
+            builder.Property(t => t.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP").IsRequired();
 
             builder.HasOne(t => t.FromAccount)
                    .WithMany(a => a.TransactionsFrom)

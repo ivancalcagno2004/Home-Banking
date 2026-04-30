@@ -85,17 +85,16 @@ namespace HomeBanking.Data.Context
                       .HasForeignKey(p => p.CategoryId)
                       .OnDelete(DeleteBehavior.Restrict);
             });
-            modelBuilder.ApplyConfiguration(new ServicePaymentConfiguration());
 
             // Aplicar configuraciones externas
             modelBuilder.ApplyConfiguration(new ServicePaymentConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());       
-            modelBuilder.ApplyConfiguration(new AccountConfiguration());    
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionCategoryMapConfiguration());
 
-            // Compatibilidad con SQLite
+            // Compatibilidad SOLO para decimales en SQLite
             if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
             {
                 foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -108,16 +107,6 @@ namespace HomeBanking.Data.Context
                         modelBuilder.Entity(entityType.Name)
                             .Property(property.Name)
                             .HasConversion<double>();
-                    }
-
-                    foreach (var property in entityType.GetProperties())
-                    {
-                        var defaultValueSql = property.GetDefaultValueSql();
-                        if (defaultValueSql != null &&
-                            defaultValueSql.Contains("GETDATE()", StringComparison.OrdinalIgnoreCase))
-                        {
-                            property.SetDefaultValueSql("CURRENT_TIMESTAMP");
-                        }
                     }
 
                     var table = entityType.GetTableName();

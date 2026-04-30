@@ -59,7 +59,7 @@ namespace Services.Implementations
                     ServiceName = "USINA TANDIL",
                     Amount = random.Next(2500, 8000), 
                     IsPaid = false,
-                    ExpDate = DateTime.Now.AddDays(10)
+                    ExpDate = DateTime.UtcNow.AddDays(10)
                 },
                 new ServicePayment
                 {
@@ -69,7 +69,7 @@ namespace Services.Implementations
                     ServiceName = "CAMUZZI GAS",
                     Amount = random.Next(2500, 8000),
                     IsPaid = false,
-                    ExpDate = DateTime.Now.AddDays(-2)
+                    ExpDate = DateTime.UtcNow.AddDays(-2)
                 },
                 new ServicePayment
                 {
@@ -79,7 +79,7 @@ namespace Services.Implementations
                     ServiceName = "ARBA AUTOMOTOR",
                     Amount = random.Next(18000, 38000),
                     IsPaid = false,
-                    ExpDate = DateTime.Now.AddDays(10)
+                    ExpDate = DateTime.UtcNow.AddDays(10)
                 },
                 new ServicePayment
                 {
@@ -89,7 +89,7 @@ namespace Services.Implementations
                     ServiceName = "PERSONAL FLOW",
                     Amount = random.Next(2500, 8000),
                     IsPaid = false,
-                    ExpDate = DateTime.Now.AddDays(15)
+                    ExpDate = DateTime.UtcNow.AddDays(15)
                 },
                 new ServicePayment
                 {
@@ -99,7 +99,7 @@ namespace Services.Implementations
                     ServiceName = "TASAS MUNICIPALES",
                     Amount = random.Next(2500, 8000),
                     IsPaid = false,
-                    ExpDate = DateTime.Now.AddDays(1)
+                    ExpDate = DateTime.UtcNow.AddDays(1)
                 },
             };
 
